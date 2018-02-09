@@ -6,6 +6,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+/**
+* Angular material components
+*/
 
 @NgModule({
   imports: [
@@ -15,7 +21,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatListModule,
     MatInputModule,
     MatTableModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatIconModule,
+    MatSnackBarModule
   ],
   declarations: [],
   exports: [
@@ -24,7 +32,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatListModule,
     MatInputModule,
     MatTableModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatIconModule,
+    MatSnackBarModule
   ]
 })
 export class AppMaterialModule { }

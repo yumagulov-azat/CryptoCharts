@@ -1,0 +1,36 @@
+.main-container {
+  height: 100vh;
+}
+
+.main-sidenav {
+  height: 100vh;
+  background: #673ab7;
+  width: 80px;
+
+  &__toolbar {
+    text-align: center;
+    height: 64px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+
+    .mat-toolbar-row {
+      justify-content: center;
+    }
+  }
+
+  mat-nav-list {
+    padding-top: 0;
+
+    .mat-list-item {
+      color: #C7AAFB;
+      height: auto;
+
+      .mat-list-item-content {
+        flex-direction: column;
+        // justify-content: center;
+        // align-items: center;
+        padding: 0;
+        text-align: center;
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+::ng-deep .app-page-content-content {
+  flex: 64px 0 0;
+}
+
+::ng-deep .app-page-content-content {
+  flex: 1 0 0;
+  overflow: auto;
+  -webkit-overflow-scroll: touch;
+  padding: 16px;
+}

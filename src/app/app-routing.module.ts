@@ -4,12 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'currencies',
+    redirectTo: 'coins',
     pathMatch: 'full'
   },
   {
-    path: 'currencies',
-    loadChildren: 'app/currencies/currencies.module#CurrenciesModule'
+    path: 'coins',
+    loadChildren: 'app/coins/coins.module#CoinsModule'
   }
 ]
 

@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 250px 0 0;
+  max-width: 250px;
+  height: 100vh;
+  max-height: 100vh;
+  background: #764EBD;
+}
+
+::ng-deep .app-page-nav-toolbar {
+  flex: 64px 0 0;
+  background: #764EBD;
+  color: #fff;
+  border-bottom: 1px solid rgba(0,0,0,.1)
+}
+
+::ng-deep .app-page-nav-content {
+  flex: 1 0 0;
+  overflow: auto;
+  -webkit-overflow-scroll: touch;
+}
