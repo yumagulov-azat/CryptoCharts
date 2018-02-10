@@ -1,3 +1,41 @@
-<p>
-  coins-list works!
-</p>
+<mat-progress-bar mode="indeterminate" *ngIf="!isLoaded"></mat-progress-bar>
+<mat-table #table [dataSource]="coinsList" matSort class="coins-list" *ngIf="isLoaded">
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="position">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> # </mat-header-cell>
+    <mat-cell *matCellDef="let element" class="coins-list__position"> {{element.position}} </mat-cell>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+    <mat-cell *matCellDef="let element" class="coins-list__name">
+      {{element.coinName}}
+      <span>{{element.name}}</span>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Price Column -->
+  <ng-container matColumnDef="price">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
+    <mat-cell *matCellDef="let element" class="coins-list__price">
+      <span>{{element.price | currency:'USD'}}</span>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Price Column -->
+  <ng-container matColumnDef="dayChange">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Day change </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.dayChange}} </mat-cell>
+  </ng-container>
+
+  <!-- Price Column -->
+  <ng-container matColumnDef="marketCap">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Market cap </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.marketCap | currency:'USD'}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/{{ row.name }}"></mat-row>
+</mat-table>

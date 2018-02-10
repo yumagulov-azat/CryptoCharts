@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1 0 0;
@@ -14,5 +15,5 @@
   flex: 1 0 0;
   overflow: auto;
   -webkit-overflow-scroll: touch;
-  padding: 16px;
+  // padding: 16px;
 }

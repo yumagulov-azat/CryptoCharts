@@ -5,20 +5,16 @@
         <span>CC</span>
       </mat-toolbar-row>
     </mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item routerLink="list">
-        <mat-icon matListIcon>folder</mat-icon>
-        <h4 mat-line>Coins</h4>
-      </a>
-      <a mat-list-item routerLink="list">
-        <mat-icon matListIcon>folder</mat-icon>
-        <h4 mat-line>Mining</h4>
-      </a>
-      <a mat-list-item routerLink="list">
-        <mat-icon matListIcon>help</mat-icon>
-        <h4 mat-line>About</h4>
-      </a>
-    </mat-nav-list>
+    <nav>
+      <ul>
+        <li *ngFor="let item of appNav">
+          <button mat-button routerLink="{{ item.link }}" routerLinkActive="active">
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <span>{{ item.name }}</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>

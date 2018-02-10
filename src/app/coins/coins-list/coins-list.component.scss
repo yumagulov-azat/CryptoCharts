@@ -1,0 +1,58 @@
+.coins-list {
+  // height: 100%;
+  // overflow: auto;
+  // -webkit-overflow-scroll: touch;
+  padding-top: 57px;
+
+  .mat-header-row {
+    position: absolute;
+    z-index: 2;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: #fff;
+  }
+
+  .mat-row {
+    cursor: pointer;
+    background: rgba(0,0,0,.0);
+    transition: all .25s ease;
+
+    &:hover {
+      background: rgba(0,0,0,.01);
+    }
+  }
+
+  .mat-column-position {
+    max-width: 40px;
+  }
+
+  &__position {
+    max-width: 40px;
+    color: rgba(0,0,0,.3)
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+
+    span {
+      font-size: 12px;
+      display: block;
+      opacity: .6;
+      font-weight: 400;
+    }
+  }
+
+  &__price {
+    // font-size: 14px;
+    // font-weight: 600;
+    // color: rgba(0,0,0,.6)
+
+    span {
+      // display: block;
+      // border-radius: 3px;
+      // background: rgba(0,0,0,.2);
+    }
+  }
+}

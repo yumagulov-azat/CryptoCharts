@@ -5,9 +5,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 /**
 * Angular material components
@@ -23,7 +25,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatTableModule,
     MatProgressBarModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule,
+    MatSortModule
   ],
   declarations: [],
   exports: [
@@ -34,7 +38,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatTableModule,
     MatProgressBarModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatButtonModule,
+    MatSortModule
   ]
 })
 export class AppMaterialModule { }

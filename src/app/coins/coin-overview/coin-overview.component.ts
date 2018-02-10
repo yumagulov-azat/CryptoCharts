@@ -11,6 +11,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoinOverviewComponent implements OnInit {
 
+  isLoaded: boolean = false;
+  
   constructor() { }
 
   ngOnInit() {

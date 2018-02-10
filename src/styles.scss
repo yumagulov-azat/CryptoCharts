@@ -4,6 +4,7 @@
 @include mat-core();
 
 $primary: mat-palette($mat-deep-purple);
+// $primary: #7C2289;
 $accent:  mat-palette($mat-pink, A200, A100, A400);
 $warn:    mat-palette($mat-red, 500);
 

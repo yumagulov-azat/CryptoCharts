@@ -7,12 +7,10 @@ import { AppMaterialModule } from './modules/app-material/app-material.module';
 import { PageModule } from './modules/page/page.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { MainNavComponent } from './components/main-nav/main-nav.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    MainNavComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

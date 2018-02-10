@@ -6,30 +6,58 @@
   height: 100vh;
   background: #673ab7;
   width: 80px;
+  background-image: linear-gradient(-45deg, #2E266F 0%, #7C2289 100%);
 
   &__toolbar {
     text-align: center;
     height: 64px;
     border-bottom: 1px solid rgba(0,0,0,.1);
+    background: transparent;
 
     .mat-toolbar-row {
       justify-content: center;
     }
   }
 
-  mat-nav-list {
-    padding-top: 0;
+  nav {
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
 
-    .mat-list-item {
-      color: #C7AAFB;
-      height: auto;
+      li {
+        border-bottom: 1px solid rgba(0,0,0,.1);
 
-      .mat-list-item-content {
-        flex-direction: column;
-        // justify-content: center;
-        // align-items: center;
-        padding: 0;
-        text-align: center;
+        .mat-button {
+          width: 80px;
+          min-width: 80px;
+          max-width: 80px;
+          height: 80px;
+          white-space: normal;
+          color: rgba(255,255,255,.8);
+          transition: all .25s ease;
+
+          .mat-button-focus-overlay {
+            transition: all .25s ease;
+          }
+
+          .mat-icon {
+            font-size: 28px;
+            width: 100%;
+            height: 36px;
+          }
+
+          span {
+            display: block;
+            line-height: 14px;
+            font-size: 12px;
+            font-weight: 400;
+          }
+
+          &:hover {
+            color: rgba(255,255,255,1);
+          }
+        }
       }
     }
   }
