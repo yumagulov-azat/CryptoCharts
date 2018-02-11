@@ -10,6 +10,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 /**
 * Angular material components
@@ -27,7 +28,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatSnackBarModule,
     MatButtonModule,
-    MatSortModule
+    MatSortModule,
+    MatCardModule
   ],
   declarations: [],
   exports: [
@@ -40,7 +42,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatSnackBarModule,
     MatButtonModule,
-    MatSortModule
+    MatSortModule,
+    MatCardModule
   ]
 })
 export class AppMaterialModule { }

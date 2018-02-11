@@ -7,6 +7,7 @@ $primary: mat-palette($mat-deep-purple);
 // $primary: #7C2289;
 $accent:  mat-palette($mat-pink, A200, A100, A400);
 $warn:    mat-palette($mat-red, 500);
+$green:    mat-palette($mat-green);
 
 $theme: mat-light-theme($primary, $accent, $warn);
 
@@ -21,4 +22,13 @@ body {
 
 h1, h2, h3, h4 {
     font-weight: normal;
+}
+
+
+.value-down {
+  color: mat-color($accent, 600);
+}
+
+.value-up {
+  color: mat-color($green);
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppMaterialModule } from '../modules/app-material/app-material.module';
 import { PageModule } from '../modules/page/page.module';
+import { ChartsModule } from '../modules/charts/charts.module';
 
 import { CoinsRoutingModule } from './coins-routing.module';
 import { CoinsService } from './coins.service';
@@ -16,7 +17,8 @@ import { CoinOverviewComponent } from './coin-overview/coin-overview.component';
     CommonModule,
     CoinsRoutingModule,
     AppMaterialModule,
-    PageModule
+    PageModule,
+    ChartsModule,
   ],
   declarations: [
     CoinsComponent,

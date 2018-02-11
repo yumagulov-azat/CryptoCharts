@@ -15,14 +15,14 @@ export class CoinsComponent implements OnInit {
   constructor(private coinsService: CoinsService, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.getSortedCoinsList();
+    this.getCoinsList();
   }
 
   /**
    * Get coins list then sort and push
    */
-  getSortedCoinsList(): void {
-    this.coinsService.getSortedCoinsList()
+  getCoinsList(): void {
+    this.coinsService.getCoinsList()
       .subscribe(res => {
         this.coinsList = res;
       });

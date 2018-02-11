@@ -11,7 +11,7 @@
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
     <mat-cell *matCellDef="let element" class="coins-list__name">
-      {{element.coinName}}
+      {{element.fullName}}
       <span>{{element.name}}</span>
     </mat-cell>
   </ng-container>
@@ -20,14 +20,18 @@
   <ng-container matColumnDef="price">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
     <mat-cell *matCellDef="let element" class="coins-list__price">
-      <span>{{element.price | currency:'USD'}}</span>
+      <span>{{element.price | currency:'CAD':'symbol-narrow':'1.2-4'}}</span>
     </mat-cell>
   </ng-container>
 
   <!-- Price Column -->
-  <ng-container matColumnDef="dayChange">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Day change </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.dayChange}} </mat-cell>
+  <ng-container matColumnDef="changePct24Hour">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Chg. 24H </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <div [ngClass]="{'value-up': element.changePct24Hour > 0, 'value-down': element.changePct24Hour < 0}">
+        {{element.changePct24Hour}}%
+      </div>
+    </mat-cell>
   </ng-container>
 
   <!-- Price Column -->

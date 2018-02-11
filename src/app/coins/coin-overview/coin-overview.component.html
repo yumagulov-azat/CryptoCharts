@@ -1,1 +1,40 @@
 <mat-progress-bar mode="indeterminate" *ngIf="!isLoaded"></mat-progress-bar>
+<!-- <line-chart [data]="chartData"></line-chart> -->
+<div class="coin-stat-cards">
+  <div class="coin-stat-cards__card">
+    <mat-card>
+      <mat-card-content>
+        <div class="mat-title">
+          Price
+        </div>
+        <div class="mat-display-1">
+          {{ coin.price | currency}}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="coin-stat-cards__card">
+    <mat-card>
+      <mat-card-content>
+        <div class="mat-title">
+          Market Cap
+        </div>
+        <div class="mat-display-1">
+          {{ coin.price | currency}}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="coin-stat-cards__card">
+    <mat-card>
+      <mat-card-content>
+        <div class="mat-title">
+          Day change
+        </div>
+        <div class="mat-display-1">
+          {{ coin.price | currency}}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -7,6 +7,7 @@ import { AppMaterialModule } from './modules/app-material/app-material.module';
 import { PageModule } from './modules/page/page.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ChartsModule } from './modules/charts/charts.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     AppMaterialModule,
-    PageModule
+    PageModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

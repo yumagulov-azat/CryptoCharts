@@ -20,7 +20,7 @@ const routes: Routes = [
         component: CoinsListComponent
       },
       {
-        path: ':id',
+        path: ':name',
         component: CoinOverviewComponent
       }
     ]

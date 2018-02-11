@@ -3,6 +3,7 @@ import { MatTableDataSource, MatSort } from '@angular/material';
 import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
 
+
 /**
 * Coins list page
 */
@@ -17,7 +18,8 @@ export class CoinsListComponent implements OnInit {
   isLoaded: boolean = false;
 
   // Data-table
-  displayedColumns = ['position', 'name', 'price', 'dayChange', 'marketCap'];
+  // displayedColumns = ['position', 'name', 'price', 'dayChange', 'marketCap'];
+  displayedColumns = ['position', 'name', 'price', 'marketCap', 'changePct24Hour'];
   coinsList = new MatTableDataSource();
 
   @ViewChild(MatSort) sort: MatSort;
@@ -32,15 +34,13 @@ export class CoinsListComponent implements OnInit {
    * Get coins list and past data to data-table
    */
   initTable(): void {
-    this.coinsService.getSortedCoinsList()
-      .subscribe(coins => {
-        this.coinsService.getCoinsFullData(coins)
-          .subscribe(res => {
-            // Past data to data
-            this.coinsList.data = res;
-            this.coinsList.sort = this.sort;
-            this.isLoaded = true;
-          });
+    this.coinsService.getCoinsList()
+      .subscribe(res => {
+        console.log(res)
+        // // Past data to data
+        this.coinsList.data = res;
+        this.coinsList.sort = this.sort;
+        this.isLoaded = true;
       });
   }
 

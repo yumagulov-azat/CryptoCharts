@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CoinsService } from '../coins.service'
 
 /**
 * Coin overview page
@@ -11,11 +13,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoinOverviewComponent implements OnInit {
 
-  isLoaded: boolean = false;
-  
-  constructor() { }
+  isLoaded: boolean = true;
+  chartData: Array<any>;
 
-  ngOnInit() {
+  coin: Coin = {
+    name: '',
+    price: 0
   }
 
+  constructor(private coinsService: CoinsService, private route: ActivatedRoute) {
+
+  }
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+        this.getCoinInfo();
+    });
+  }
+
+  getCoinInfo(): void {
+    this.coin.name = this.route.snapshot.paramMap.get('name');
+    this.coinsService.getCoinFullData(this.coin.name).subscribe(res => {
+      if(res.Response == 'Success') {
+        let data = res.Data;
+        console.log(res)
+        this.coin.price = data.AggregatedData.PRICE
+      } else if(res.Response == 'Error') {
+        console.log('error');
+      }
+    });
+  }
+}
+
+export interface Coin {
+    name: string,
+    price: number
 }

@@ -1,0 +1,17 @@
+.coin-stat-cards {
+  display: flex;
+  padding: 16px 8px;
+
+  &__card {
+    padding: 0 8px;
+    flex: 33.33333%;
+    max-width: 33.33333%;
+
+    .mat-title {
+      color: rgba(0,0,0,.5);
+      font-weight: 400;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  }
+}
