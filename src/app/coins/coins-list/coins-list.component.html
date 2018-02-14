@@ -1,45 +1,58 @@
-<mat-progress-bar mode="indeterminate" *ngIf="!isLoaded"></mat-progress-bar>
-<mat-table #table [dataSource]="coinsList" matSort class="coins-list" *ngIf="isLoaded">
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<div class="coins-list">
+  <mat-table #table [dataSource]="coinsList" matSort *ngIf="!loading">
 
-  <!-- Position Column -->
-  <ng-container matColumnDef="position">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> # </mat-header-cell>
-    <mat-cell *matCellDef="let element" class="coins-list__position"> {{element.position}} </mat-cell>
-  </ng-container>
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> # </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="coins-list-item__position"> {{element.position}} </mat-cell>
+    </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-    <mat-cell *matCellDef="let element" class="coins-list__name">
-      {{element.fullName}}
-      <span>{{element.name}}</span>
-    </mat-cell>
-  </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="coins-list-item__name">
+        <div class="coins-list-item__name__img">
+          <img src="https://www.cryptocompare.com/{{element.imageUrl}}" alt="{{element.fullName}}" width="24">
+        </div>
+        <div class="coins-list-item__name__text">
+          {{element.fullName}}
+          <span>{{element.name}}</span>
+        </div>
+      </mat-cell>
+    </ng-container>
 
-  <!-- Price Column -->
-  <ng-container matColumnDef="price">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
-    <mat-cell *matCellDef="let element" class="coins-list__price">
-      <span>{{element.price | currency:'CAD':'symbol-narrow':'1.2-4'}}</span>
-    </mat-cell>
-  </ng-container>
+    <!-- Price Column -->
+    <ng-container matColumnDef="price">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="coins-list-item__price">
+        <span>{{element.price | currency:'CAD':'symbol-narrow':'1.2-4'}}</span>
+      </mat-cell>
+    </ng-container>
 
-  <!-- Price Column -->
-  <ng-container matColumnDef="changePct24Hour">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Chg. 24H </mat-header-cell>
-    <mat-cell *matCellDef="let element">
-      <div [ngClass]="{'value-up': element.changePct24Hour > 0, 'value-down': element.changePct24Hour < 0}">
-        {{element.changePct24Hour}}%
-      </div>
-    </mat-cell>
-  </ng-container>
+    <!-- Price Column -->
+    <ng-container matColumnDef="changePct24Hour">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Chg. 24H </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div [ngClass]="{'value-up': element.changePct24Hour > 0, 'value-down': element.changePct24Hour < 0}">
+          {{element.changePct24Hour}}%
+        </div>
+      </mat-cell>
+    </ng-container>
 
-  <!-- Price Column -->
-  <ng-container matColumnDef="marketCap">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> Market cap </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.marketCap | currency:'USD'}} </mat-cell>
-  </ng-container>
+    <!-- Price Column -->
+    <ng-container matColumnDef="marketCap">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Market cap </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.marketCap | currency:'USD'}} </mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/{{ row.name }}"></mat-row>
-</mat-table>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/{{ row.name }}" class="coins-list-item"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator
+                 [length]="1000"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="[50, 100]"
+                 [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>

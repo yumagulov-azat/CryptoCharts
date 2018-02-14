@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
 
@@ -15,32 +15,41 @@ import { CoinsService } from '../coins.service';
 })
 export class CoinsListComponent implements OnInit {
 
-  isLoaded: boolean = false;
+  loading: boolean = true;
 
   // Data-table
   // displayedColumns = ['position', 'name', 'price', 'dayChange', 'marketCap'];
   displayedColumns = ['position', 'name', 'price', 'marketCap', 'changePct24Hour'];
   coinsList = new MatTableDataSource();
+  pageSize: number = 50;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private coinsService: CoinsService, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.initTable();
+    this.getCoinsList(this.pageSize);
+
+    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+    this.paginator.page.subscribe(res => {
+      this.getCoinsList(this.paginator.pageSize, this.paginator.pageIndex);
+    })
   }
 
   /**
    * Get coins list and past data to data-table
    */
-  initTable(): void {
-    this.coinsService.getCoinsList()
+  getCoinsList(limit: number = 50, page: number = 0): void {
+    this.loading = true;
+
+    this.coinsService.getCoinsList(limit, page)
       .subscribe(res => {
-        console.log(res)
-        // // Past data to data
+        // Past data to data
         this.coinsList.data = res;
         this.coinsList.sort = this.sort;
-        this.isLoaded = true;
+        this.loading = false;
       });
   }
 

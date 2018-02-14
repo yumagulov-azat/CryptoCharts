@@ -2,7 +2,16 @@
   // height: 100%;
   // overflow: auto;
   // -webkit-overflow-scroll: touch;
-  padding-top: 57px;
+  padding-top: 48px;
+  padding-bottom: 56px;
+  //opacity: 0;
+  //display: none;
+  //transition: opacity .3s ease;
+  //
+  //&--visible {
+  //  display: block;
+  //  opacity: 1;
+  //}
 
   .mat-header-row {
     position: absolute;
@@ -10,31 +19,60 @@
     top: 64px;
     left: 0;
     right: 0;
+    min-height: 48px;
     background: #fff;
-  }
-
-  .mat-row {
-    cursor: pointer;
-    background: rgba(0,0,0,.0);
-    transition: all .25s ease;
-
-    &:hover {
-      background: rgba(0,0,0,.01);
-    }
   }
 
   .mat-column-position {
     max-width: 40px;
   }
 
+  .mat-row {
+    cursor: pointer;
+    background: rgba(0, 0, 0, .0);
+    transition: all .25s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, .01);
+    }
+  }
+
+  .mat-paginator {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+}
+
+.coins-list-item {
   &__position {
     max-width: 40px;
-    color: rgba(0,0,0,.3)
+    color: rgba(0, 0, 0, .3)
   }
 
   &__name {
+    display: flex;
+    align-items: center;
     font-size: 16px;
     font-weight: 600;
+
+    &__img {
+      flex: 32px 0 0;
+      width: 32px;
+      margin-right: 10px;
+
+      img {
+        max-width: 100%;
+      }
+    }
+
+    &__text {
+      flex: 1 0 0;
+    }
 
     span {
       font-size: 12px;

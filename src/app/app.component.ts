@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import * as shape from 'd3-shape';
-import * as d3 from 'd3';
 
 @Component({
   selector: 'app-root',
