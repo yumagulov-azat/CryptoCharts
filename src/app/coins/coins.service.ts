@@ -32,7 +32,7 @@ export class CoinsService {
         }
       }).subscribe((res: {Message: string, Data: any}) => {
         let coinsList: Array<{}> = [];
-        console.log(res)
+
         if (res.Message == 'Success') {
           res.Data.forEach((item, index) => {
             let coinInfo       = item.CoinInfo,
@@ -52,9 +52,11 @@ export class CoinsService {
               coinsMined: conversionInfo.Supply,
               marketCap: priceInfo.PRICE * conversionInfo.Supply
             });
-            observer.next(coinsList);
-            observer.complete();
           });
+
+          observer.next(coinsList);
+          observer.complete();
+
         } else {
           observer.error('API error');
         }
@@ -62,6 +64,17 @@ export class CoinsService {
 
     });
   }
+
+
+  // getCoinsList(limit: number = 50, page: number = 0): Observable<any> {
+  //   return this.http.get('https://min-api.cryptocompare.com/data/top/totalvol', {
+  //       params: {
+  //         limit: limit,
+  //         page: page,
+  //         tsym: 'USD'
+  //       }
+  //     })
+  // }
 
   /**
    * Get coin data

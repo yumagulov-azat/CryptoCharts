@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTable, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
-
 
 /**
 * Coins list page
