@@ -18,7 +18,6 @@ export class CoinsListComponent implements OnInit {
   loading: boolean = true;
 
   // Data-table
-  // displayedColumns = ['position', 'name', 'price', 'dayChange', 'marketCap'];
   displayedColumns = ['position', 'name', 'price', 'marketCap', 'changePct24Hour'];
   coinsList = new MatTableDataSource();
   pageSize: number = 50;
@@ -31,11 +30,9 @@ export class CoinsListComponent implements OnInit {
   ngOnInit() {
     this.getCoinsList(this.pageSize);
 
-    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
     this.paginator.page.subscribe(res => {
       this.getCoinsList(this.paginator.pageSize, this.paginator.pageIndex);
-    })
+    });
   }
 
   /**
@@ -46,10 +43,11 @@ export class CoinsListComponent implements OnInit {
 
     this.coinsService.getCoinsList(limit, page)
       .subscribe(res => {
-        // Past data to data
         this.coinsList.data = res;
         this.coinsList.sort = this.sort;
         this.loading = false;
+      }, error => {
+        this.snackBar.open(error, 'OK')
       });
   }
 

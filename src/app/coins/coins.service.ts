@@ -19,7 +19,9 @@ export class CoinsService {
   constructor(private http: HttpClient) {
   }
 
-
+  /**
+   * Get coins list
+   */
   getCoinsList(limit: number = 50, page: number = 0): Observable<any> {
     return Observable.create((observer) => {
       this.http.get('https://min-api.cryptocompare.com/data/top/totalvol', {
@@ -28,10 +30,10 @@ export class CoinsService {
           page: page,
           tsym: 'USD'
         }
-      }).subscribe((res: {Data: any}) => {
+      }).subscribe((res: {Message: string, Data: any}) => {
         let coinsList: Array<{}> = [];
         console.log(res)
-        if (res.Data) {
+        if (res.Message == 'Success') {
           res.Data.forEach((item, index) => {
             let coinInfo       = item.CoinInfo,
                 conversionInfo = item.ConversionInfo,
@@ -53,6 +55,8 @@ export class CoinsService {
             observer.next(coinsList);
             observer.complete();
           });
+        } else {
+          observer.error('API error');
         }
       });
 
@@ -82,31 +86,6 @@ export class CoinsService {
         limit: limit
       }
     })
-  }
-
-  /**
-   * Sort and slice
-   */
-  private sortSliceResult(res: any, max: number = 30, sort: boolean = true): Array<any> {
-    let resultList = [];
-
-    // Result object to array
-    if (typeof res === 'object') {
-      Object.keys(res).forEach(key => {
-        resultList.push(res[key]);
-      });
-    } else {
-      resultList = res;
-    }
-
-    // Sort
-    if (sort) {
-      resultList.sort((a, b) => {
-        return a.SortOrder - b.SortOrder
-      });
-    }
-
-    return resultList.slice(0, max);
   }
 
 }
