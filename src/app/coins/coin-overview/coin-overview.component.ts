@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CoinsService } from '../coins.service'
+import { CoinsService } from '../coins.service';
 
 /**
 * Coin overview page
@@ -29,6 +29,9 @@ export class CoinOverviewComponent implements OnInit {
     this.route.params.subscribe(params => {
         this.getCoinInfo();
     });
+
+    this.route.parent.data
+      .subscribe(v => console.log(v));
   }
 
   getCoinInfo(): void {

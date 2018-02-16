@@ -4,13 +4,13 @@
 
     <!-- Position Column -->
     <ng-container matColumnDef="position">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> # </mat-header-cell>
-      <mat-cell *matCellDef="let row" class="coins-list-item__position"> {{row.position}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> #</mat-header-cell>
+      <mat-cell *matCellDef="let row" class="coins-list-item__position"> {{row.position}}</mat-cell>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>
       <mat-cell *matCellDef="let row" class="coins-list-item__name">
         <div class="coins-list-item__name__img">
           <img src="https://www.cryptocompare.com{{row.imageUrl}}" width="24">
@@ -24,7 +24,7 @@
 
     <!-- Price Column -->
     <ng-container matColumnDef="price">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Price</mat-header-cell>
       <mat-cell *matCellDef="let row" class="coins-list-item__price">
         <span>{{row.price}}</span>
       </mat-cell>
@@ -32,7 +32,7 @@
 
     <!-- Price Column -->
     <ng-container matColumnDef="changePct24Hour">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Chg. 24H </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Chg. 24H</mat-header-cell>
       <mat-cell *matCellDef="let row">
         <div [ngClass]="{'value-up': row.changePct24Hour > 0, 'value-down': row.changePct24Hour < 0}">
           {{row.changePct24Hour}}%
@@ -42,12 +42,21 @@
 
     <!-- Price Column -->
     <ng-container matColumnDef="marketCap">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Market cap </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.marketCap}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Market cap</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.marketCap}}</mat-cell>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="weekHistory">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> 7d Chart (USD)</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.weekHistory}}
+      </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/{{ row.name }}" class="coins-list-item"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/{{ row.name }}"
+             class="coins-list-item"></mat-row>
   </mat-table>
   <mat-paginator #paginator
                  [length]="1000"

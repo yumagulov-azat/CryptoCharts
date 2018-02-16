@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { CoinsComponent } from './coins.component';
-import { CoinsNavComponent } from './coins-nav/coins-nav.component';
 import { CoinsListComponent } from './coins-list/coins-list.component';
 import { CoinOverviewComponent } from './coin-overview/coin-overview.component';
 
@@ -10,6 +9,9 @@ const routes: Routes = [
   {
     path: '',
     component: CoinsComponent,
+    data: {
+      coins: ''
+    },
     children: [
       {
         path: '',

@@ -17,7 +17,7 @@ export class CoinsListComponent implements OnInit {
   loading: boolean = true;
 
   // Data-table
-  displayedColumns = ['position', 'name', 'price', 'marketCap', 'changePct24Hour'];
+  displayedColumns = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'weekHistory'];
   coinsList = new MatTableDataSource();
   pageSize: number = 50;
 
