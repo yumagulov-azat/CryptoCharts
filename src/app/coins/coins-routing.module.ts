@@ -12,10 +12,14 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'list'
+        redirectTo: 'list/1'
       },
       {
         path: 'list',
+        redirectTo: 'list/1'
+      },
+      {
+        path: 'list/:page',
         component: CoinsListComponent
       },
       {

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTable, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
@@ -24,12 +25,17 @@ export class CoinsListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private coinsService: CoinsService, public snackBar: MatSnackBar) { }
+  constructor(private coinsService: CoinsService, private route: ActivatedRoute, private router: Router, public snackBar: MatSnackBar) {
+
+  }
 
   ngOnInit() {
-    this.getCoinsList(this.pageSize);
+    this.paginator.pageIndex = this.route.snapshot.paramMap.get('page') - 1;
+    this.getCoinsList(this.pageSize, this.paginator.pageIndex);
+
 
     this.paginator.page.subscribe(res => {
+      this.router.navigate(['/coins/list/' + (this.paginator.pageIndex + 1)]);
       this.getCoinsList(this.paginator.pageSize, this.paginator.pageIndex);
     });
   }
