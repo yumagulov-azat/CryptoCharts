@@ -10,6 +10,11 @@ export class AppComponent {
 
   appNav = [
     {
+      name: 'Favorits',
+      link: '/coins',
+      icon: 'star'
+    },
+    {
       name: 'Coins',
       link: '/coins',
       icon: 'album'

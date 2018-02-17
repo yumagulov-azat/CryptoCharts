@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import {CCC} from '../../utilities/ccc-streamer-utilities';
@@ -23,8 +25,32 @@ export class CoinsService {
    * Get coins list
    */
   getCoinsList(limit: number = 50, page: number = 0): Observable<any> {
-    let coinsList: Array<{}> = [];
+    let params = new HttpParams()
+      .set('limit', limit.toString())
+      .set('page', page.toString())
+      .set('tsym', 'USD');
 
+    return this.http.get('https://min-api.cryptocompare.com/data/top/totalvol', {params: params})
+    .map((res: {Message: string, Data: any}) => {
+      let coinsList: Array<{}> = [];
+      if (res.Message == 'Success' && res.Data.length > 0) {
+        res.Data.forEach((item, index) => {
+          coinsList.push({
+            position: page * limit + (index + 1),
+            name: item.CoinInfo.Name,
+            fullName: item.CoinInfo.FullName,
+          });
+        });
+      }
+      return coinsList;
+    })
+  }
+
+
+  /**
+   * Get coins list with full data
+   */
+  getCoinsListFullData(limit: number = 50, page: number = 0): Observable<any> {
     let params = new HttpParams()
       .set('limit', limit.toString())
       .set('page', page.toString())
@@ -32,7 +58,9 @@ export class CoinsService {
 
     return this.http.get('https://min-api.cryptocompare.com/data/top/totalvol', {params: params})
       .map((res: {Message: string, Data: any}) => {
-        if (res.Message == 'Success') {
+        let coinsList: Array<{}> = [];
+
+        if (res.Message == 'Success' && res.Data.length > 0) {
           res.Data.forEach((item, index) => {
             let coinInfo       = item.CoinInfo,
                 conversionInfo = item.ConversionInfo,
@@ -44,27 +72,25 @@ export class CoinsService {
               fullName: coinInfo.FullName,
               imageUrl: coinInfo.ImageUrl,
               price: CCC.convertValueToDisplay('$', priceInfo.PRICE),
-              open24Hour: priceInfo.OPEN24HOUR,
-              change24Hour: priceInfo.PRICE - priceInfo.OPEN24HOUR,
               changePct24Hour: ((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100).toFixed(2),
-              coinsMined: conversionInfo.Supply,
-              marketCap: CCC.convertValueToDisplay('$', priceInfo.PRICE * conversionInfo.Supply, 'short')
+              marketCap: CCC.convertValueToDisplay('$', priceInfo.PRICE * conversionInfo.Supply, 'short'),
+              weekHistory: []
             });
           });
-
-          return coinsList;
         }
+        return coinsList;
       })
-      .flatMap((coinsList: any) => {
-        // Add to coins list coin 7d history
-        return this.getCoinsHistoryByDays(coinsList, 7)
-          .map(coinsHistory=> {
-            coinsList.forEach((coin, index) => {
-              coinsList[index].weekHistory = coinsHistory[index].Data;
-            });
-            return coinsList;
-          });
-      });
+      // .flatMap((coinsList: any) => {
+      //   return this.getCoinsHistoryByDays(coinsList, 7)
+      //     .map(coinsHistory=> {
+      //       coinsList.forEach((coin, index) => {
+      //         coinsList[index].weekHistory = coinsHistory[index].Data;
+      //       });
+      //       return coinsList;
+      //     }, error => {
+      //       return error;
+      //     });
+      // });
   }
 
   /**
@@ -73,16 +99,21 @@ export class CoinsService {
   getCoinsHistoryByDays(coins: Array<any>, limit: number = 365): Observable<any> {
     let coinsRequests = [];
 
-    coins.forEach(coin => {
-      let params = new HttpParams()
-        .set('limit', limit.toString())
-        .set('fsym', coin.name)
-        .set('tsym', 'USD');
+    if(coins) {
+      coins.forEach((coin, index) => {
+        let params = new HttpParams()
+          .set('limit', limit.toString())
+          .set('fsym', coin.name)
+          .set('tsym', 'USD');
 
-      coinsRequests.push(this.http.get('https://min-api.cryptocompare.com/data/histoday', {params: params}));
-    });
+        coinsRequests.push(this.http.get('https://min-api.cryptocompare.com/data/histoday', {params: params}));
+      });
 
-    return Observable.forkJoin(coinsRequests);
+      return Observable.forkJoin(coinsRequests);
+
+    } else {
+      return Observable.create((observer) => observer.error('Empty coins list'));
+    }
   }
 
 

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { CoinsService } from './coins.service';
 
 @Component({
   selector: 'app-coins',
@@ -10,22 +8,11 @@ import { CoinsService } from './coins.service';
 export class CoinsComponent implements OnInit {
 
   title: string = 'All coins';
-  coinsList = [];
 
-  constructor(private coinsService: CoinsService, public snackBar: MatSnackBar) { }
+  constructor() { }
 
   ngOnInit() {
-    this.getCoinsList();
-  }
 
-  /**
-   * Get coins list then sort and push
-   */
-  getCoinsList(): void {
-    this.coinsService.getCoinsList()
-      .subscribe(res => {
-        this.coinsList = res;
-      });
   }
 
 }

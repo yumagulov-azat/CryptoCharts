@@ -40,13 +40,14 @@ export class CoinsListComponent implements OnInit {
   getCoinsList(limit: number = 50, page: number = 0): void {
     this.loading = true;
 
-    this.coinsService.getCoinsList(limit, page)
+    this.coinsService.getCoinsListFullData(limit, page)
       .subscribe(res => {
         this.coinsList.data = res;
         this.coinsList.sort = this.sort;
         this.loading = false;
       }, error => {
-        this.snackBar.open(error, 'OK')
+        this.snackBar.open('API Error', 'OK');
+        this.loading = false;
       });
   }
 

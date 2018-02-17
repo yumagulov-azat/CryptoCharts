@@ -9,9 +9,6 @@ const routes: Routes = [
   {
     path: '',
     component: CoinsComponent,
-    data: {
-      coins: ''
-    },
     children: [
       {
         path: '',
