@@ -121,11 +121,60 @@ export class CoinsService {
    * Get coin data
    */
   getCoinFullData(coinName: string): Observable<any> {
+    let coinShapshot: any = {
+      finance: {},
+      info: {},
+      daysHistory: []
+    };
+
     let params = new HttpParams()
       .set('fsym', coinName)
       .set('tsym', 'USD');
 
-    return this.http.get('https://www.cryptocompare.com/api/data/coinsnapshot/', {params: params})
+    // Request coin main info
+    let coinInfoRequest = this.http.get('https://min-api.cryptocompare.com/data/top/exchanges/full', {params: params})
+      .map(res => res)
+      .flatMap((res: any) => {
+        if(res.Data){
+          let finane = res.Data.AggregatedData;
+          coinShapshot.finance = {
+            price: CCC.convertValueToDisplay('$', finane.PRICE),
+            change24Hour: CCC.convertValueToDisplay('$', finane.CHANGE24HOUR),
+            changeDay: CCC.convertValueToDisplay('$', finane.CHANGEDAY),
+            changePct24Hour: finane.CHANGEPCT24HOUR.toFixed(2),
+            changePctDay: finane.CHANGEPCTDAY.toFixed(2),
+            high24Hour: CCC.convertValueToDisplay('$', finane.HIGH24HOUR),
+            highDay: CCC.convertValueToDisplay('$', finane.HIGHDAY),
+            low24Hour: CCC.convertValueToDisplay('$', finane.LOW24HOUR),
+            lowDay: CCC.convertValueToDisplay('$', finane.LOWDAY),
+            open24Hour: CCC.convertValueToDisplay('$', finane.OPEN24HOUR),
+            openDay: CCC.convertValueToDisplay('$', finane.OPENDAY),
+            marketCap: CCC.convertValueToDisplay('$', finane.MKTCAP, 'short'),
+          };
+        }
+
+        return this.http.get('https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?id=' + res.Data.CoinInfo.Id)
+          .map((res: any) => {
+            if(res.Data){
+              coinShapshot.info = res.Data.General;
+            }
+            return coinShapshot;
+          }, err => {
+            return err;
+          });
+      });
+
+      // Reques coin history by days
+      let coinDaysHistoryRequest = this.getCoinHistoryByDays(coinName)
+
+      // Paralell Request
+      return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest]).
+        map((res: any) => {
+          coinShapshot.daysHistory = res[1];
+          return coinShapshot;
+        });
+
+
   }
 
   /**

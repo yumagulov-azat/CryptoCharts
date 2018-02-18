@@ -30,7 +30,7 @@ export class CoinsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.paginator.pageIndex = this.route.snapshot.paramMap.get('page') - 1;
+    this.paginator.pageIndex = parseInt(this.route.snapshot.paramMap.get('page')) - 1;
     this.getCoinsList(this.pageSize, this.paginator.pageIndex);
 
 

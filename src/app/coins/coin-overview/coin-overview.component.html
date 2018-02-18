@@ -1,4 +1,4 @@
-<mat-progress-bar mode="indeterminate" *ngIf="!isLoaded"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
 <!-- <line-chart [data]="chartData"></line-chart> -->
 <div class="coin-stat-cards">
   <div class="coin-stat-cards__card">
@@ -8,7 +8,7 @@
           Price
         </div>
         <div class="mat-display-1">
-          {{ coin.price | currency }}
+          {{ coin.finance.price }}
         </div>
       </mat-card-content>
     </mat-card>
@@ -20,7 +20,7 @@
           Market Cap
         </div>
         <div class="mat-display-1">
-          {{ coin.price | currency}}
+          {{ coin.finance.marketCap }}
         </div>
       </mat-card-content>
     </mat-card>
@@ -29,12 +29,17 @@
     <mat-card>
       <mat-card-content>
         <div class="mat-title">
-          Day change
+          24h change
         </div>
         <div class="mat-display-1">
-          {{ coin.price | currency}}
+          <div [ngClass]="{'value-up': coin.finance.changePct24Hour > 0, 'value-down': coin.finance.changePct24Hour < 0}">
+            {{ coin.finance.changePct24Hour }}%
+          </div>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
+
+<!-- Coin charts -->
+<app-line-chart></app-line-chart>

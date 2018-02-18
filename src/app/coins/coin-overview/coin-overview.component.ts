@@ -13,14 +13,17 @@ import { CoinsService } from '../coins.service';
 })
 export class CoinOverviewComponent implements OnInit {
 
-  isLoaded: boolean = true;
+  loading: boolean = true;
   chartData: Array<any>;
 
-  coin: Coin = {
-    name: '',
-    price: 0
-  }
+  coinName: string;
 
+  coin: Coin = {
+    finance: {},
+    info: {},
+    daysHistory: []
+  };
+  
   constructor(private coinsService: CoinsService, private route: ActivatedRoute) {
 
   }
@@ -29,26 +32,22 @@ export class CoinOverviewComponent implements OnInit {
     this.route.params.subscribe(params => {
         this.getCoinInfo();
     });
-
-    this.route.parent.data
-      .subscribe(v => console.log(v));
   }
 
   getCoinInfo(): void {
-    this.coin.name = this.route.snapshot.paramMap.get('name');
-    this.coinsService.getCoinFullData(this.coin.name).subscribe(res => {
-      if(res.Response == 'Success') {
-        let data = res.Data;
-        console.log(res)
-        this.coin.price = data.AggregatedData.PRICE
-      } else if(res.Response == 'Error') {
-        console.log('error');
-      }
+    this.coinName = this.route.snapshot.paramMap.get('name');
+    this.coinsService.getCoinFullData(this.coinName).subscribe(res => {
+      this.coin = res;
+      this.loading = false;
+    }, err => {
+      console.log(err);
+      this.loading = false;
     });
   }
 }
-
+//
 export interface Coin {
-    name: string,
-    price: number
+    finance: any,
+    info: any,
+    daysHistory: Array<any>
 }

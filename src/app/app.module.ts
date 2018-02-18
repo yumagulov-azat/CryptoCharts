@@ -6,9 +6,9 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
 
 import { AppMaterialModule } from './modules/app-material/app-material.module';
 import { PageModule } from './modules/page/page.module';
-import { AppComponent } from './app.component';
+import { AppChartsModule } from './modules/app-charts/app-charts.module';
 import { AppRoutingModule } from './app-routing.module';
-import { ChartsModule } from './modules/charts/charts.module';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { ChartsModule } from './modules/charts/charts.module';
     AppRoutingModule,
     AppMaterialModule,
     PageModule,
-    ChartsModule
+    AppChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
