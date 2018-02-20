@@ -88,30 +88,30 @@ export class CoinsService {
         }
         return coinsList;
       })
-    // .flatMap((coinsList: any) => {
-    //   return this.getCoinsHistoryByDays(coinsList, 7)
-    //     .map(coinsHistory=> {
-    //       coinsList.forEach((coin, index) => {
-    //         coinsList[index].weekHistory = coinsHistory[index].Data;
-    //       });
-    //       return coinsList;
-    //     }, error => {
-    //       return error;
-    //     });
-    // });
+      .flatMap((coinsList: any) => {
+        return this.getCoinsHistoryByDays(coinsList, 7)
+          .map(coinsHistory=> {
+            coinsList.forEach((coin, index) => {
+              coinsList[index].weekHistory = coinsHistory[index].Data;
+            });
+            return coinsList;
+          }, error => {
+            return error;
+          });
+      });
   }
 
   /**
    * Get multiply coins history by days
-   * @param coins
+   * @param coinsList
    * @param limit
    * @returns {Observable<R>}
    */
-  getCoinsHistoryByDays(coins: Array<any>, limit: number = 365): Observable<any> {
+  getCoinsHistoryByDays(coinsList: Array<any>, limit: number = 365): Observable<any> {
     let coinsRequests = [];
 
-    if (coins) {
-      coins.forEach((coin, index) => {
+    if (coinsList.length > 0) {
+      coinsList.forEach((coin, index) => {
         let params = new HttpParams()
           .set('limit', limit.toString())
           .set('fsym', coin.name)
@@ -123,7 +123,6 @@ export class CoinsService {
       return Observable.forkJoin(coinsRequests);
 
     } else {
-      // return Observable.create((observer) => observer.error('Empty coins list'));
       throw 'Empty coins list';
     }
   }

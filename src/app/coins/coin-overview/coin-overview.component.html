@@ -1,5 +1,4 @@
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-<!-- <line-chart [data]="chartData"></line-chart> -->
+<progress-loading [loading]="loading"></progress-loading>
 <div class="coin-stat-cards">
   <div class="coin-stat-cards__card">
     <mat-card>
@@ -42,18 +41,27 @@
 </div>
 
 <!-- Coin charts -->
-<mat-card class="coin-chart">
+<mat-card class="coin-chart" *ngIf="coin.daysHistory.length > 0">
   <mat-card-content>
     <div class="coin-chart__toolbar">
       <h2 class="mat-title">
-        BTC-USD
+        {{ coin.info.Name }}-USD
       </h2>
-      <div class="coin-chart__toolbar__btns">
-        <button mat-button color="accent">7 D</button>
-        <button mat-button>1 M</button>
-        <button mat-button>3 M</button>
-        <button mat-button>6 M</button>
-        <button mat-button>1 Y</button>
+      <div class="coin-chart__toolbar__filter">
+        <mat-form-field>
+          <mat-select placeholder="Data" [(value)]="chartDataFilterSelected" multiple>
+            <mat-option *ngFor="let chartDataFilterItem of chartDataFilter" [value]="chartDataFilterItem.value">
+              {{ chartDataFilterItem.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Period" [(value)]="chartPeriodsSelected">
+            <mat-option *ngFor="let period of chartPeriods" [value]="period.value">
+              {{ period.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
     <app-line-chart [data]="chartData"></app-line-chart>

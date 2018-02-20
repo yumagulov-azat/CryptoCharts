@@ -36,6 +36,23 @@ export class CoinOverviewComponent implements OnInit {
     daysHistory: []
   };
 
+  chartDataFilter: Array<any> = [
+    {value: 'close', viewValue: 'Close'},
+    {value: 'open', viewValue: 'Open'},
+    {value: 'high', viewValue: 'High'},
+    {value: 'low', viewValue: 'Low'}
+  ];
+  chartDataFilterSelected: Array<any> = ['close'];
+
+  chartPeriods: Array<any> = [
+    {value: 7, viewValue: '7 days'},
+    {value: 30, viewValue: '1 month'},
+    {value: 90, viewValue: '3 month'},
+    {value: 180, viewValue: '6 month'},
+    {value: 364, viewValue: '1 year'}
+  ];
+  chartPeriodsSelected: number = 7;
+
   constructor(private coinsService: CoinsService, private route: ActivatedRoute, public snackBar: MatSnackBar) {
 
   }
@@ -50,38 +67,58 @@ export class CoinOverviewComponent implements OnInit {
     this.coinName = this.route.snapshot.paramMap.get('name');
     this.loading = true;
 
-    this.coinsService.getCoinFullData(this.coinName).subscribe(res => {
-      this.coin = res;
-      this.chartData = res.daysHistory;
-      this.chartData = {
-        json: res.daysHistory,
-        keys: {
-          x: 'time',
-          value: ['close'],
-        },
-        type: 'area-spline'
+    this.coinsService.getCoinFullData(this.coinName)
+      .subscribe(res => {
+        this.coin = res;
+        this.chartData = {
+          json: this.prepareChartDataJson(res.daysHistory),
+          keys: {
+            x: 'time',
+            value: ['close', 'open'],
+          },
+          type: 'area',
+          axis: {
+            y: {
+              max: 15000,
+            }
+          }
+        }
+
+        this.loading = false;
+
+      }, err => {
+        this.snackBar.open('API Error', 'OK');
+        this.loading = false;
+      });
+  }
+
+  prepareChartDataJson(daysHistory: Array<any>): Array<any> {
+    return daysHistory.map((item: any) => {
+      return {
+        // time: moment(new Date(item.time*1000)).format('YYYY-MM-DD'),
+        time: item.time,
+        close: item.close,
+        open: item.open,
+        high: item.high
       }
-      this.loading = false;
+    })
+  }
 
-      console.log(res)
+  getCoinHistoryByDays(limit: number = 7): void {
+    this.coinsService.getCoinHistoryByDays(this.coinName, limit)
+      .subscribe(res => {
+        this.chartData = {
+          json: this.prepareChartDataJson(res),
+          keys: {
+            x: 'time',
+            value: ['usd'],
+          },
+          type: 'area-spline'
+        }
 
-      // let labels = [];
-      // let data = [
-      //   {
-      //     title: 'USD',
-      //     color: 'violet',
-      //     values: []
-      //   }
-      // ];
-      // this.coin.daysHistory.forEach((item) => {
-      //   labels.push(moment(new Date(item.time*1000)).format('YYYY-MM-DD'));
-      //   data[0].values.push(item.close);
-      // });
-
-    }, err => {
-      this.snackBar.open('API Error', 'OK');
-      this.loading = false;
-    });
+      }, err => {
+        this.snackBar.open('API Error', 'OK');
+      });
   }
 
 

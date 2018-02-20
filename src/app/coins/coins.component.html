@@ -12,6 +12,9 @@
   <app-page-content>
     <mat-toolbar class="app-page-content-toolbar">
       <mat-toolbar-row>
+        <button mat-icon-button routerLink="/coins/list/1" *ngIf="showBackButton">
+          <mat-icon class="example-icon">arrow_back</mat-icon>
+        </button>
         <span>{{ title }}</span>
       </mat-toolbar-row>
     </mat-toolbar>

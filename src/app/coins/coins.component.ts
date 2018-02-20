@@ -9,10 +9,17 @@ export class CoinsComponent implements OnInit {
 
   title: string = 'All coins';
 
+  public showBackButton: boolean = false;
+
   constructor() { }
 
   ngOnInit() {
 
+  }
+
+  ngOnChanges() {
+    // this.route
+    // console.log(this.route)
   }
 
 }

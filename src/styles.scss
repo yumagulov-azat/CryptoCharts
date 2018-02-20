@@ -13,6 +13,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
 
 @include angular-material-theme($theme);
 
+* { box-sizing: border-box; }
+
 body {
     font-family: $mat-font-family;
     font-weight: normal;

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AppMaterialModule } from '../modules/app-material/app-material.module';
 import { PageModule } from '../modules/page/page.module';
 import { AppChartsModule } from '../modules/app-charts/app-charts.module';
+import { ProgressLoadingComponent } from '../shared/components/progress-loading/progress-loading.component';
 
 import { CoinsRoutingModule } from './coins-routing.module';
 import { CoinsService } from './coins.service';
@@ -25,6 +26,7 @@ import { CoinOverviewComponent } from './coin-overview/coin-overview.component';
     CoinsNavComponent,
     CoinsListComponent,
     CoinOverviewComponent,
+    ProgressLoadingComponent
   ],
   exports: [
     CoinsComponent

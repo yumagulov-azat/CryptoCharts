@@ -1,5 +1,5 @@
 <div class="coins-list">
-  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <progress-loading [loading]="loading"></progress-loading>
   <mat-table #table [dataSource]="coinsList" matSort>
 
     <!-- Position Column -->
