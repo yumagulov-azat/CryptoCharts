@@ -42,4 +42,20 @@
 </div>
 
 <!-- Coin charts -->
-<app-line-chart></app-line-chart>
+<mat-card class="coin-chart">
+  <mat-card-content>
+    <div class="coin-chart__toolbar">
+      <h2 class="mat-title">
+        BTC-USD
+      </h2>
+      <div class="coin-chart__toolbar__btns">
+        <button mat-button color="accent">7 D</button>
+        <button mat-button>1 M</button>
+        <button mat-button>3 M</button>
+        <button mat-button>6 M</button>
+        <button mat-button>1 Y</button>
+      </div>
+    </div>
+    <app-line-chart [data]="chartData"></app-line-chart>
+  </mat-card-content>
+</mat-card>

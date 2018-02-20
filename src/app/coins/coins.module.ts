@@ -24,7 +24,7 @@ import { CoinOverviewComponent } from './coin-overview/coin-overview.component';
     CoinsComponent,
     CoinsNavComponent,
     CoinsListComponent,
-    CoinOverviewComponent
+    CoinOverviewComponent,
   ],
   exports: [
     CoinsComponent
