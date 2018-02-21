@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 import { CoinsService } from '../coins.service';
 
 import * as moment from 'moment';
@@ -36,14 +38,14 @@ export class CoinOverviewComponent implements OnInit {
     daysHistory: []
   };
 
+  // Chart data select
   chartDataFilter: Array<any> = [
     {value: 'close', viewValue: 'Close'},
     {value: 'open', viewValue: 'Open'},
-    {value: 'high', viewValue: 'High'},
-    {value: 'low', viewValue: 'Low'}
   ];
   chartDataFilterSelected: Array<any> = ['close'];
 
+  // Chart period select
   chartPeriods: Array<any> = [
     {value: 7, viewValue: '7 days'},
     {value: 30, viewValue: '1 month'},
@@ -51,7 +53,7 @@ export class CoinOverviewComponent implements OnInit {
     {value: 180, viewValue: '6 month'},
     {value: 364, viewValue: '1 year'}
   ];
-  chartPeriodsSelected: number = 7;
+  chartPeriodsSelected: number = 30;
 
   constructor(private coinsService: CoinsService, private route: ActivatedRoute, public snackBar: MatSnackBar) {
 
@@ -67,21 +69,17 @@ export class CoinOverviewComponent implements OnInit {
     this.coinName = this.route.snapshot.paramMap.get('name');
     this.loading = true;
 
-    this.coinsService.getCoinFullData(this.coinName)
+    this.coinsService.getCoinFullData(this.coinName, this.chartPeriodsSelected)
       .subscribe(res => {
         this.coin = res;
         this.chartData = {
-          json: this.prepareChartDataJson(res.daysHistory),
+          json: res.daysHistory,
           keys: {
             x: 'time',
-            value: ['close', 'open'],
+            value: this.chartDataFilterSelected,
           },
-          type: 'area',
-          axis: {
-            y: {
-              max: 15000,
-            }
-          }
+          type: 'area-spline'
+          // type: 'line'
         }
 
         this.loading = false;
@@ -92,26 +90,14 @@ export class CoinOverviewComponent implements OnInit {
       });
   }
 
-  prepareChartDataJson(daysHistory: Array<any>): Array<any> {
-    return daysHistory.map((item: any) => {
-      return {
-        // time: moment(new Date(item.time*1000)).format('YYYY-MM-DD'),
-        time: item.time,
-        close: item.close,
-        open: item.open,
-        high: item.high
-      }
-    })
-  }
-
-  getCoinHistoryByDays(limit: number = 7): void {
+  getCoinHistoryByDays(limit: number = this.chartPeriodsSelected): void {
     this.coinsService.getCoinHistoryByDays(this.coinName, limit)
       .subscribe(res => {
         this.chartData = {
-          json: this.prepareChartDataJson(res),
+          json: res,
           keys: {
             x: 'time',
-            value: ['usd'],
+            value: this.chartDataFilterSelected,
           },
           type: 'area-spline'
         }
@@ -120,6 +106,8 @@ export class CoinOverviewComponent implements OnInit {
         this.snackBar.open('API Error', 'OK');
       });
   }
+
+
 
 
 }

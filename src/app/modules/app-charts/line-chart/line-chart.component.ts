@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
-import * as c3 from 'c3'
+import * as c3 from 'c3';
+import { CCC } from '../../../../utilities/ccc-streamer-utilities';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-line-chart',
@@ -10,6 +12,60 @@ export class LineChartComponent implements OnInit {
 
   @Input() data: any;
 
+  chart: any;
+  chartColors: Array<any> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
+  chartOptions: any = {
+    bindto: '#line-chart',
+    data: this.data,
+    size: {
+      height: 400
+    },
+    color: {
+      pattern: this.chartColors
+    },
+    legend: {
+      show: false
+    },
+    point: {
+      r: 0,
+      focus: {
+        expand: {
+          r: 4
+        }
+      }
+    },
+    axis: {
+      y: {
+        inner: true,
+        tick: {
+          count: 6,
+          format: function (value) {
+            return CCC.convertValueToDisplay('$', value);
+          }
+        }
+      },
+      x: {
+        padding: 0,
+        tick: {
+          format: function (date) {
+            return moment(new Date(date * 1000)).format('YYYY-MM-DD')
+          }
+        }
+      }
+    },
+    area: {
+      zerobased: false
+    },
+    subchart: {
+      show: true,
+      size: {
+        height: 50
+      }
+    },
+    transition: {
+      duration: 300
+    }
+  }
 
   constructor() {
   }
@@ -19,34 +75,14 @@ export class LineChartComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if (this.data) {
-      let chart = c3.generate({
-        bindto: '#line-chart',
-        data: this.data,
-        color: {
-          pattern: ['#673ab7', '#E91E63', '#9C27B0']
-        },
-        legend: {
-          show: false
-        },
-        point: {
-          show: false
-        },
-        size: {
-          height: 350
-        },
-        // axis: {
-        //   y: {
-        //     max: 13000,
-        //     min: 6000,
-        //     // Range includes padding, set 0 if no padding needed
-        //     // padding: {top:0, bottom:0}
-        //   }
-        // },
-        // subchart: {
-        //   show: true
-        // }
-      });
+    this.chartOptions.data = this.data;
+    console.log(this.data)
+    if(this.data) {
+      if(this.chart) {
+        this.chart.load(this.data);
+      } else {
+        this.chart = c3.generate(this.chartOptions);
+      }
     }
   }
 }

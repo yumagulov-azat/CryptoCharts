@@ -8,6 +8,12 @@
       p {
         color: rgba(0,0,0,.3);
       }
+
+      &.active {
+        color: rgba(0,0,0,.8);
+        color: #E91E63;
+        background: rgba(0,0,0,.02);
+      }
     }
   }
 }

@@ -133,7 +133,7 @@ export class CoinsService {
    * @param coinName
    * @returns {Observable<R>}
    */
-  getCoinFullData(coinName: string): Observable<any> {
+  getCoinFullData(coinName: string, historyDays: number = 7): Observable<any> {
     let coinShapshot: any = {
       finance: {},
       info: {},
@@ -148,7 +148,7 @@ export class CoinsService {
     let coinInfoRequest = this.http.get(this.apiUrl + '/top/exchanges/full', {params: params});
 
     // Request coin history by days
-    let coinDaysHistoryRequest = this.getCoinHistoryByDays(coinName, 31);
+    let coinDaysHistoryRequest = this.getCoinHistoryByDays(coinName, historyDays);
 
     return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
       .map((res: any) => {

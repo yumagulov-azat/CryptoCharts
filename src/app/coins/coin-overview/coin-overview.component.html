@@ -49,19 +49,19 @@
       </h2>
       <div class="coin-chart__toolbar__filter">
         <mat-form-field>
-          <mat-select placeholder="Data" [(value)]="chartDataFilterSelected" multiple>
-            <mat-option *ngFor="let chartDataFilterItem of chartDataFilter" [value]="chartDataFilterItem.value">
-              {{ chartDataFilterItem.viewValue }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select placeholder="Period" [(value)]="chartPeriodsSelected">
+          <mat-select placeholder="Period" [(value)]="chartPeriodsSelected" (selectionChange)="getCoinHistoryByDays()">
             <mat-option *ngFor="let period of chartPeriods" [value]="period.value">
               {{ period.viewValue }}
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <!--<mat-form-field>-->
+          <!--<mat-select placeholder="Data" [(value)]="chartDataFilterSelected" multiple (selectionChange)="getCoinHistoryByDays()">-->
+            <!--<mat-option *ngFor="let chartDataFilterItem of chartDataFilter" [value]="chartDataFilterItem.value">-->
+              <!--{{ chartDataFilterItem.viewValue }}-->
+            <!--</mat-option>-->
+          <!--</mat-select>-->
+        <!--</mat-form-field>-->
       </div>
     </div>
     <app-line-chart [data]="chartData"></app-line-chart>
