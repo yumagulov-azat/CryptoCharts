@@ -4,11 +4,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 
-import { AppMaterialModule } from './modules/app-material/app-material.module';
-import { PageModule } from './modules/page/page.module';
-import { AppChartsModule } from './modules/app-charts/app-charts.module';
+import { AppMaterialModule } from './shared/modules/app-material/app-material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { UtilsService } from './shared/services/utils.service';
 
 @NgModule({
   declarations: [
@@ -21,10 +20,12 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     AppMaterialModule,
-    PageModule,
-    AppChartsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    UtilsService
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }

@@ -1,5 +1,6 @@
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-<!-- <line-chart [data]="chartData"></line-chart> -->
+<progress-loading [loading]="loading"></progress-loading>
+
+<!-- Coin main info -->
 <div class="coin-stat-cards">
   <div class="coin-stat-cards__card">
     <mat-card>
@@ -32,7 +33,8 @@
           24h change
         </div>
         <div class="mat-display-1">
-          <div [ngClass]="{'value-up': coin.finance.changePct24Hour > 0, 'value-down': coin.finance.changePct24Hour < 0}">
+          <div
+            [ngClass]="{'value-up': coin.finance.changePct24Hour > 0, 'value-down': coin.finance.changePct24Hour < 0}">
             {{ coin.finance.changePct24Hour }}%
           </div>
         </div>
@@ -41,5 +43,73 @@
   </div>
 </div>
 
-<!-- Coin charts -->
-<app-line-chart></app-line-chart>
+<!-- Coin chart -->
+<mat-card class="coin-chart">
+  <mat-card-content>
+    <div class="coin-chart__toolbar">
+      <h2 class="mat-title">
+        {{ coin.info.Name }}-USD
+      </h2>
+      <div class="coin-chart__toolbar__filter">
+        <mat-form-field>
+          <mat-select placeholder="Period" [(value)]="chartPeriodsSelected" (selectionChange)="getCoinHistory()">
+            <mat-option *ngFor="let period of chartPeriods" [value]="period.value">
+              {{ period.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Data" [(value)]="chartDataFilterSelected" multiple (selectionChange)="getCoinHistory()">
+            <mat-option *ngFor="let chartDataFilterItem of chartDataFilter" [value]="chartDataFilterItem.value">
+              {{ chartDataFilterItem.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="app-line-chart-wrap">
+      <app-line-chart [data]="chartData"></app-line-chart>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<div class="coin-stat-cards">
+  <div class="coin-stat-cards__card">
+    <mat-card>
+      <mat-card-content>
+        <div class="mat-title">
+          Volume 24H
+        </div>
+        <div class="mat-display-1">
+          {{ coin.finance.volume24Hour }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="coin-stat-cards__card">
+    <mat-card>
+      <mat-card-content>
+        <div class="mat-title">
+          Open 24H
+        </div>
+        <div class="mat-display-1">
+          {{ coin.finance.open24Hour }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="coin-stat-cards__card">
+    <mat-card>
+      <mat-card-content>
+        <div class="mat-title">
+          Low/High 24H
+        </div>
+        <div class="mat-display-1">
+          <div>
+            {{ coin.finance.low24Hour }} / {{ coin.finance.high24Hour }}
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

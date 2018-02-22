@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatTable, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
 
 /**
-* Coins list page
-*/
+ * Coins list page
+ */
 
 @Component({
   selector: 'coins-list',
@@ -18,8 +18,8 @@ export class CoinsListComponent implements OnInit {
   loading: boolean = true;
 
   // Data-table
-  displayedColumns = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'weekHistory'];
-  coinsList = new MatTableDataSource();
+  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'weekHistory'];
+  coinsList: any = new MatTableDataSource();
   pageSize: number = 50;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -42,6 +42,8 @@ export class CoinsListComponent implements OnInit {
 
   /**
    * Get coins list and past data to data-table
+   * @param limit
+   * @param page
    */
   getCoinsList(limit: number = 50, page: number = 0): void {
     this.loading = true;
@@ -51,10 +53,36 @@ export class CoinsListComponent implements OnInit {
         this.coinsList.data = res;
         this.coinsList.sort = this.sort;
         this.loading = false;
+        this.renderSparklines();
       }, error => {
         this.snackBar.open('API Error', 'OK');
         this.loading = false;
       });
   }
 
+  /**
+   * Render sparklines after coins linst loaded
+   * because paralell loading is very slow
+   */
+  renderSparklines(): void {
+    let coins = this.coinsList.data.map(item => {
+      return {
+        name: item.name
+      }
+    });
+
+    let i = 0;
+    this.coinsService.getCoinsHistoryByDays(coins, 6)
+      .subscribe(res => {
+        this.coinsList.data[i].weekHistory = {
+          json: res[0],
+          keys: {
+            x: 'time',
+            value: ['close'],
+          },
+          type: 'area-spline'
+        };
+        i++;
+      });
+  }
 }

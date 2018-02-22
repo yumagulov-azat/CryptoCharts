@@ -10,8 +10,8 @@ export class AppComponent {
 
   appNav = [
     {
-      name: 'Favorits',
-      link: '/coins',
+      name: 'Favorites',
+      link: '/favorites',
       icon: 'star'
     },
     {
@@ -21,7 +21,7 @@ export class AppComponent {
     },
     {
       name: 'Mining',
-      link: '/coins',
+      link: '/mining',
       icon: 'bubble_chart'
     },
     {
@@ -29,5 +29,5 @@ export class AppComponent {
       link: '/coins',
       icon: 'info'
     }
-  ]
+  ];
 }

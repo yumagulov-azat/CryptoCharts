@@ -1,0 +1,54 @@
+@import "../app-charts.style";
+
+:host {
+  ::ng-deep {
+    mat-spinner {
+      opacity: .5;
+    }
+
+    .c3-tooltip-container {
+      background: #fff;
+      padding: 2px 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+      border-radius: 3px;
+
+      .c3-tooltip {
+        background: transparent;
+        box-shadow: none;
+
+        tr {
+          border: none;
+          display: inline-block;
+        }
+
+        th {
+          padding: 0;
+          display: inline-block;
+          font-size: 11px;
+          line-height: 11px;
+        }
+
+        td {
+          display: inline-block;
+          font-size: 11px;
+          line-height: 11px;
+          border: none;
+          padding: 0;
+
+          > span {
+            display: none;
+          }
+
+          &.name {
+            display: none;
+          }
+
+          &.value {
+            font-weight: 600;
+            padding-left: 5px;
+          }
+        }
+      }
+    }
+  }
+}

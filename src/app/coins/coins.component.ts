@@ -7,12 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoinsComponent implements OnInit {
 
-  title: string = 'All coins';
+  title = 'All coins';
+
+  public showBackButton = false;
 
   constructor() { }
 
   ngOnInit() {
 
+  }
+
+  ngOnChanges() {
+    // this.route
+    // console.log(this.route)
   }
 
 }
