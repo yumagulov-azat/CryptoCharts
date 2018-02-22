@@ -29,7 +29,7 @@ export class LineChartComponent implements OnInit, OnChanges {
       padding: 0,
       tick: {
         format: (date) => {
-          return moment(new Date(date * 1000)).format('DD MMM YYYY');
+          return moment(new Date(date * 1000)).format('DD MMM YYYY, HH:mm');
         }
       }
     }
@@ -48,9 +48,6 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (!this.chartOptions) { this.setChartOptions(); }
-
-    console.log(this.data)
-
     this.chartOptions.data = this.data;
 
     if (this.data) {
@@ -63,7 +60,6 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   setChartOptions(): void {
-    // console.log(this.el.nativeElement.children)
     this.chartOptions = {
       bindto: this.el.nativeElement.children[0],
       data: [],

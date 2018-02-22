@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { SparklineComponent } from './sparkline/sparkline.component';
 
 @NgModule({
-  imports: [],
+  imports: [
+    MatProgressSpinnerModule
+  ],
   declarations: [
     LineChartComponent,
     SparklineComponent

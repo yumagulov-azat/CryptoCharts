@@ -20,7 +20,7 @@ export interface CoinSnapshot {
 })
 export class CoinOverviewComponent implements OnInit {
 
-  loading = true;
+  loading: boolean = true;
 
   coinName: string;
 
@@ -43,13 +43,15 @@ export class CoinOverviewComponent implements OnInit {
 
   // Chart period select
   chartPeriods: Array<any> = [
-    {value: 7, viewValue: '7 days'},
-    {value: 30, viewValue: '1 month'},
-    {value: 90, viewValue: '3 month'},
-    {value: 180, viewValue: '6 month'},
-    {value: 364, viewValue: '1 year'}
+    {value: 59, viewValue: '1 hour', type: 'histominute'},
+    {value: 23, viewValue: '1 day', type: 'histohour'},
+    {value: 6, viewValue: '1 week', type: 'histoday'},
+    {value: 30, viewValue: '1 month', type: 'histoday'},
+    {value: 90, viewValue: '3 month', type: 'histoday'},
+    {value: 180, viewValue: '6 month', type: 'histoday'},
+    {value: 364, viewValue: '1 year', type: 'histoday'}
   ];
-  chartPeriodsSelected = 30;
+  chartPeriodsSelected: number = 30;
 
   constructor(private coinsService: CoinsService, private route: ActivatedRoute, public snackBar: MatSnackBar) {
 
@@ -61,6 +63,9 @@ export class CoinOverviewComponent implements OnInit {
     });
   }
 
+  /**
+   * Get main coin info
+   */
   getCoinInfo(): void {
     this.coinName = this.route.snapshot.paramMap.get('name');
     this.loading = true;
@@ -68,41 +73,50 @@ export class CoinOverviewComponent implements OnInit {
     this.coinsService.getCoinFullData(this.coinName, this.chartPeriodsSelected)
       .subscribe(res => {
         this.coin = res;
-        this.chartData = {
-          json: res.daysHistory,
-          keys: {
-            x: 'time',
-            value: this.chartDataFilterSelected,
-          },
-          type: 'area-spline'
-        };
-
+        this.chartData = this.prepareChartData(res.daysHistory);
         this.loading = false;
-
+        console.log(this.coin)
       }, err => {
         this.snackBar.open('API Error', 'OK');
         this.loading = false;
       });
   }
 
-  getCoinHistoryByDays(limit: number = this.chartPeriodsSelected): void {
+  /**
+   * Get coin history
+   * @param limit
+   */
+  getCoinHistory(limit: number = this.chartPeriodsSelected, type: string = 'histoday'): void {
     this.loading = true;
 
-    this.coinsService.getCoinHistoryByDays(this.coinName, limit)
+    type = this.chartPeriods.filter(item => {
+      return item.value === limit;
+    })[0].type;
+
+    this.coinsService.getCoinHistory(this.coinName, limit, type)
       .subscribe(res => {
-        this.chartData = {
-          json: res,
-          keys: {
-            x: 'time',
-            value: this.chartDataFilterSelected,
-          },
-          type: 'area-spline'
-        };
+        this.chartData = this.prepareChartData(res);
         this.loading = false;
       }, err => {
         this.snackBar.open('API Error', 'OK');
         this.loading = false;
       });
+  }
+
+  /**
+   * Prepare data for chart
+   * @param data
+   * @returns {{json: any, keys: {x: string, value: Array<any>}, type: string}}
+   */
+  prepareChartData(data: any): any {
+    return {
+      json: data,
+      keys: {
+        x: 'time',
+        value: this.chartDataFilterSelected,
+      },
+      type: 'area-spline'
+    }
   }
 
 

@@ -1,17 +1,13 @@
+//::ng-deep {
+//  app-page-content {
+//    background: #fff;
+//  }
+//}
+
+// Table styles
 .coins-list {
-  // height: 100%;
-  // overflow: auto;
-  // -webkit-overflow-scroll: touch;
   padding-top: 48px;
   padding-bottom: 56px;
-  //opacity: 0;
-  //display: none;
-  //transition: opacity .3s ease;
-  //
-  //&--visible {
-  //  display: block;
-  //  opacity: 1;
-  //}
 
   .mat-header-row {
     position: absolute;
@@ -48,6 +44,7 @@
   }
 }
 
+// Table row style
 .coins-list-item {
   &__position {
     max-width: 40px;
@@ -82,19 +79,9 @@
     }
   }
 
-  &__price {
-    // font-size: 14px;
-    // font-weight: 600;
-    // color: rgba(0,0,0,.6)
-
-    span {
-      // display: block;
-      // border-radius: 3px;
-      // background: rgba(0,0,0,.2);
-    }
-  }
-
   &__sparkline {
     height: 60px;
+    display: flex;
+    align-items: center;
   }
 }

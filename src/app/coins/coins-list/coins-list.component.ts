@@ -15,12 +15,12 @@ import { CoinsService } from '../coins.service';
 })
 export class CoinsListComponent implements OnInit {
 
-  loading = true;
+  loading: boolean = true;
 
   // Data-table
-  displayedColumns = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'weekHistory'];
-  coinsList = new MatTableDataSource();
-  pageSize = 50;
+  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'weekHistory'];
+  coinsList: any = new MatTableDataSource();
+  pageSize: number = 50;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

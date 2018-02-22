@@ -1,46 +1,52 @@
 @import "../app-charts.style";
 
-::ng-deep {
-  .c3-tooltip-container {
-    background: #fff;
-    padding: 2px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
-    border-radius: 3px;
+:host {
+  ::ng-deep {
+    mat-spinner {
+      opacity: .5;
+    }
 
-    .c3-tooltip {
-      background: transparent;
-      box-shadow: none;
+    .c3-tooltip-container {
+      background: #fff;
+      padding: 2px 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+      border-radius: 3px;
 
-      tr {
-        border: none;
-        display: inline-block;
-      }
+      .c3-tooltip {
+        background: transparent;
+        box-shadow: none;
 
-      th {
-        padding: 0;
-        display: inline-block;
-        font-size: 12px;
-        line-height: 12px;
-      }
-
-      td {
-        display: inline-block;
-        font-size: 12px;
-        line-height: 12px;
-        border: none;
-        padding: 0;
-
-        > span {
-          display: none;
+        tr {
+          border: none;
+          display: inline-block;
         }
 
-        &.name {
-          display: none;
+        th {
+          padding: 0;
+          display: inline-block;
+          font-size: 11px;
+          line-height: 11px;
         }
 
-        &.value {
-          font-weight: 600;
-          padding-left: 5px;
+        td {
+          display: inline-block;
+          font-size: 11px;
+          line-height: 11px;
+          border: none;
+          padding: 0;
+
+          > span {
+            display: none;
+          }
+
+          &.name {
+            display: none;
+          }
+
+          &.value {
+            font-weight: 600;
+            padding-left: 5px;
+          }
         }
       }
     }

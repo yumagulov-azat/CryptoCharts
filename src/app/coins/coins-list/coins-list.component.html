@@ -25,7 +25,7 @@
     <!-- Price Column -->
     <ng-container matColumnDef="price">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
-      <mat-cell *matCellDef="let row" class="coins-list-item__price">
+      <mat-cell *matCellDef="let row">
         <span>{{ row.price }}</span>
       </mat-cell>
     </ng-container>

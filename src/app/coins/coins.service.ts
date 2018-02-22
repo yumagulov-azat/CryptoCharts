@@ -105,7 +105,7 @@ export class CoinsService {
 
     if (coinsList.length > 0) {
       coinsList.forEach((coin, index) => {
-        coinsRequests.push(this.getCoinHistoryByDays(coin.name, limit));
+        coinsRequests.push(this.getCoinHistory(coin.name, limit));
       });
 
       return Observable.zip(
@@ -139,13 +139,14 @@ export class CoinsService {
     const coinInfoRequest = this.http.get(this.apiUrl + '/top/exchanges/full', {params: params});
 
     // Request coin history by days
-    const coinDaysHistoryRequest = this.getCoinHistoryByDays(coinName, historyDays);
+    const coinDaysHistoryRequest = this.getCoinHistory(coinName, historyDays);
 
     return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
       .map((res: any) => {
         const finance = res[0].Data.AggregatedData;
 
         coinShapshot.info = res[0].Data.CoinInfo;
+        console.log(finance)
         coinShapshot.finance = {
           price: this.utils.convertPriceToDisplay('$', finance.PRICE),
           change24Hour: this.utils.convertPriceToDisplay('$', finance.CHANGE24HOUR),
@@ -159,6 +160,7 @@ export class CoinsService {
           open24Hour: this.utils.convertPriceToDisplay('$', finance.OPEN24HOUR),
           openDay: this.utils.convertPriceToDisplay('$', finance.OPENDAY),
           marketCap: this.utils.convertPriceToDisplay('$', finance.MKTCAP, 'short'),
+          volume24Hour: this.utils.convertPriceToDisplay('$', finance.VOLUME24HOUR, 'short'),
         };
         coinShapshot.daysHistory = res[1];
         return coinShapshot;
@@ -173,13 +175,13 @@ export class CoinsService {
    * @param limit
    * @returns {Observable<R>}
    */
-  getCoinHistoryByDays(coinName: string, limit: number = 365): Observable<any> {
+  getCoinHistory(coinName: string, limit: number = 365, type: string = 'histoday'): Observable<any> {
     const params = new HttpParams()
       .set('limit', limit.toString())
       .set('fsym', coinName)
       .set('tsym', 'USD');
 
-    return this.http.get(this.apiUrl + '/histoday', {params: params})
+    return this.http.get(this.apiUrl + '/' + type, {params: params})
       .map((res: any) => {
         return res.Data;
       });
