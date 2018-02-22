@@ -19,7 +19,7 @@ const routes: Routes = [
     path: 'mining',
     loadChildren: 'app/mining/mining.module#MiningModule'
   }
-]
+];
 
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],

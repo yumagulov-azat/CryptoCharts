@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Components
-import { MiningComponent } from './mining.component'
+import { MiningComponent } from './mining.component';
 
 const routes: Routes = [
   {

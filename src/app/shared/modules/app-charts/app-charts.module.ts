@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { LineChartComponent } from './line-chart/line-chart.component';
+import { SparklineComponent } from './sparkline/sparkline.component';
 
 @NgModule({
   imports: [],
   declarations: [
-    LineChartComponent
+    LineChartComponent,
+    SparklineComponent
   ],
   exports: [
-    LineChartComponent
+    LineChartComponent,
+    SparklineComponent
   ]
 })
 export class AppChartsModule { }

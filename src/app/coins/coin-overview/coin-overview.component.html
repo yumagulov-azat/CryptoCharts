@@ -1,4 +1,6 @@
 <progress-loading [loading]="loading"></progress-loading>
+
+<!-- Coin main info -->
 <div class="coin-stat-cards">
   <div class="coin-stat-cards__card">
     <mat-card>
@@ -40,7 +42,7 @@
   </div>
 </div>
 
-<!-- Coin charts -->
+<!-- Coin chart -->
 <mat-card class="coin-chart" *ngIf="coin.daysHistory.length > 0">
   <mat-card-content>
     <div class="coin-chart__toolbar">
@@ -55,13 +57,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <!--<mat-form-field>-->
-          <!--<mat-select placeholder="Data" [(value)]="chartDataFilterSelected" multiple (selectionChange)="getCoinHistoryByDays()">-->
-            <!--<mat-option *ngFor="let chartDataFilterItem of chartDataFilter" [value]="chartDataFilterItem.value">-->
-              <!--{{ chartDataFilterItem.viewValue }}-->
-            <!--</mat-option>-->
-          <!--</mat-select>-->
-        <!--</mat-form-field>-->
       </div>
     </div>
     <app-line-chart [data]="chartData"></app-line-chart>

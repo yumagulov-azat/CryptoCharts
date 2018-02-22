@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ProgressLoadingComponent implements OnInit {
 
-  @Input() loading: boolean = false;
+  @Input() loading = false;
 
   constructor() { }
 

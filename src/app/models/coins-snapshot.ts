@@ -1,5 +1,5 @@
 export interface CoinSnapshot {
   info: {
 
-  },
+  };
 }

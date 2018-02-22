@@ -49,8 +49,8 @@
     <!-- 7d Chart (USD) Column -->
     <ng-container matColumnDef="weekHistory">
       <mat-header-cell *matHeaderCellDef>7d Chart (USD)</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <!--{{ row.weekHistory }}-->
+      <mat-cell *matCellDef="let row" class="coins-list-item__sparkline">
+        <app-sparkline [data]="row.weekHistory" [height]="60" [width]="250"></app-sparkline>
       </mat-cell>
     </ng-container>
 

@@ -7,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoinsComponent implements OnInit {
 
-  title: string = 'All coins';
+  title = 'All coins';
 
-  public showBackButton: boolean = false;
+  public showBackButton = false;
 
   constructor() { }
 

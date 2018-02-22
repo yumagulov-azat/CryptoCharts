@@ -1,22 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 import { CoinsService } from '../coins.service';
-
-import * as moment from 'moment';
 
 /**
  * Coin overview page
  */
 
-export interface Coin {
-  finance: any,
-  info: any,
-  daysHistory: Array<any>
+export interface CoinSnapshot {
+  finance: any;
+  info: any;
+  daysHistory: Array<any>;
 }
-
 
 @Component({
   selector: 'coin-overview',
@@ -25,18 +20,19 @@ export interface Coin {
 })
 export class CoinOverviewComponent implements OnInit {
 
-  loading: boolean = true;
-  chartData: any;
+  loading = true;
 
   coinName: string;
 
-  coin: Coin = {
+  coin: CoinSnapshot = {
     finance: {},
     info: {
       Description: ''
     },
     daysHistory: []
   };
+
+  chartData: any;
 
   // Chart data select
   chartDataFilter: Array<any> = [
@@ -53,7 +49,7 @@ export class CoinOverviewComponent implements OnInit {
     {value: 180, viewValue: '6 month'},
     {value: 364, viewValue: '1 year'}
   ];
-  chartPeriodsSelected: number = 30;
+  chartPeriodsSelected = 30;
 
   constructor(private coinsService: CoinsService, private route: ActivatedRoute, public snackBar: MatSnackBar) {
 
@@ -79,8 +75,7 @@ export class CoinOverviewComponent implements OnInit {
             value: this.chartDataFilterSelected,
           },
           type: 'area-spline'
-          // type: 'line'
-        }
+        };
 
         this.loading = false;
 
@@ -91,6 +86,8 @@ export class CoinOverviewComponent implements OnInit {
   }
 
   getCoinHistoryByDays(limit: number = this.chartPeriodsSelected): void {
+    this.loading = true;
+
     this.coinsService.getCoinHistoryByDays(this.coinName, limit)
       .subscribe(res => {
         this.chartData = {
@@ -100,14 +97,13 @@ export class CoinOverviewComponent implements OnInit {
             value: this.chartDataFilterSelected,
           },
           type: 'area-spline'
-        }
-
+        };
+        this.loading = false;
       }, err => {
         this.snackBar.open('API Error', 'OK');
+        this.loading = false;
       });
   }
-
-
 
 
 }
