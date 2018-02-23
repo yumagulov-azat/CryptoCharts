@@ -18,7 +18,7 @@ export class CoinsListComponent implements OnInit {
   loading: boolean = true;
 
   // Data-table
-  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'weekHistory'];
+  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'sparkline'];
   coinsList: any = new MatTableDataSource();
   pageSize: number = 50;
 
@@ -74,7 +74,7 @@ export class CoinsListComponent implements OnInit {
     let i = 0;
     this.coinsService.getCoinsHistoryByDays(coins, 6)
       .subscribe(res => {
-        this.coinsList.data[i].weekHistory = {
+        this.coinsList.data[i].history = {
           json: res[0],
           keys: {
             x: 'time',

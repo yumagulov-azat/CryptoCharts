@@ -12,5 +12,5 @@ export interface CoinsListFullData {
   price: string;
   changePct24Hour: string;
   marketCap: string;
-  weekHistory: Array<any>;
+  history: Array<any>;
 }

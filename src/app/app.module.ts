@@ -18,8 +18,8 @@ import { UtilsService } from './shared/services/utils.service';
     HttpClientModule,
     TransferHttpCacheModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     AppMaterialModule,
+    AppRoutingModule
   ],
   providers: [
     UtilsService

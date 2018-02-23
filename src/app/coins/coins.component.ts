@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-coins',
@@ -7,19 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoinsComponent implements OnInit {
 
-  title = 'All coins';
+  toolbarTitle = 'All coins';
 
   public showBackButton = false;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,) { }
 
   ngOnInit() {
 
   }
 
   ngOnChanges() {
-    // this.route
-    // console.log(this.route)
+
   }
 
 }
