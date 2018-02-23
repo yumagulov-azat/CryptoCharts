@@ -1,6 +1,7 @@
-import { Component, OnInit, OnChanges, Input, ElementRef } from '@angular/core';
-import * as c3 from 'c3';
+import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { UtilsService } from '../../../services/utils.service';
+import * as c3 from 'c3';
 import * as moment from 'moment';
 
 @Component({
@@ -38,7 +39,7 @@ export class LineChartComponent implements OnInit, OnChanges {
   chart: any;
   chartOptions: any;
 
-  constructor(private utils: UtilsService, private el: ElementRef) {
+  constructor(private utils: UtilsService, private el: ElementRef, @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
 
@@ -47,14 +48,16 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (!this.chartOptions) { this.setChartOptions(); }
-    this.chartOptions.data = this.data;
+    if (isPlatformBrowser(this.platformId)) {
+      if (!this.chartOptions) { this.setChartOptions(); }
+      this.chartOptions.data = this.data;
 
-    if (this.data) {
-      if (this.chart) {
-        this.chart.load(this.data);
-      } else {
-        this.chart = c3.generate(this.chartOptions);
+      if (this.data) {
+        if (this.chart) {
+          this.chart.load(this.data);
+        } else {
+          this.chart = c3.generate(this.chartOptions);
+        }
       }
     }
   }
