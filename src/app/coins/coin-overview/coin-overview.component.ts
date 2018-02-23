@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
+import { NotificationsService } from '../../shared/services/notifications.service';
 import { CoinSnapshot } from '../../models/coin-snapshot';
 
 /**
@@ -50,7 +50,11 @@ export class CoinOverviewComponent implements OnInit {
   ];
   chartPeriodsSelected: number = 30;
 
-  constructor(private coinsService: CoinsService, private route: ActivatedRoute, public snackBar: MatSnackBar) {
+  constructor(
+    private coinsService: CoinsService,
+    private route: ActivatedRoute,
+    private notifications: NotificationsService
+  ) {
 
   }
 
@@ -75,7 +79,7 @@ export class CoinOverviewComponent implements OnInit {
         this.state.error = false;
         this.state.firstShow = false;
       }, err => {
-        this.snackBar.open('API Error', 'OK');
+        this.notifications.show('API Error');
         this.state.loading = false;
         this.state.error = true;
       });
@@ -98,7 +102,7 @@ export class CoinOverviewComponent implements OnInit {
         this.chartData = this.prepareChartData(res);
         this.state.loading = false;
       }, err => {
-        this.snackBar.open('API Error', 'OK');
+        this.notifications.show('API Error');
         this.state.loading = false;
       });
   }

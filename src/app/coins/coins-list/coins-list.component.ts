@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
-import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
+import { NotificationsService } from '../../shared/services/notifications.service';
 
 /**
  * Coins list page
@@ -25,7 +25,12 @@ export class CoinsListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private coinsService: CoinsService, private route: ActivatedRoute, private router: Router, public snackBar: MatSnackBar) {
+  constructor(
+    private coinsService: CoinsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private notifications: NotificationsService
+  ) {
 
   }
 
@@ -55,7 +60,7 @@ export class CoinsListComponent implements OnInit {
         this.loading = false;
         this.renderSparklines();
       }, error => {
-        this.snackBar.open('API Error', 'OK');
+        this.notifications.show('API Error');
         this.loading = false;
       });
   }

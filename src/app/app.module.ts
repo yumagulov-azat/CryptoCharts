@@ -8,6 +8,7 @@ import { AppMaterialModule } from './shared/modules/app-material/app-material.mo
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UtilsService } from './shared/services/utils.service';
+import { NotificationsService } from './shared/services/notifications.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { UtilsService } from './shared/services/utils.service';
     AppRoutingModule
   ],
   providers: [
-    UtilsService
+    UtilsService,
+    NotificationsService
   ],
   bootstrap: [
     AppComponent
