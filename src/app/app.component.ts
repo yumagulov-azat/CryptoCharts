@@ -6,9 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  title: string = 'app';
 
-  appNav = [
+  appNav: Array<any> = [
     {
       name: 'Favorites',
       link: '/favorites',

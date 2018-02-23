@@ -20,11 +20,17 @@ const routes: Routes = [
       },
       {
         path: 'list/:page',
-        component: CoinsListComponent
+        component: CoinsListComponent,
+        data: {
+          title: 'All coins'
+        }
       },
       {
         path: ':name',
-        component: CoinOverviewComponent
+        component: CoinOverviewComponent,
+        data: {
+          title: 'Coin'
+        }
       }
     ]
   },

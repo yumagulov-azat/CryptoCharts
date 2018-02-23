@@ -2,16 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
+import { CoinSnapshot } from '../../models/coin-snapshot';
 
 /**
  * Coin overview page
  */
-
-export interface CoinSnapshot {
-  finance: any;
-  info: any;
-  daysHistory: Array<any>;
-}
 
 @Component({
   selector: 'coin-overview',
@@ -20,16 +15,18 @@ export interface CoinSnapshot {
 })
 export class CoinOverviewComponent implements OnInit {
 
-  loading: boolean = true;
+  state: any = {
+    loading: <boolean>true,
+    firstShow: <boolean>true,
+    error: <boolean>false,
+  };
 
   coinName: string;
 
   coin: CoinSnapshot = {
     finance: {},
-    info: {
-      Description: ''
-    },
-    daysHistory: []
+    info: {},
+    history: []
   };
 
   chartData: any;
@@ -68,26 +65,29 @@ export class CoinOverviewComponent implements OnInit {
    */
   getCoinInfo(): void {
     this.coinName = this.route.snapshot.paramMap.get('name');
-    this.loading = true;
+    this.state.loading = true;
 
     this.coinsService.getCoinFullData(this.coinName, this.chartPeriodsSelected)
-      .subscribe(res => {
-        this.coin = res;
-        this.chartData = this.prepareChartData(res.daysHistory);
-        this.loading = false;
-        console.log(this.coin)
+      .subscribe(coin => {
+        this.coin = coin;
+        this.chartData = this.prepareChartData(coin.history);
+        this.state.loading = false;
+        this.state.error = false;
+        this.state.firstShow = false;
       }, err => {
         this.snackBar.open('API Error', 'OK');
-        this.loading = false;
+        this.state.loading = false;
+        this.state.error = true;
       });
   }
 
   /**
    * Get coin history
    * @param limit
+   * @param type
    */
   getCoinHistory(limit: number = this.chartPeriodsSelected, type: string = 'histoday'): void {
-    this.loading = true;
+    this.state.loading = true;
 
     type = this.chartPeriods.filter(item => {
       return item.value === limit;
@@ -96,10 +96,10 @@ export class CoinOverviewComponent implements OnInit {
     this.coinsService.getCoinHistory(this.coinName, limit, type)
       .subscribe(res => {
         this.chartData = this.prepareChartData(res);
-        this.loading = false;
+        this.state.loading = false;
       }, err => {
         this.snackBar.open('API Error', 'OK');
-        this.loading = false;
+        this.state.loading = false;
       });
   }
 
@@ -117,7 +117,6 @@ export class CoinOverviewComponent implements OnInit {
       },
       type: 'area-spline'
     }
-  }
-
+  }8
 
 }
