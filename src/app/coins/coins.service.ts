@@ -105,7 +105,8 @@ export class CoinsService {
     let coinShapshot: CoinSnapshot = {
       info: {},
       finance: {},
-      history: []
+      history: [],
+      exchanges: []
     };
 
     const params = new HttpParams()
@@ -140,6 +141,7 @@ export class CoinsService {
             marketCap: this.utils.convertPriceToDisplay('$', finance.MKTCAP, 'short'),
             volume24Hour: this.utils.convertPriceToDisplay('$', finance.VOLUME24HOUR, 'short'),
           };
+          coinShapshot.exchanges = res[0].Data.Exchanges;
         } else {
           throw new Error('Coin data empty');
         }

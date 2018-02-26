@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+
 import { CoinsService } from '../coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 import { CoinSnapshot } from '../../models/coin-snapshot';
@@ -23,11 +25,7 @@ export class CoinOverviewComponent implements OnInit {
 
   coinName: string;
 
-  coin: CoinSnapshot = {
-    finance: {},
-    info: {},
-    history: []
-  };
+  coin: CoinSnapshot;
 
   chartData: any;
 
@@ -49,6 +47,9 @@ export class CoinOverviewComponent implements OnInit {
     {value: 364, viewValue: '1 year', type: 'histoday'}
   ];
   chartPeriodsSelected: number = 30;
+
+  // Top exchanges
+  topExchanges: Observable<any>;
 
   constructor(
     private coinsService: CoinsService,
@@ -73,6 +74,7 @@ export class CoinOverviewComponent implements OnInit {
 
     this.coinsService.getCoinFullData(this.coinName, this.chartPeriodsSelected)
       .subscribe(coin => {
+        console.log(coin)
         this.coin = coin;
         this.chartData = this.prepareChartData(coin.history);
         this.state.loading = false;

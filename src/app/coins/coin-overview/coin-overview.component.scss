@@ -13,8 +13,9 @@ mat-card {
 
   &__card {
     padding: 0 8px;
-    flex: 33.33333%;
-    max-width: 33.33333%;
+    // flex: 33.33333%;
+    // max-width: 33.33333%;
+    flex: 1 0 0;
 
     &__title {
       color: rgba(0,0,0,.5);

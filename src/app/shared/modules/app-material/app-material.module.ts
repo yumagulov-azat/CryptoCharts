@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 /**
  * Angular material components
@@ -35,7 +36,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatPaginatorModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatGridListModule
   ],
   declarations: [],
   exports: [
@@ -52,7 +54,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatPaginatorModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatGridListModule
   ]
 })
 export class AppMaterialModule {

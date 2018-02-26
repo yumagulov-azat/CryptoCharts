@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UtilsService } from './shared/services/utils.service';
 import { NotificationsService } from './shared/services/notifications.service';
+import { StorageService } from './shared/services/storage.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { NotificationsService } from './shared/services/notifications.service';
   ],
   providers: [
     UtilsService,
-    NotificationsService
+    NotificationsService,
+    StorageService
   ],
   bootstrap: [
     AppComponent
