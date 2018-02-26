@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
-import { MatSnackBar } from '@angular/material';
 import { CoinsService } from '../coins.service';
+import { NotificationsService } from '../../shared/services/notifications.service';
 
 /**
  * Coins list page
@@ -18,14 +18,19 @@ export class CoinsListComponent implements OnInit {
   loading: boolean = true;
 
   // Data-table
-  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'weekHistory'];
+  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'sparkline'];
   coinsList: any = new MatTableDataSource();
   pageSize: number = 50;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private coinsService: CoinsService, private route: ActivatedRoute, private router: Router, public snackBar: MatSnackBar) {
+  constructor(
+    private coinsService: CoinsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private notifications: NotificationsService
+  ) {
 
   }
 
@@ -55,7 +60,7 @@ export class CoinsListComponent implements OnInit {
         this.loading = false;
         this.renderSparklines();
       }, error => {
-        this.snackBar.open('API Error', 'OK');
+        this.notifications.show('API Error');
         this.loading = false;
       });
   }
@@ -74,7 +79,7 @@ export class CoinsListComponent implements OnInit {
     let i = 0;
     this.coinsService.getCoinsHistoryByDays(coins, 6)
       .subscribe(res => {
-        this.coinsList.data[i].weekHistory = {
+        this.coinsList.data[i].history = {
           json: res[0],
           keys: {
             x: 'time',
