@@ -1,13 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
 
+// RxJs
+import { Subject } from "rxjs/Subject";
+import 'rxjs/add/operator/takeUntil';
+
+// Services
 import { StorageService } from '../../shared/services/storage.service';
-import { CoinsService } from '../coins.service';
+import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
-import { CoinSnapshot } from '../../models/coin-snapshot';
+
+// Models
+import { CoinSnapshot } from '../../shared/models/coin-snapshot';
+
+export interface CoinOvervieData {
+
+}
 
 /**
  * Coin overview page
@@ -20,16 +28,16 @@ import { CoinSnapshot } from '../../models/coin-snapshot';
 })
 export class CoinOverviewComponent implements OnInit {
 
+  ngUnsubscribe: Subject<void> = new Subject<void>();
+
   state: any = {
     loading: <boolean>true,
     firstShow: <boolean>true,
     error: <boolean>false,
   };
 
-  coinName: string;
-
   coin: CoinSnapshot;
-
+  coinName: string;
   chartData: any;
 
   // Chart data select
@@ -51,14 +59,9 @@ export class CoinOverviewComponent implements OnInit {
   ];
   chartPeriodsSelected: number = 30;
 
-  // Top exchanges
-  topExchanges: Observable<any>;
-
-  constructor(
-    private coinsService: CoinsService,
-    private route: ActivatedRoute,
-    private notifications: NotificationsService
-  ) {
+  constructor(private coinsService: CoinsService,
+              private route: ActivatedRoute,
+              private notifications: NotificationsService) {
 
   }
 
@@ -66,10 +69,14 @@ export class CoinOverviewComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.getCoinInfo();
     });
+  }
 
-    // Observable.from(this.chartDataFilterSelected).subscribe(res => {
-    //   console.log(res)
-    // })
+  /**
+   * Unsubscribe from Observables on destroy
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
@@ -80,6 +87,7 @@ export class CoinOverviewComponent implements OnInit {
     this.state.loading = true;
 
     this.coinsService.getCoinFullData(this.coinName, this.chartPeriodsSelected)
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(coin => {
         this.coin = coin;
         this.chartData = this.prepareChartData(coin.history);
@@ -106,6 +114,7 @@ export class CoinOverviewComponent implements OnInit {
     })[0].type;
 
     this.coinsService.getCoinHistory(this.coinName, limit, type)
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.chartData = this.prepareChartData(res);
         this.state.loading = false;
@@ -129,6 +138,6 @@ export class CoinOverviewComponent implements OnInit {
       },
       type: 'area-spline'
     }
-  }8
+  }
 
 }

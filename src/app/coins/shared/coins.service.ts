@@ -2,8 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-// Libs
+// RxJs
 import { Observable } from 'rxjs/Observable';
+import { Subject } from "rxjs/Subject";
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/zip';
@@ -11,18 +12,26 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/concatMap';
 
-import { UtilsService } from '../shared/services/utils.service';
-import { CoinsList, CoinsListFullData } from '../models/coins-list';
-import { CoinSnapshot } from '../models/coin-snapshot';
+// Services
+import { UtilsService } from '../../shared/services/utils.service';
 
+// Models
+import { CoinsList, CoinsListFullData } from '../../shared/models/coins-list';
+import { CoinSnapshot } from '../../shared/models/coin-snapshot';
+
+/**
+ * Bidirectional service
+ */
 
 @Injectable()
 export class CoinsService {
 
   private apiUrl = 'https://min-api.cryptocompare.com/data';
 
-  constructor(private http: HttpClient, private utils: UtilsService) {
+  // CoinsList subject for pass it to coinsNav component
+  coinsList = new Subject<any>();
 
+  constructor(private http: HttpClient, private utils: UtilsService) {
 
   }
 
@@ -91,6 +100,8 @@ export class CoinsService {
             });
           });
         }
+
+        this.coinsList.next(coinsList);
         return coinsList;
       })
   }
@@ -99,7 +110,8 @@ export class CoinsService {
   /**
    * Get coin data
    * @param coinName
-   * @returns {Observable<R>}
+   * @param historyLimit
+   * @returns {any}
    */
   getCoinFullData(coinName: string, historyLimit: number = 7): Observable<CoinSnapshot> {
     let coinShapshot: CoinSnapshot = {
@@ -121,7 +133,7 @@ export class CoinsService {
 
     return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
       .map((res: any) => {
-        if(res[0].Response == 'Success') {
+        if (res[0].Response == 'Success') {
           const finance = res[0].Data.AggregatedData;
 
           coinShapshot.info = res[0].Data.CoinInfo;
@@ -177,6 +189,7 @@ export class CoinsService {
    * Get multiply coins history
    * @param coinsList
    * @param limit
+   * @param type
    * @returns {Observable<R>}
    */
   getCoinsHistoryByDays(coinsList: Array<any>, limit: number = 365, type: string = 'histoday'): Observable<any> {

@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from "rxjs/Subject";
+import 'rxjs/add/operator/takeUntil';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
-import { CoinsService } from '../coins.service';
+import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 
 /**
@@ -15,6 +17,8 @@ import { NotificationsService } from '../../shared/services/notifications.servic
 })
 export class CoinsListComponent implements OnInit {
 
+  ngUnsubscribe: Subject<void> = new Subject<void>();
+
   loading: boolean = true;
 
   // Data-table
@@ -25,12 +29,10 @@ export class CoinsListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(
-    private coinsService: CoinsService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private notifications: NotificationsService
-  ) {
+  constructor(private coinsService: CoinsService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private notifications: NotificationsService) {
 
   }
 
@@ -46,6 +48,14 @@ export class CoinsListComponent implements OnInit {
   }
 
   /**
+   * Unsubscribe from Observables on destroy
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  /**
    * Get coins list and past data to data-table
    * @param limit
    * @param page
@@ -54,6 +64,7 @@ export class CoinsListComponent implements OnInit {
     this.loading = true;
 
     this.coinsService.getCoinsListFullData(limit, page)
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coinsList.data = res;
         this.coinsList.sort = this.sort;
@@ -78,6 +89,7 @@ export class CoinsListComponent implements OnInit {
 
     let i = 0;
     this.coinsService.getCoinsHistoryByDays(coins, 6)
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coinsList.data[i].history = {
           json: res[0],

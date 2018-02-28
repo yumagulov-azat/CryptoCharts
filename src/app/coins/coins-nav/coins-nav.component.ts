@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { CoinsService } from '../coins.service';
+import { Component, OnInit, Input } from '@angular/core';
 
 /**
-* Coins page nav
-*/
+ * Coins page nav
+ */
 
 @Component({
   selector: 'coins-nav',
@@ -12,14 +11,12 @@ import { CoinsService } from '../coins.service';
 })
 export class CoinsNavComponent implements OnInit {
 
-  coinsList: Array<any> = [];
+  @Input() coinsList: Array<any> = [];
 
-  constructor(private coinsService: CoinsService) { }
+  constructor() {
+  }
 
   ngOnInit() {
-     this.coinsService.getCoinsList()
-      .subscribe(res => {
-        this.coinsList = res;
-      });
+
   }
 }

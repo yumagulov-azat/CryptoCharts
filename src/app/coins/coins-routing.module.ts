@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+// Components
 import { CoinsComponent } from './coins.component';
 import { CoinsListComponent } from './coins-list/coins-list.component';
 import { CoinOverviewComponent } from './coin-overview/coin-overview.component';

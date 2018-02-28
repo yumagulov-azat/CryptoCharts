@@ -4,9 +4,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 
-import { AppMaterialModule } from './shared/modules/app-material/app-material.module';
+import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CoinsService } from './coins/shared/coins.service';
 import { UtilsService } from './shared/services/utils.service';
 import { NotificationsService } from './shared/services/notifications.service';
 import { StorageService } from './shared/services/storage.service';
@@ -20,13 +21,14 @@ import { StorageService } from './shared/services/storage.service';
     HttpClientModule,
     TransferHttpCacheModule,
     BrowserAnimationsModule,
-    AppMaterialModule,
+    SharedModule,
     AppRoutingModule
   ],
   providers: [
     UtilsService,
     NotificationsService,
-    StorageService
+    StorageService,
+    CoinsService
   ],
   bootstrap: [
     AppComponent
