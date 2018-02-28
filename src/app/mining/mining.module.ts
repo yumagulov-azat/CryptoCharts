@@ -1,16 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AppMaterialModule } from '../shared/modules/app-material/app-material.module';
-import { PageModule } from '../shared/modules/page/page.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { MiningRoutingModule } from './mining-routing.module';
 import { MiningComponent } from './mining.component';
 
 @NgModule({
   imports: [
-    CommonModule,
-    AppMaterialModule,
-    PageModule,
+    SharedModule,
     MiningRoutingModule
   ],
   declarations: [MiningComponent]

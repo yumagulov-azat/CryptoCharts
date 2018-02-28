@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AppMaterialModule } from '../shared/modules/app-material/app-material.module';
-import { PageModule } from '../shared/modules/page/page.module';
+import { SharedModule } from '../shared/shared.module';
 
 import { FavoritesRoutingModule } from './favorites-routing.module';
 import { FavoritesService } from './favorites.service';
@@ -10,9 +8,7 @@ import { FavoriteCoinComponent } from './favorite-coin/favorite-coin.component';
 
 @NgModule({
   imports: [
-    CommonModule,
-    AppMaterialModule,
-    PageModule,
+    SharedModule,
     FavoritesRoutingModule
   ],
   declarations: [FavoritesComponent, FavoriteCoinComponent],
