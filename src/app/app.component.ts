@@ -20,14 +20,19 @@ export class AppComponent {
       icon: 'album'
     },
     {
+      name: 'Exchanges',
+      link: '/exchanges',
+      icon: 'compare_arrows'
+    },
+    {
       name: 'Mining',
       link: '/mining',
       icon: 'bubble_chart'
     },
     {
-      name: 'About',
-      link: '/coins',
-      icon: 'info'
+      name: 'News',
+      link: '/news',
+      icon: 'view_list'
     }
   ];
 }

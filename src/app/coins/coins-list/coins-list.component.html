@@ -50,7 +50,7 @@
     <ng-container matColumnDef="sparkline">
       <mat-header-cell *matHeaderCellDef>7d Chart (USD)</mat-header-cell>
       <mat-cell *matCellDef="let row" class="coins-list-item__sparkline">
-        <app-sparkline [data]="row.history" [height]="60" ></app-sparkline>
+        <app-sparkline [data]="row.history" [height]="60" [colors]="row.changePct24Hour > 0 ? ['#4caf50'] : ['#d81b60']"></app-sparkline>
       </mat-cell>
     </ng-container>
 

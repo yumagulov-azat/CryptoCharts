@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/from';
 
+import { StorageService } from '../../shared/services/storage.service';
 import { CoinsService } from '../coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 import { CoinSnapshot } from '../../models/coin-snapshot';
@@ -63,6 +66,10 @@ export class CoinOverviewComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.getCoinInfo();
     });
+
+    // Observable.from(this.chartDataFilterSelected).subscribe(res => {
+    //   console.log(res)
+    // })
   }
 
   /**
@@ -74,7 +81,6 @@ export class CoinOverviewComponent implements OnInit {
 
     this.coinsService.getCoinFullData(this.coinName, this.chartPeriodsSelected)
       .subscribe(coin => {
-        console.log(coin)
         this.coin = coin;
         this.chartData = this.prepareChartData(coin.history);
         this.state.loading = false;

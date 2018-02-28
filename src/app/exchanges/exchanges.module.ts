@@ -3,16 +3,16 @@ import { CommonModule } from '@angular/common';
 import { AppMaterialModule } from '../shared/modules/app-material/app-material.module';
 import { PageModule } from '../shared/modules/page/page.module';
 
-import { MiningRoutingModule } from './mining-routing.module';
-import { MiningComponent } from './mining.component';
+import { ExchangesRoutingModule } from './exchanges-routing.module';
+import { ExchangesComponent } from './exchanges.component';
 
 @NgModule({
-  imports: [
+  imports: [,
     CommonModule,
     AppMaterialModule,
     PageModule,
-    MiningRoutingModule
+    ExchangesRoutingModule,
   ],
-  declarations: [MiningComponent]
+  declarations: [ExchangesComponent]
 })
-export class MiningModule { }
+export class ExchangesModule { }

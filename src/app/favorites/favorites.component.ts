@@ -13,7 +13,7 @@ export class FavoritesComponent implements OnInit {
   ngOnInit() {
     this.favoritesService.setFavoriteCoins(['BTC', 'ETH']);
 
-    this.favoritesService.getFavoriteCoins('BTC')
+    this.favoritesService.getFavoriteCoins()
       .subscribe((res: any) => {
         console.log(res)
       });

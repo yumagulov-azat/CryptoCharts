@@ -16,8 +16,16 @@ const routes: Routes = [
     loadChildren: 'app/coins/coins.module#CoinsModule'
   },
   {
+    path: 'exchanges',
+    loadChildren: 'app/exchanges/exchanges.module#ExchangesModule'
+  },
+  {
     path: 'mining',
     loadChildren: 'app/mining/mining.module#MiningModule'
+  },
+  {
+    path: 'news',
+    loadChildren: 'app/news/news.module#NewsModule'
   }
 ];
 

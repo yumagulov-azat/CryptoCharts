@@ -15,6 +15,7 @@ export class SparklineComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() height = 50;
   @Input() width = 200;
+  @Input() colors = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
 
   chart: any;
   chartOptions: any;
@@ -51,7 +52,7 @@ export class SparklineComponent implements OnInit, OnChanges {
         width: this.width,
       },
       color: {
-        pattern: ['#673ab7', '#E91E63', '#FF9800', '#4CAF50']
+        pattern: this.colors
       },
       legend: {
         show: false

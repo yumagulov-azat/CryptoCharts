@@ -3,16 +3,16 @@ import { CommonModule } from '@angular/common';
 import { AppMaterialModule } from '../shared/modules/app-material/app-material.module';
 import { PageModule } from '../shared/modules/page/page.module';
 
-import { MiningRoutingModule } from './mining-routing.module';
-import { MiningComponent } from './mining.component';
+import { NewsRoutingModule } from './news-routing.module';
+import { NewsComponent } from './news.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AppMaterialModule,
     PageModule,
-    MiningRoutingModule
+    NewsRoutingModule
   ],
-  declarations: [MiningComponent]
+  declarations: [NewsComponent]
 })
-export class MiningModule { }
+export class NewsModule { }

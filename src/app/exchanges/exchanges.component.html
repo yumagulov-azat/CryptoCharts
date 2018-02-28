@@ -1,8 +1,18 @@
 <app-page>
+  <app-page-nav>
+    <mat-toolbar class="app-page-nav-toolbar">
+      <mat-toolbar-row>
+        <span>Exchanges</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div class="app-page-nav-content">
+
+    </div>
+  </app-page-nav>
   <app-page-content>
     <mat-toolbar class="app-page-content-toolbar">
       <mat-toolbar-row>
-        <span>Favorites</span>
+        <span>{{ toolbarTitle }}</span>
       </mat-toolbar-row>
     </mat-toolbar>
     <div class="app-page-content-content">
