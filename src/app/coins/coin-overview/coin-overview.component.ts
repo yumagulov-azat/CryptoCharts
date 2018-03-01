@@ -22,7 +22,7 @@ export interface CoinOvervieData {
  */
 
 @Component({
-  selector: 'coin-overview',
+  selector: 'app-coin-overview',
   templateUrl: './coin-overview.component.html',
   styleUrls: ['./coin-overview.component.scss']
 })
@@ -88,17 +88,25 @@ export class CoinOverviewComponent implements OnInit {
 
     this.coinsService.getCoinFullData(this.coinName, this.chartPeriodsSelected)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(coin => {
-        this.coin = coin;
-        this.chartData = this.prepareChartData(coin.history);
-        this.state.loading = false;
-        this.state.error = false;
-        this.state.firstShow = false;
+      .subscribe((coin: CoinSnapshot) => {
+        this.pastCoinData(coin);
       }, err => {
         this.notifications.show('API Error');
         this.state.loading = false;
         this.state.error = true;
       });
+  }
+
+  /**
+   *
+   * @param coin
+   */
+  pastCoinData(coin: CoinSnapshot): void {
+    this.coin = coin;
+    this.chartData = this.prepareChartData(coin.history);
+    this.state.loading = false;
+    this.state.error = false;
+    this.state.firstShow = false;
   }
 
   /**

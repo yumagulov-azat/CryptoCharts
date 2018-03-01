@@ -5,7 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
  */
 
 @Component({
-  selector: 'coins-nav',
+  selector: 'app-coins-nav',
   templateUrl: './coins-nav.component.html',
   styleUrls: ['./coins-nav.component.scss']
 })

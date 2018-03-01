@@ -6,17 +6,38 @@
   height: 100vh;
   max-height: 100vh;
   background: whitesmoke;
+
+  .app-page-nav-toolbar {
+    flex: 64px 0 0;
+    background: rgba(0,0,0,.05);
+    color: rgba(0,0,0,.85);
+  }
+
+  .app-page-nav-content {
+    flex: 1 0 0;
+    overflow: auto;
+    -webkit-overflow-scroll: touch;
+  }
+
+  ::ng-deep {
+    mat-nav-list {
+      padding-top: 0;
+
+      .mat-list-item {
+        color: rgba(0,0,0,.6);
+
+        p {
+          color: rgba(0,0,0,.3);
+        }
+
+        &.active {
+          color: rgba(0,0,0,.8);
+          color: #E91E63;
+          background: rgba(0,0,0,.02);
+        }
+      }
+    }
+  }
 }
 
-::ng-deep .app-page-nav-toolbar {
-  flex: 64px 0 0;
-  background: rgba(0,0,0,.05);
-  color: rgba(0,0,0,.85);
-  // border-bottom: 1px solid rgba(0,0,0,.1)
-}
 
-::ng-deep .app-page-nav-content {
-  flex: 1 0 0;
-  overflow: auto;
-  -webkit-overflow-scroll: touch;
-}

@@ -1,17 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+
+// RxJs
 import { Subject } from "rxjs/Subject";
 import 'rxjs/add/operator/takeUntil';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+
+// Services
 import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
+
+// Models
+import { CoinsListFullData } from '../../shared/models/coins-list';
 
 /**
  * Coins list page
  */
 
 @Component({
-  selector: 'coins-list',
+  selector: 'app-coins-list',
   templateUrl: './coins-list.component.html',
   styleUrls: ['./coins-list.component.scss']
 })
@@ -47,6 +54,7 @@ export class CoinsListComponent implements OnInit {
     });
   }
 
+
   /**
    * Unsubscribe from Observables on destroy
    */
@@ -55,8 +63,9 @@ export class CoinsListComponent implements OnInit {
     this.ngUnsubscribe.complete();
   }
 
+
   /**
-   * Get coins list and past data to data-table
+   * Get coins list
    * @param limit
    * @param page
    */
@@ -65,16 +74,26 @@ export class CoinsListComponent implements OnInit {
 
     this.coinsService.getCoinsListFullData(limit, page)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(res => {
-        this.coinsList.data = res;
-        this.coinsList.sort = this.sort;
-        this.loading = false;
-        this.renderSparklines();
+      .subscribe((res: CoinsListFullData[]) => {
+        this.renderData(res);
       }, error => {
         this.notifications.show('API Error');
         this.loading = false;
       });
   }
+
+
+  /**
+   * Past data to data-table
+   * @param data
+   */
+  renderData(data: CoinsListFullData[]): void {
+    this.coinsList.data = data;
+    this.coinsList.sort = this.sort;
+    this.loading = false;
+    this.renderSparklines();
+  }
+
 
   /**
    * Render sparklines after coins linst loaded
