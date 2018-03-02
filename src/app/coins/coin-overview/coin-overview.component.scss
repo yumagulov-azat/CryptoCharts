@@ -37,23 +37,7 @@ mat-card {
 }
 
 
-.coin-chart {
-  &__toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
-    &__filter {
-      mat-form-field {
-        margin-left: 16px;
-      }
-    }
-  }
-
-  .app-line-chart-wrap {
-    height: 400px;
-  }
-}
 
 .coin-overview-error {
   position: absolute;

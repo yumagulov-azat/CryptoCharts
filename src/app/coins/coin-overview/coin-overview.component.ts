@@ -11,11 +11,8 @@ import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 
 // Models
-import { CoinSnapshot } from '../../shared/models/coin-snapshot';
+import { CoinSnapshot } from '../shared/models/coin-snapshot';
 
-export interface CoinOvervieData {
-
-}
 
 /**
  * Coin overview page

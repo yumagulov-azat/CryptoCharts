@@ -11,7 +11,8 @@ import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 
 // Models
-import { CoinsListFullData } from '../../shared/models/coins-list';
+import { CoinsList } from '../shared/models/coins-list';
+
 
 /**
  * Coins list page
@@ -25,7 +26,6 @@ import { CoinsListFullData } from '../../shared/models/coins-list';
 export class CoinsListComponent implements OnInit {
 
   ngUnsubscribe: Subject<void> = new Subject<void>();
-
   loading: boolean = true;
 
   // Data-table
@@ -36,6 +36,7 @@ export class CoinsListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
               private router: Router,
@@ -44,10 +45,12 @@ export class CoinsListComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Get current page and coins list
     this.paginator.pageIndex = parseInt(this.route.snapshot.paramMap.get('page')) - 1;
     this.getCoinsList(this.pageSize, this.paginator.pageIndex);
 
 
+    // When page changed get new coins list
     this.paginator.page.subscribe(res => {
       this.router.navigate(['/coins/list/' + (this.paginator.pageIndex + 1)]);
       this.getCoinsList(this.paginator.pageSize, this.paginator.pageIndex);
@@ -72,9 +75,9 @@ export class CoinsListComponent implements OnInit {
   getCoinsList(limit: number = 50, page: number = 0): void {
     this.loading = true;
 
-    this.coinsService.getCoinsListFullData(limit, page)
+    this.coinsService.getCoinsList(limit, page)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe((res: CoinsListFullData[]) => {
+      .subscribe((res: CoinsList[]) => {
         this.renderData(res);
       }, error => {
         this.notifications.show('API Error');
@@ -87,7 +90,7 @@ export class CoinsListComponent implements OnInit {
    * Past data to data-table
    * @param data
    */
-  renderData(data: CoinsListFullData[]): void {
+  renderData(data: CoinsList[]): void {
     this.coinsList.data = data;
     this.coinsList.sort = this.sort;
     this.loading = false;

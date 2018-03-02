@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 /**
 * App page content
 */
+
 @Component({
   selector: 'app-page-content',
   template: '<ng-content></ng-content>',

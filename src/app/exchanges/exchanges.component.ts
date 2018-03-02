@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExchangesComponent implements OnInit {
 
-  toolbarTitle: '';
-
   constructor() { }
 
   ngOnInit() {

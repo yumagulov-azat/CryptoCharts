@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+// Models
+import { CoinsList } from '../shared/models/coins-list';
+
+
 /**
  * Coins page nav
  */
@@ -11,7 +15,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CoinsNavComponent implements OnInit {
 
-  @Input() coinsList: Array<any> = [];
+  @Input() coinsList: CoinsList[];
+
 
   constructor() {
   }

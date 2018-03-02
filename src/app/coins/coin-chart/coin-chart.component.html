@@ -1,0 +1,23 @@
+<div class="coin-chart-toolbar" *ngIf="showToolbar">
+  <h2 class="mat-title">
+    {{ coinName }}-USD
+  </h2>
+  <div class="coin-chart-toolbar__filter">
+    <mat-form-field>
+      <mat-select placeholder="Period" [(value)]="chartPeriodsSelected">
+        <mat-option *ngFor="let period of chartPeriods" [value]="period.value">
+          {{ period.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Data" [(value)]="chartDataFilterSelected" multiple>
+        <mat-option *ngFor="let chartDataFilterItem of chartDataFilter" [value]="chartDataFilterItem.value">
+          {{ chartDataFilterItem.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<app-line-chart [data]="chartData"></app-line-chart>

@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CoinsService } from './shared/coins.service';
+
+// RxJs
 import { Subscription } from "rxjs";
+
+// Services
+import { CoinsService } from './shared/coins.service';
+
+// Models
+import { CoinsList } from './shared/models/coins-list'
+
+/**
+ * Coins module parent component
+ */
 
 @Component({
   selector: 'app-coins',
@@ -10,7 +21,7 @@ import { Subscription } from "rxjs";
 })
 export class CoinsComponent implements OnInit {
 
-  coinsList: Array<any> = [];
+  coinsList: CoinsList[];
   coinsListSubscription: Subscription;
 
   toolbarTitle = 'All coins';
@@ -22,11 +33,12 @@ export class CoinsComponent implements OnInit {
 
   ngOnInit() {
     // Do not make unnecessary requests
-    if(this.route.snapshot.children[0].url[0].path == 'list') {
-      this.coinsListSubscription = this.coinsService.coinsList.subscribe(res => {
-        this.coinsList = res;
-        this.coinsListSubscription.unsubscribe();
-      });
+    if (this.route.snapshot.children[0].url[0].path == 'list') {
+      this.coinsListSubscription = this.coinsService.coinsList
+        .subscribe(res => {
+          this.coinsList = res;
+          this.coinsListSubscription.unsubscribe();
+        });
     } else {
       this.coinsService.getCoinsList()
         .subscribe(res => {

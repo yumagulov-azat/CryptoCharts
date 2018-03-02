@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ExchangesComponent } from './exchanges.component';
+import { ExchangesComponent } from './exchanges.component'
 
 const routes: Routes = [
   {

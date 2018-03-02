@@ -1,3 +1,6 @@
+/**
+ * Coin overview model for coin page
+ */
 export interface CoinSnapshot {
   finance: any;
   info: any;

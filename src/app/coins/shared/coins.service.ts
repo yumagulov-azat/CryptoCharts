@@ -1,4 +1,3 @@
-// Angular
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -16,8 +15,9 @@ import 'rxjs/add/operator/concatMap';
 import { UtilsService } from '../../shared/services/utils.service';
 
 // Models
-import { CoinsList, CoinsListFullData } from '../../shared/models/coins-list';
-import { CoinSnapshot } from '../../shared/models/coin-snapshot';
+import { CoinsList } from './models/coins-list';
+import { CoinSnapshot } from './models/coin-snapshot';
+
 
 /**
  * Bidirectional service
@@ -36,10 +36,10 @@ export class CoinsService {
   }
 
   /**
-   * Get coins list
+   * Get coins list with full data
    * @param limit
    * @param page
-   * @returns {Observable<R>}
+   * @returns {Observable<CoinsList[]>}
    */
   getCoinsList(limit: number = 50, page: number = 0): Observable<CoinsList[]> {
     const params = new HttpParams()
@@ -50,36 +50,6 @@ export class CoinsService {
     const coinsList: CoinsList[] = [];
 
     return this.http.get<CoinsList[]>(this.apiUrl + '/top/totalvol', {params: params})
-      .map((res: any) => {
-        if (res.Message == 'Success' && res.Data.length > 0) {
-          res.Data.forEach((item, index) => {
-            coinsList.push({
-              position: page * limit + (index + 1),
-              name: item.CoinInfo.Name,
-              fullName: item.CoinInfo.FullName,
-            });
-          });
-        }
-        return coinsList;
-      });
-  }
-
-
-  /**
-   * Get coins list with full data
-   * @param limit
-   * @param page
-   * @returns {Observable<CoinsListFullData[]>}
-   */
-  getCoinsListFullData(limit: number = 50, page: number = 0): Observable<CoinsListFullData[]> {
-    const params = new HttpParams()
-      .set('limit', limit.toString())
-      .set('page', page.toString())
-      .set('tsym', 'USD');
-
-    const coinsList: CoinsListFullData[] = [];
-
-    return this.http.get<CoinsListFullData[]>(this.apiUrl + '/top/totalvol', {params: params})
       .map((res: any) => {
 
         if (res.Message == 'Success' && res.Data.length > 0) {
@@ -103,7 +73,7 @@ export class CoinsService {
 
         this.coinsList.next(coinsList);
         return coinsList;
-      })
+      });
   }
 
 

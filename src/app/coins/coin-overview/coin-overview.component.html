@@ -42,34 +42,41 @@
   </div>
 
   <!-- Coin chart -->
-  <mat-card class="coin-chart">
+  <mat-card>
     <mat-card-content>
-      <div class="coin-chart__toolbar">
-        <h2 class="mat-title">
-          {{ coin.info.Name }}-USD
-        </h2>
-        <div class="coin-chart__toolbar__filter">
-          <mat-form-field>
-            <mat-select placeholder="Period" [(value)]="chartPeriodsSelected" (selectionChange)="getCoinHistory()">
-              <mat-option *ngFor="let period of chartPeriods" [value]="period.value">
-                {{ period.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-select placeholder="Data" [(value)]="chartDataFilterSelected" multiple (selectionChange)="getCoinHistory()">
-              <mat-option *ngFor="let chartDataFilterItem of chartDataFilter" [value]="chartDataFilterItem.value">
-                {{ chartDataFilterItem.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="app-line-chart-wrap">
-        <app-line-chart [data]="chartData"></app-line-chart>
-      </div>
+      <app-coin-chart [chartData]="chartData" [coinName]="coinName" (filterChange)="getCoinHistoryTest($event)"></app-coin-chart>
     </mat-card-content>
   </mat-card>
+
+  <!-- Coin chart -->
+  <!--<mat-card class="coin-chart">-->
+    <!--<mat-card-content>-->
+      <!--<div class="coin-chart__toolbar">-->
+        <!--<h2 class="mat-title">-->
+          <!--{{ coin.info.Name }}-USD-->
+        <!--</h2>-->
+        <!--<div class="coin-chart__toolbar__filter">-->
+          <!--<mat-form-field>-->
+            <!--<mat-select placeholder="Period" [(value)]="chartPeriodsSelected" (selectionChange)="getCoinHistory()">-->
+              <!--<mat-option *ngFor="let period of chartPeriods" [value]="period.value">-->
+                <!--{{ period.viewValue }}-->
+              <!--</mat-option>-->
+            <!--</mat-select>-->
+          <!--</mat-form-field>-->
+          <!--<mat-form-field>-->
+            <!--<mat-select placeholder="Data" [(value)]="chartDataFilterSelected" multiple (selectionChange)="getCoinHistory()">-->
+              <!--<mat-option *ngFor="let chartDataFilterItem of chartDataFilter" [value]="chartDataFilterItem.value">-->
+                <!--{{ chartDataFilterItem.viewValue }}-->
+              <!--</mat-option>-->
+            <!--</mat-select>-->
+          <!--</mat-form-field>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="app-line-chart-wrap">-->
+        <!--<app-line-chart [data]="chartData"></app-line-chart>-->
+      <!--</div>-->
+    <!--</mat-card-content>-->
+  <!--</mat-card>-->
 
   <div class="coin-stats">
     <div class="coin-stats__card">

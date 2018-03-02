@@ -7,10 +7,16 @@
   max-height: 100vh;
   background: whitesmoke;
 
+  //background: #EDE7F6;
+  //background: #794DC8;
+
   .app-page-nav-toolbar {
     flex: 64px 0 0;
     background: rgba(0,0,0,.05);
     color: rgba(0,0,0,.85);
+
+    //background: rgba(0,0,0,.1);
+    //color: #DAC6FF;
   }
 
   .app-page-nav-content {
@@ -25,14 +31,17 @@
 
       .mat-list-item {
         color: rgba(0,0,0,.6);
+        //color: #DAC6FF;
 
         p {
           color: rgba(0,0,0,.3);
+          //color: #A87FEE;
         }
 
         &.active {
           color: rgba(0,0,0,.8);
           color: #E91E63;
+          //color: #fff;
           background: rgba(0,0,0,.02);
         }
       }

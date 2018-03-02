@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
 
+// Modules
+import { SharedModule } from '../shared/shared.module';
 import { CoinsRoutingModule } from './coins-routing.module';
 
 // Components

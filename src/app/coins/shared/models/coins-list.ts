@@ -1,10 +1,7 @@
+/**
+ * Coins list model
+ */
 export interface CoinsList {
-  position: number;
-  name: string;
-  fullName: string;
-}
-
-export interface CoinsListFullData {
   position: number;
   name: string;
   fullName: string;
