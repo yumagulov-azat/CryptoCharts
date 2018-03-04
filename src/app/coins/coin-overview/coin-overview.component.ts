@@ -38,6 +38,11 @@ export class CoinOverviewComponent implements OnInit {
 
   coin: CoinSnapshot;
   coinName: string;
+  chartFilter: ChartFilter = {
+    period: 30,
+    periodType: 'histoday',
+    data: ['close']
+  }
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
@@ -66,7 +71,7 @@ export class CoinOverviewComponent implements OnInit {
     this.coinName = this.route.snapshot.paramMap.get('name');
     this.state.loading = true;
 
-    this.coinsService.getCoinFullData(this.coinName, 30)
+    this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
@@ -93,6 +98,7 @@ export class CoinOverviewComponent implements OnInit {
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coin.history = res;
+        this.chartFilter = filter;
         this.state.loading = false;
       }, err => {
         this.notifications.show('API Error');
