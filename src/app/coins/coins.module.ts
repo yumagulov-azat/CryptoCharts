@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Modules
 import { SharedModule } from '../shared/shared.module';
@@ -13,6 +14,7 @@ import { CoinChartComponent } from './coin-chart/coin-chart.component';
 
 @NgModule({
   imports: [
+    ReactiveFormsModule,
     SharedModule,
     CoinsRoutingModule,
   ],
