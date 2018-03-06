@@ -58,5 +58,5 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatGridListModule
   ]
 })
-export class AppMaterialModule {
+export class MaterialModule {
 }

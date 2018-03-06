@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { AppMaterialModule } from '../app-material/app-material.module'
+import { MaterialModule } from '../material/material.module'
 import { PageComponent } from './page.component';
 import { PageContentComponent } from './page-content/page-content.component';
 import { PageNavComponent } from './page-nav/page-nav.component';
@@ -10,7 +10,7 @@ import { PageNavComponent } from './page-nav/page-nav.component';
 
 @NgModule({
   imports: [
-    AppMaterialModule
+    MaterialModule
   ],
   declarations: [
     PageComponent,

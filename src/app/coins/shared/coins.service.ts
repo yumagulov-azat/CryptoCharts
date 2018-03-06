@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import * as find from 'lodash/find';
 
 // RxJs
 import { Observable } from 'rxjs/Observable';
@@ -15,8 +16,8 @@ import 'rxjs/add/operator/concatMap';
 import { UtilsService } from '../../shared/services/utils.service';
 
 // Models
-import { CoinsList } from './models/coins-list';
-import { CoinSnapshot } from './models/coin-snapshot';
+import { CoinsList } from './models/coins-list.model';
+import { CoinSnapshot } from './models/coin-snapshot.model';
 
 
 /**
@@ -65,7 +66,8 @@ export class CoinsService {
               price: priceInfo.PRICE,
               changePct24Hour: ((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100).toFixed(2),
               marketCap: priceInfo.PRICE * conversionInfo.Supply,
-              history: null
+              history: null,
+              conversionSymbol: conversionInfo.Conversion == 'direct' ? 'USD' : conversionInfo.ConversionSymbol
             });
           });
 
@@ -85,54 +87,66 @@ export class CoinsService {
    * @param historyLimit
    * @returns {any}
    */
-  getCoinFullData(coinName: string, historyLimit: number = 7): Observable<CoinSnapshot> {
+  getCoinFullData(coinName: string, historyLimit: number = 7, toSymbol: string = 'USD'): Observable<CoinSnapshot> {
     let coinSnapshot: CoinSnapshot = {
       info: {},
       finance: {},
       history: [],
-      exchanges: []
+      exchanges: [],
+      pairs: []
     };
 
-    const params = new HttpParams()
-      .set('fsym', coinName)
-      .set('tsym', 'USD');
 
-    // Request coin main info
-    const coinInfoRequest = this.http.get<CoinSnapshot>(this.API_URL + '/top/exchanges/full', {params: params});
+    return this.http.get('https://min-api.cryptocompare.com/data/top/pairs?fsym=' + coinName)
+      .flatMap((pairs: any) => {
 
-    // Request coin history by days
-    const coinDaysHistoryRequest = this.getCoinHistory(coinName, historyLimit);
+        toSymbol = find(pairs.Data, {toSymbol: toSymbol}) ? toSymbol : pairs.Data[0].toSymbol;
 
-    return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
-      .map((res: any) => {
-        if (res[0].Response == 'Success') {
-          const finance = res[0].Data.AggregatedData;
+        const params = new HttpParams()
+          .set('fsym', coinName)
+          .set('tsym', toSymbol);
 
-          coinSnapshot.info = res[0].Data.CoinInfo;
-          coinSnapshot.history = res[1];
-          coinSnapshot.finance = {
-            priceReal: finance.PRICE,
-            price: finance.PRICE,
-            change24Hour: finance.CHANGE24HOUR,
-            changeDay: finance.CHANGEDAY,
-            changePct24Hour: finance.CHANGEPCT24HOUR.toFixed(2),
-            changePctDay: finance.CHANGEPCTDAY.toFixed(2),
-            high24Hour: finance.HIGH24HOUR,
-            highDay: finance.HIGHDAY,
-            low24Hour: finance.LOW24HOUR,
-            lowDay: finance.LOWDAY,
-            open24Hour: finance.OPEN24HOUR,
-            openDay: finance.OPENDAY,
-            marketCap: finance.MKTCAP,
-            volume24Hour: finance.VOLUME24HOUR,
-          };
-          coinSnapshot.exchanges = res[0].Data.Exchanges;
+        // Request coin main info
+        const coinInfoRequest = this.http.get<CoinSnapshot>(this.API_URL + '/top/exchanges/full', {params: params});
 
-          return coinSnapshot;
-        } else {
-          throw new Error('Coin data empty');
-        }
+        // Request coin history by days
+        const coinDaysHistoryRequest = this.getCoinHistory(coinName, historyLimit, 'histoday', toSymbol);
+
+        return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
+          .map((res: any) => {
+            console.log(res)
+            if (res[0].Response == 'Success') {
+              const finance = res[0].Data.AggregatedData;
+
+              coinSnapshot.info = res[0].Data.CoinInfo;
+              coinSnapshot.history = res[1];
+              coinSnapshot.finance = {
+                toSymbol: toSymbol,
+                toSymbolDisplay: this.utils.getSymbolFromCurrency(toSymbol),
+                price: finance.PRICE,
+                change24Hour: finance.CHANGE24HOUR,
+                changeDay: finance.CHANGEDAY,
+                changePct24Hour: finance.CHANGEPCT24HOUR.toFixed(2),
+                changePctDay: finance.CHANGEPCTDAY.toFixed(2),
+                high24Hour: finance.HIGH24HOUR,
+                highDay: finance.HIGHDAY,
+                low24Hour: finance.LOW24HOUR,
+                lowDay: finance.LOWDAY,
+                open24Hour: finance.OPEN24HOUR,
+                openDay: finance.OPENDAY,
+                marketCap: finance.MKTCAP,
+                volume24Hour: finance.VOLUME24HOUR,
+              };
+              coinSnapshot.pairs = pairs.Data;
+              coinSnapshot.exchanges = res[0].Data.Exchanges;
+
+              return coinSnapshot;
+            } else {
+              throw new Error('Coin data empty');
+            }
+          });
       });
+
   }
 
 
@@ -143,11 +157,11 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  getCoinHistory(coinName: string, limit: number = 365, type: string = 'histoday'): Observable<any> {
+  getCoinHistory(coinName: string, limit: number = 365, type: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
     const params = new HttpParams()
       .set('limit', limit.toString())
       .set('fsym', coinName)
-      .set('tsym', 'USD');
+      .set('tsym', toSymbol);
 
     return this.http.get(this.API_URL + '/' + type, {params: params})
       .map((res: any) => {

@@ -11,8 +11,8 @@ import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 
 // Models
-import { CoinSnapshot } from '../shared/models/coin-snapshot';
-import { ChartFilter } from '../shared/models/chart-filter';
+import { CoinSnapshot } from '../shared/models/coin-snapshot.model';
+import { ChartFilter } from '../shared/models/chart-filter.model';
 
 
 /**
@@ -69,11 +69,11 @@ export class CoinOverviewComponent implements OnInit {
   /**
    * Get main coin info
    */
-  getCoinInfo(): void {
+  getCoinInfo(toSymbol: string = 'USD'): void {
     this.coinName = this.route.snapshot.paramMap.get('name');
     this.state.loading = true;
 
-    this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period)
+    this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;

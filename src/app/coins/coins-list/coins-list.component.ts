@@ -13,7 +13,7 @@ import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 
 // Models
-import { CoinsList } from '../shared/models/coins-list';
+import { CoinsList } from '../shared/models/coins-list.model';
 
 
 /**
@@ -54,7 +54,7 @@ export class CoinsListComponent implements OnInit {
         this.paginator.pageIndex = res.params.page;
         this.getCoinsList(this.pageSize, this.paginator.pageIndex - 1);
 
-        let metaPage: string = this.paginator.pageIndex > 1 ? ', page' + this.paginator.pageIndex : '';
+        let metaPage: string = this.paginator.pageIndex > 1 ? ', page ' + this.paginator.pageIndex : '';
         this.meta.setTitle(`List${metaPage} | Coins`);
       });
 

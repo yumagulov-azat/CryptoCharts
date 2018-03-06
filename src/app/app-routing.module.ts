@@ -39,16 +39,6 @@ const routes: Routes = [
     }
   },
   {
-    path: 'mining',
-    loadChildren: 'app/mining/mining.module#MiningModule',
-    canActivate: [MetaGuard],
-    data: {
-      meta: {
-        title: 'Mining'
-      }
-    }
-  },
-  {
     path: 'news',
     loadChildren: 'app/news/news.module#NewsModule',
     canActivate: [MetaGuard],

@@ -38,6 +38,7 @@
     "@types/moment": "^2.13.0",
     "c3": "^0.4.21",
     "core-js": "^2.4.1",
+    "currency-symbol-map": "^4.0.3",
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "rxjs": "^5.5.6",

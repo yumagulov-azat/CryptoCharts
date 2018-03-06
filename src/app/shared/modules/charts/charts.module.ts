@@ -16,4 +16,4 @@ import { SparklineComponent } from './sparkline/sparkline.component';
     SparklineComponent
   ]
 })
-export class AppChartsModule { }
+export class ChartsModule { }

@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AppMaterialModule } from './modules/app-material/app-material.module';
+import { MaterialModule } from './modules/material/material.module';
 import { PageModule } from './modules/page/page.module';
-import { AppChartsModule } from './modules/app-charts/app-charts.module';
+import { ChartsModule } from './modules/charts/charts.module';
 import { ProgressLoadingComponent } from './components/progress-loading/progress-loading.component';
 import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
-    AppMaterialModule,
+    MaterialModule,
     PageModule,
-    AppChartsModule
+    ChartsModule
   ],
   declarations: [
     ProgressLoadingComponent,
@@ -20,9 +20,9 @@ import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
   ],
   exports: [
     CommonModule,
-    AppMaterialModule,
+    MaterialModule,
     PageModule,
-    AppChartsModule,
+    ChartsModule,
     ProgressLoadingComponent,
     CryptoCurrencyPipe
   ]
