@@ -85,6 +85,7 @@ export class CoinsService {
    * Get coin data
    * @param coinName
    * @param historyLimit
+   * @param toSymbol
    * @returns {any}
    */
   getCoinFullData(coinName: string, historyLimit: number = 7, toSymbol: string = 'USD'): Observable<CoinSnapshot> {
@@ -97,9 +98,10 @@ export class CoinsService {
     };
 
 
-    return this.http.get('https://min-api.cryptocompare.com/data/top/pairs?fsym=' + coinName)
+    return this.http.get('https://min-api.cryptocompare.com/data/top/pairs?fsym=' + coinName + '&limit=20')
       .flatMap((pairs: any) => {
 
+        // Find USD. If USD not found, get first pair
         toSymbol = find(pairs.Data, {toSymbol: toSymbol}) ? toSymbol : pairs.Data[0].toSymbol;
 
         const params = new HttpParams()
@@ -114,7 +116,6 @@ export class CoinsService {
 
         return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
           .map((res: any) => {
-            console.log(res)
             if (res[0].Response == 'Success') {
               const finance = res[0].Data.AggregatedData;
 
@@ -177,12 +178,12 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  getCoinsHistory(coinsList: Array<any>, limit: number = 365, type: string = 'histoday'): Observable<any> {
+  getCoinsHistory(coinsList: Array<any>, limit: number = 365, type: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
     const coinsRequests = [];
 
     if (coinsList.length > 0) {
       coinsList.forEach((coin) => {
-        coinsRequests.push(this.getCoinHistory(coin.name, limit, type));
+        coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol));
       });
 
       return Observable.zip(

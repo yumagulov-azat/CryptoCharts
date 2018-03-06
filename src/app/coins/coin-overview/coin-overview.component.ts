@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 
 // RxJs
@@ -44,6 +44,7 @@ export class CoinOverviewComponent implements OnInit {
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
+              private router: Router,
               private notifications: NotificationsService,
               private meta: MetaService) {
 
@@ -53,8 +54,9 @@ export class CoinOverviewComponent implements OnInit {
     this.route.params
       .takeUntil(this.ngUnsubscribe)
       .subscribe(params => {
+        this.coinName = this.route.snapshot.paramMap.get('name');
         this.getCoinInfo();
-        this.meta.setTitle(`${this.route.snapshot.paramMap.get('name')} | Coins`);
+        this.meta.setTitle(`${this.coinName} | Coins`);
       });
   }
 
@@ -67,10 +69,10 @@ export class CoinOverviewComponent implements OnInit {
   }
 
   /**
-   * Get main coin info
+   * Get coin info
+   * @param toSymbol
    */
   getCoinInfo(toSymbol: string = 'USD'): void {
-    this.coinName = this.route.snapshot.paramMap.get('name');
     this.state.loading = true;
 
     this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period, toSymbol)
@@ -90,13 +92,13 @@ export class CoinOverviewComponent implements OnInit {
 
   /**
    * Get coin history
-   * @param limit
-   * @param type
+   * @param filter
+   * @param toSymbol
    */
-  getCoinHistory(filter: ChartFilter): void {
+  getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
     this.state.loading = true;
 
-    this.coinsService.getCoinHistory(this.coinName, filter.period, filter.periodType)
+    this.coinsService.getCoinHistory(this.coinName, filter.period, filter.periodType, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coin.history = res;

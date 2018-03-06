@@ -14,8 +14,8 @@ export class CryptoCurrencyPipe implements PipeTransform {
 
   }
 
-  transform(value: any, symbol?: any = '$', short?: string): any {
-    return this.utils.convertPriceToDisplay(symbol, value, short);
+  transform(value: any, symbol: any = '$', short: string): any {
+    return this.utils.convertPriceToDisplay(symbol + ' ', value, short);
   }
 
 }

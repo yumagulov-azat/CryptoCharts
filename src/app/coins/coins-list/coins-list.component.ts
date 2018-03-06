@@ -4,6 +4,7 @@ import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 // RxJs
+import { Subscription } from "rxjs";
 import { Subject } from "rxjs/Subject";
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/switchMap';
@@ -37,6 +38,8 @@ export class CoinsListComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  coinsListSubscription: Subscription;
 
 
   constructor(private coinsService: CoinsService,
@@ -115,8 +118,10 @@ export class CoinsListComponent implements OnInit {
       }
     });
 
+    if(this.coinsListSubscription) this.coinsListSubscription.unsubscribe();
+
     let i = 0;
-    this.coinsService.getCoinsHistory(coins, 6)
+    this.coinsListSubscription = this.coinsService.getCoinsHistory(coins, 6)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coinsList.data[i].history = {
@@ -130,4 +135,5 @@ export class CoinsListComponent implements OnInit {
         i++;
       });
   }
+
 }

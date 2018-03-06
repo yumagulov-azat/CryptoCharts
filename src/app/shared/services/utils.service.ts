@@ -38,7 +38,13 @@ export class UtilsService {
   constructor() { }
 
   getSymbolFromCurrency(currency: string): string {
-    return symbolFromCurrency(currency);
+    let displaySymbol = symbolFromCurrency(currency);
+
+    if(displaySymbol) {
+      return displaySymbol;
+    } else {
+      return currency;
+    }
   }
 
   unpack(value) {

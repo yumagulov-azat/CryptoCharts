@@ -23,7 +23,7 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="coin-stats__card">
+    <div class="coin-stats__card" *ngIf="coin.finance.marketCap">
       <mat-card>
         <mat-card-content>
           <div class="coin-stats__card__title">
@@ -56,8 +56,9 @@
         [chartDataInput]="coin.history"
         [coinName]="coinName"
         [toSymbol]="coin.finance.toSymbol"
+        [toSymbolDisplay]="coin.finance.toSymbolDisplay"
         [filter]="chartFilter"
-        (filterChanged)="getCoinHistory($event)">
+        (filterChanged)="getCoinHistory($event, coin.finance.toSymbol)">
       </app-coin-chart>
     </mat-card-content>
   </mat-card>
