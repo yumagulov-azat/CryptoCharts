@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { find } from 'lodash';
+import * as find from 'lodash/find';
 
 // Models
 import { ChartFilter } from '../shared/models/chart-filter';
@@ -24,18 +24,19 @@ export class CoinChartComponent implements OnInit, OnChanges {
   @Input() filter: ChartFilter;
   @Output() filterChanged: EventEmitter<ChartFilter> = new EventEmitter();
 
+  // Form group for chart filter
   chartFilterForm = new FormGroup ({
     chartPeriod: new FormControl(30),
     chartDataShow: new FormControl(['close'])
   });
 
-  // Chart series select
+  // chartDataShow options
   chartDataList: Array<any> = [
     {value: 'close', viewValue: 'Close'},
     {value: 'open', viewValue: 'Open'},
   ];
 
-  // Chart period select
+  // chartPeriod options
   chartPeriodList: Array<any> = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
     {value: 23, viewValue: '1 day', type: 'histohour'},
@@ -50,6 +51,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
+    // Emit filterChanged when chartFilter changed
     this.chartFilterForm.valueChanges
       .subscribe(res => {
         const filter: ChartFilter = {
@@ -77,9 +79,5 @@ export class CoinChartComponent implements OnInit, OnChanges {
       },
       type: 'area-spline'
     }
-  }
-
-  test(): void {
-    console.log('v test')
   }
 }

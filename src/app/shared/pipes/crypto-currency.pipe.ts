@@ -1,6 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { UtilsService } from '../../shared/services/utils.service';
 
+/**
+ * Return utils.convertPriceToDisplay result
+ */
+
 @Pipe({
   name: 'cryptoCurrency'
 })

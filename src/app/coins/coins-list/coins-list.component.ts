@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 // RxJs
 import { Subject } from "rxjs/Subject";
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/switchMap';
 
 // Services
 import { CoinsService } from '../shared/coins.service';
@@ -40,20 +42,24 @@ export class CoinsListComponent implements OnInit {
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
               private router: Router,
-              private notifications: NotificationsService) {
+              private notifications: NotificationsService,
+              private meta: MetaService) {
 
   }
 
   ngOnInit() {
-    // Get current page and coins list
-    this.paginator.pageIndex = parseInt(this.route.snapshot.paramMap.get('page')) - 1;
-    this.getCoinsList(this.pageSize, this.paginator.pageIndex);
+    this.route.paramMap
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((res: any) => {
+        this.paginator.pageIndex = res.params.page;
+        this.getCoinsList(this.pageSize, this.paginator.pageIndex - 1);
 
+        let metaPage: string = this.paginator.pageIndex > 1 ? ', page' + this.paginator.pageIndex : '';
+        this.meta.setTitle(`List${metaPage} | Coins`);
+      });
 
-    // When page changed get new coins list
     this.paginator.page.subscribe(res => {
-      this.router.navigate(['/coins/list/' + (this.paginator.pageIndex + 1)]);
-      this.getCoinsList(this.paginator.pageSize, this.paginator.pageIndex);
+      this.router.navigate(['/coins/list/' + this.paginator.pageIndex]);
     });
   }
 

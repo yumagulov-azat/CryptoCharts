@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MetaService } from '@ngx-meta/core';
 
 // RxJs
 import { Subject } from "rxjs/Subject";
 import 'rxjs/add/operator/takeUntil';
 
 // Services
-import { StorageService } from '../../shared/services/storage.service';
 import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
-
-import { CoinChartComponent } from '../coin-chart/coin-chart.component'
 
 // Models
 import { CoinSnapshot } from '../shared/models/coin-snapshot';
@@ -46,14 +44,18 @@ export class CoinOverviewComponent implements OnInit {
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
-              private notifications: NotificationsService) {
+              private notifications: NotificationsService,
+              private meta: MetaService) {
 
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.getCoinInfo();
-    });
+    this.route.params
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(params => {
+        this.getCoinInfo();
+        this.meta.setTitle(`${this.route.snapshot.paramMap.get('name')} | Coins`);
+      });
   }
 
   /**

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { MetaGuard } from '@ngx-meta/core';
 
 // Components
 import { CoinsComponent } from './coins.component';
@@ -10,6 +11,7 @@ const routes: Routes = [
   {
     path: '',
     component: CoinsComponent,
+    canActivateChild: [MetaGuard],
     children: [
       {
         path: '',
@@ -23,15 +25,14 @@ const routes: Routes = [
         path: 'list/:page',
         component: CoinsListComponent,
         data: {
-          title: 'All coins'
+          meta: {
+            title: 'List | Coins'
+          }
         }
       },
       {
         path: ':name',
-        component: CoinOverviewComponent,
-        data: {
-          title: 'Coin'
-        }
+        component: CoinOverviewComponent
       }
     ]
   },
