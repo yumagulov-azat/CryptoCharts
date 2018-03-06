@@ -34,7 +34,7 @@ export class CoinsComponent implements OnInit {
   ngOnInit() {
     // Do not make unnecessary requests
     if (this.route.snapshot.children[0].url[0].path == 'list') {
-      this.coinsListSubscription = this.coinsService.coinsList
+      this.coinsListSubscription = this.coinsService.coinsListSubject
         .subscribe(res => {
           this.coinsList = res;
           this.coinsListSubscription.unsubscribe();

@@ -110,7 +110,7 @@ export class CoinsListComponent implements OnInit {
     });
 
     let i = 0;
-    this.coinsService.getCoinsHistoryByDays(coins, 6)
+    this.coinsService.getCoinsHistory(coins, 6)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coinsList.data[i].history = {

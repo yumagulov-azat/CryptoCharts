@@ -5,6 +5,7 @@ import { AppMaterialModule } from './modules/app-material/app-material.module';
 import { PageModule } from './modules/page/page.module';
 import { AppChartsModule } from './modules/app-charts/app-charts.module';
 import { ProgressLoadingComponent } from './components/progress-loading/progress-loading.component';
+import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
 
 @NgModule({
   imports: [
@@ -14,14 +15,16 @@ import { ProgressLoadingComponent } from './components/progress-loading/progress
     AppChartsModule
   ],
   declarations: [
-    ProgressLoadingComponent
+    ProgressLoadingComponent,
+    CryptoCurrencyPipe
   ],
   exports: [
     CommonModule,
     AppMaterialModule,
     PageModule,
     AppChartsModule,
-    ProgressLoadingComponent
+    ProgressLoadingComponent,
+    CryptoCurrencyPipe
   ]
 })
 export class SharedModule { }

@@ -10,7 +10,7 @@
             Price
           </div>
           <div class="coin-stats__card__value">
-            {{ coin.finance.price }}
+            {{ coin.finance.price | cryptoCurrency }}
           </div>
         </mat-card-content>
       </mat-card>
@@ -22,7 +22,7 @@
             Market Cap
           </div>
           <div class="coin-stats__card__value">
-            {{ coin.finance.marketCap }}
+            {{ coin.finance.marketCap | cryptoCurrency:'short' }}
           </div>
         </mat-card-content>
       </mat-card>
@@ -47,6 +47,7 @@
       <app-coin-chart
         [chartDataInput]="coin.history"
         [coinName]="coinName"
+        [filter]="chartFilter"
         (filterChanged)="getCoinHistory($event)">
       </app-coin-chart>
     </mat-card-content>
@@ -60,7 +61,7 @@
             Volume 24H
           </div>
           <div class="coin-stats__card__value">
-            {{ coin.finance.volume24Hour }}
+            {{ coin.finance.volume24Hour | cryptoCurrency:'short' }}
           </div>
         </mat-card-content>
       </mat-card>
@@ -72,7 +73,7 @@
             Open 24H
           </div>
           <div class="coin-stats__card__value">
-            {{ coin.finance.open24Hour }}
+            {{ coin.finance.open24Hour | cryptoCurrency }}
           </div>
         </mat-card-content>
       </mat-card>
@@ -85,7 +86,7 @@
           </div>
           <div class="coin-stats__card__value">
             <div>
-              {{ coin.finance.low24Hour }} / {{ coin.finance.high24Hour }}
+              {{ coin.finance.low24Hour | cryptoCurrency }} / {{ coin.finance.high24Hour | cryptoCurrency }}
             </div>
           </div>
         </mat-card-content>

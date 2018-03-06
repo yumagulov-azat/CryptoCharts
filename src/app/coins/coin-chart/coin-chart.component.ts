@@ -21,6 +21,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
   @Input() chartData: any;
   @Input() coinName: string;
   @Input() showToolbar: boolean = true;
+  @Input() filter: ChartFilter;
   @Output() filterChanged: EventEmitter<ChartFilter> = new EventEmitter();
 
   chartFilterForm = new FormGroup ({
