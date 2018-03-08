@@ -8,6 +8,7 @@ export interface CoinsList {
   imageUrl: string;
   price: string;
   changePct24Hour: string;
-  marketCap: string;
+  marketCap: number;
   history: Array<any>;
+  conversionSymbol: string;
 }

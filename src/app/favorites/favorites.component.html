@@ -1,11 +1,6 @@
 <app-page>
-  <app-page-content>
-    <mat-toolbar class="app-page-content-toolbar">
-      <mat-toolbar-row>
-        <span>Favorites</span>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <div class="app-page-content-content">
+  <app-page-content [toolbarTitle]="toolbarTitle">
+    <div class="app-page-content-router-wrap">
       <router-outlet></router-outlet>
     </div>
   </app-page-content>

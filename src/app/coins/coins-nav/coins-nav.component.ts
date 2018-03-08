@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 // Models
-import { CoinsList } from '../shared/models/coins-list';
+import { CoinsList } from '../shared/models/coins-list.model';
 
 
 /**

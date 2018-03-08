@@ -26,7 +26,7 @@
     <ng-container matColumnDef="price">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <span>{{ row.price }}</span>
+        <span>{{ row.price | cryptoCurrency }}</span>
       </mat-cell>
     </ng-container>
 
@@ -43,7 +43,7 @@
     <!-- Market cap Column -->
     <ng-container matColumnDef="marketCap">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Market cap</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.marketCap }}</mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.marketCap | cryptoCurrency:'$':'short' }}</mat-cell>
     </ng-container>
 
     <!-- 7d Chart (USD) Column -->

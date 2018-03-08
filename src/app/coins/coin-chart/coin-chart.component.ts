@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { find } from 'lodash';
+import * as find from 'lodash/find';
 
 // Models
-import { ChartFilter } from '../shared/models/chart-filter';
+import { ChartFilter } from '../shared/models/chart-filter.model';
 
 
 /**
@@ -20,21 +20,25 @@ export class CoinChartComponent implements OnInit, OnChanges {
   @Input() chartDataInput: any;
   @Input() chartData: any;
   @Input() coinName: string;
+  @Input() toSymbol: string;
+  @Input() toSymbolDisplay: string = '$';
   @Input() showToolbar: boolean = true;
+  @Input() filter: ChartFilter;
   @Output() filterChanged: EventEmitter<ChartFilter> = new EventEmitter();
 
-  chartFilterForm = new FormGroup ({
+  // Form group for chart filter
+  chartFilterForm = new FormGroup({
     chartPeriod: new FormControl(30),
     chartDataShow: new FormControl(['close'])
   });
 
-  // Chart series select
+  // chartDataShow options
   chartDataList: Array<any> = [
     {value: 'close', viewValue: 'Close'},
     {value: 'open', viewValue: 'Open'},
   ];
 
-  // Chart period select
+  // chartPeriod options
   chartPeriodList: Array<any> = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
     {value: 23, viewValue: '1 day', type: 'histohour'},
@@ -46,14 +50,16 @@ export class CoinChartComponent implements OnInit, OnChanges {
   ];
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+    // Emit filterChanged when chartFilter changed
     this.chartFilterForm.valueChanges
       .subscribe(res => {
         const filter: ChartFilter = {
           period: res.chartPeriod,
-          periodType: find(this.chartPeriodList, { 'value': res.chartPeriod}).type,
+          periodType: find(this.chartPeriodList, {'value': res.chartPeriod}).type,
           data: res.chartDataShow,
         }
         this.filterChanged.emit(filter);
@@ -76,9 +82,5 @@ export class CoinChartComponent implements OnInit, OnChanges {
       },
       type: 'area-spline'
     }
-  }
-
-  test(): void {
-    console.log('v test')
   }
 }

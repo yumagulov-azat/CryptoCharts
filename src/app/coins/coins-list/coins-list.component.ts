@@ -1,17 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 // RxJs
+import { Subscription } from "rxjs";
 import { Subject } from "rxjs/Subject";
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/switchMap';
 
 // Services
 import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 
 // Models
-import { CoinsList } from '../shared/models/coins-list';
+import { CoinsList } from '../shared/models/coins-list.model';
 
 
 /**
@@ -36,24 +39,30 @@ export class CoinsListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  coinsListSubscription: Subscription;
+
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
               private router: Router,
-              private notifications: NotificationsService) {
+              private notifications: NotificationsService,
+              private meta: MetaService) {
 
   }
 
   ngOnInit() {
-    // Get current page and coins list
-    this.paginator.pageIndex = parseInt(this.route.snapshot.paramMap.get('page')) - 1;
-    this.getCoinsList(this.pageSize, this.paginator.pageIndex);
+    this.route.paramMap
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((res: any) => {
+        this.paginator.pageIndex = res.params.page;
+        this.getCoinsList(this.pageSize, this.paginator.pageIndex - 1);
 
+        let metaPage: string = this.paginator.pageIndex > 1 ? ', page ' + this.paginator.pageIndex : '';
+        this.meta.setTitle(`List${metaPage} | Coins`);
+      });
 
-    // When page changed get new coins list
     this.paginator.page.subscribe(res => {
-      this.router.navigate(['/coins/list/' + (this.paginator.pageIndex + 1)]);
-      this.getCoinsList(this.paginator.pageSize, this.paginator.pageIndex);
+      this.router.navigate(['/coins/list/' + this.paginator.pageIndex]);
     });
   }
 
@@ -109,8 +118,10 @@ export class CoinsListComponent implements OnInit {
       }
     });
 
+    if(this.coinsListSubscription) this.coinsListSubscription.unsubscribe();
+
     let i = 0;
-    this.coinsService.getCoinsHistoryByDays(coins, 6)
+    this.coinsListSubscription = this.coinsService.getCoinsHistory(coins, 6)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coinsList.data[i].history = {
@@ -124,4 +135,5 @@ export class CoinsListComponent implements OnInit {
         i++;
       });
   }
+
 }

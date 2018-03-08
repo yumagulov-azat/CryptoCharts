@@ -24,11 +24,6 @@ export class AppComponent {
       icon: 'compare_arrows'
     },
     {
-      name: 'Mining',
-      link: '/mining',
-      icon: 'bubble_chart'
-    },
-    {
       name: 'News',
       link: '/news',
       icon: 'view_list'

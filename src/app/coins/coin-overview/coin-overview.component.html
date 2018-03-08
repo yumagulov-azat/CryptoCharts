@@ -1,6 +1,14 @@
 <progress-loading [loading]="state.loading"></progress-loading>
 
 <div class="coin-overview" *ngIf="!state.error && !state.firstShow">
+  <mat-form-field>
+    <mat-select [(value)]="coin.finance.toSymbol" (selectionChange)="getCoinInfo(coin.finance.toSymbol)">
+      <mat-option *ngFor="let pair of coin.pairs" [value]="pair.toSymbol">
+        {{ pair.toSymbol }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <!-- Coin main info -->
   <div class="coin-stats">
     <div class="coin-stats__card">
@@ -10,19 +18,19 @@
             Price
           </div>
           <div class="coin-stats__card__value">
-            {{ coin.finance.price }}
+            {{ coin.finance.price | cryptoCurrency:coin.finance.toSymbolDisplay }}
           </div>
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="coin-stats__card">
+    <div class="coin-stats__card" *ngIf="coin.finance.marketCap">
       <mat-card>
         <mat-card-content>
           <div class="coin-stats__card__title">
             Market Cap
           </div>
           <div class="coin-stats__card__value">
-            {{ coin.finance.marketCap }}
+            {{ coin.finance.marketCap | cryptoCurrency:coin.finance.toSymbolDisplay:'short' }}
           </div>
         </mat-card-content>
       </mat-card>
@@ -47,7 +55,10 @@
       <app-coin-chart
         [chartDataInput]="coin.history"
         [coinName]="coinName"
-        (filterChanged)="getCoinHistory($event)">
+        [toSymbol]="coin.finance.toSymbol"
+        [toSymbolDisplay]="coin.finance.toSymbolDisplay"
+        [filter]="chartFilter"
+        (filterChanged)="getCoinHistory($event, coin.finance.toSymbol)">
       </app-coin-chart>
     </mat-card-content>
   </mat-card>
@@ -60,7 +71,7 @@
             Volume 24H
           </div>
           <div class="coin-stats__card__value">
-            {{ coin.finance.volume24Hour }}
+            {{ coin.finance.volume24Hour | cryptoCurrency:coin.finance.toSymbolDisplay:'short' }}
           </div>
         </mat-card-content>
       </mat-card>
@@ -72,7 +83,7 @@
             Open 24H
           </div>
           <div class="coin-stats__card__value">
-            {{ coin.finance.open24Hour }}
+            {{ coin.finance.open24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }}
           </div>
         </mat-card-content>
       </mat-card>
@@ -85,7 +96,7 @@
           </div>
           <div class="coin-stats__card__value">
             <div>
-              {{ coin.finance.low24Hour }} / {{ coin.finance.high24Hour }}
+              {{ coin.finance.low24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }} / {{ coin.finance.high24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }}
             </div>
           </div>
         </mat-card-content>

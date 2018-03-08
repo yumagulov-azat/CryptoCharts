@@ -8,7 +8,7 @@ import { Subscription } from "rxjs";
 import { CoinsService } from './shared/coins.service';
 
 // Models
-import { CoinsList } from './shared/models/coins-list'
+import { CoinsList } from './shared/models/coins-list.model'
 
 /**
  * Coins module parent component
@@ -34,14 +34,14 @@ export class CoinsComponent implements OnInit {
   ngOnInit() {
     // Do not make unnecessary requests
     if (this.route.snapshot.children[0].url[0].path == 'list') {
-      this.coinsListSubscription = this.coinsService.coinsList
-        .subscribe(res => {
+      this.coinsListSubscription = this.coinsService.coinsListSubject
+        .subscribe((res: CoinsList[]) => {
           this.coinsList = res;
           this.coinsListSubscription.unsubscribe();
         });
     } else {
       this.coinsService.getCoinsList()
-        .subscribe(res => {
+        .subscribe((res: CoinsList[]) => {
           this.coinsList = res;
         });
     }

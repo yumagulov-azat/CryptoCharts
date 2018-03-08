@@ -8,6 +8,8 @@ import { FavoritesService } from './favorites.service'
 })
 export class FavoritesComponent implements OnInit {
 
+  toolbarTitle: string = 'Favorites';
+
   constructor(private favoritesService: FavoritesService) { }
 
   ngOnInit() {

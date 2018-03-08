@@ -7,11 +7,11 @@
   max-height: 100vh;
 }
 
-::ng-deep .app-page-content-content {
+::ng-deep .app-page-content-toolbar {
   flex: 64px 0 0;
 }
 
-::ng-deep .app-page-content-content {
+::ng-deep .app-page-content-router-wrap {
   flex: 1 0 0;
   overflow: auto;
   -webkit-overflow-scroll: touch;

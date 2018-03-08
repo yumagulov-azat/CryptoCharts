@@ -1,6 +1,6 @@
 <div class="coin-chart-toolbar" *ngIf="showToolbar">
   <h2 class="mat-title">
-    {{ coinName }}-USD
+    {{ coinName }}-{{ toSymbol }}
   </h2>
   <form [formGroup]="chartFilterForm" class="coin-chart-toolbar__filter">
     <mat-form-field>
@@ -20,4 +20,4 @@
   </form>
 </div>
 
-<app-line-chart [data]="chartData"></app-line-chart>
+<app-line-chart [data]="chartData" [toSymbolDisplay]="toSymbolDisplay"></app-line-chart>

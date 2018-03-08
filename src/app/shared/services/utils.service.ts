@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as symbolFromCurrency from 'currency-symbol-map';
 
 /**
  * Methods from cryptocompare CCC.utils
@@ -35,6 +36,16 @@ export class UtilsService {
   }
 
   constructor() { }
+
+  getSymbolFromCurrency(currency: string): string {
+    let displaySymbol = symbolFromCurrency(currency);
+
+    if(displaySymbol) {
+      return displaySymbol;
+    } else {
+      return currency;
+    }
+  }
 
   unpack(value) {
     let valuesArray = value.split('~');

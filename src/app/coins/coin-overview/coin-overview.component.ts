@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MetaService } from '@ngx-meta/core';
 
 // RxJs
 import { Subject } from "rxjs/Subject";
 import 'rxjs/add/operator/takeUntil';
 
 // Services
-import { StorageService } from '../../shared/services/storage.service';
 import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 
-import { CoinChartComponent } from '../coin-chart/coin-chart.component'
-
 // Models
-import { CoinSnapshot } from '../shared/models/coin-snapshot';
-import { ChartFilter } from '../shared/models/chart-filter';
+import { CoinSnapshot } from '../shared/models/coin-snapshot.model';
+import { ChartFilter } from '../shared/models/chart-filter.model';
 
 
 /**
@@ -46,14 +44,20 @@ export class CoinOverviewComponent implements OnInit {
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
-              private notifications: NotificationsService) {
+              private router: Router,
+              private notifications: NotificationsService,
+              private meta: MetaService) {
 
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.getCoinInfo();
-    });
+    this.route.params
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(params => {
+        this.coinName = this.route.snapshot.paramMap.get('name');
+        this.getCoinInfo();
+        this.meta.setTitle(`${this.coinName} | Coins`);
+      });
   }
 
   /**
@@ -65,13 +69,13 @@ export class CoinOverviewComponent implements OnInit {
   }
 
   /**
-   * Get main coin info
+   * Get coin info
+   * @param toSymbol
    */
-  getCoinInfo(): void {
-    this.coinName = this.route.snapshot.paramMap.get('name');
+  getCoinInfo(toSymbol: string = 'USD'): void {
     this.state.loading = true;
 
-    this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period)
+    this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
@@ -88,13 +92,13 @@ export class CoinOverviewComponent implements OnInit {
 
   /**
    * Get coin history
-   * @param limit
-   * @param type
+   * @param filter
+   * @param toSymbol
    */
-  getCoinHistory(filter: ChartFilter): void {
+  getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
     this.state.loading = true;
 
-    this.coinsService.getCoinHistory(this.coinName, filter.period, filter.periodType)
+    this.coinsService.getCoinHistory(this.coinName, filter.period, filter.periodType, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coin.history = res;

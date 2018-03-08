@@ -13,16 +13,17 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   // Input variables
   @Input() data: any;
-  @Input() height = 400;
+  @Input() height: number = 400;
   @Input() chartColors: Array<any> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
-  @Input() subchart = true;
+  @Input() subchart: boolean = true;
+  @Input() toSymbolDisplay: string = '$';
   @Input() axis: any = {
     y: {
       inner: true,
       tick: {
         count: 6,
         format: (value)=> {
-          return this.utils.convertPriceToDisplay('$', value);
+          return this.utils.convertPriceToDisplay(this.toSymbolDisplay + ' ', value);
         }
       }
     },
