@@ -1,0 +1,14 @@
+mat-card {
+  margin-bottom: 16px;
+  
+  mat-card-header {
+    mat-card-title {
+      font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
+      margin-bottom: 5px;
+    }
+
+    .mat-card-header-text {
+      margin: 0
+    }
+  }
+}

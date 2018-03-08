@@ -11,7 +11,10 @@ import { FavoriteCoinComponent } from './favorite-coin/favorite-coin.component';
     SharedModule,
     FavoritesRoutingModule
   ],
-  declarations: [FavoritesComponent, FavoriteCoinComponent],
+  declarations: [
+    FavoritesComponent,
+    FavoriteCoinComponent
+  ],
   providers: [
     FavoritesService
   ]

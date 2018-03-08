@@ -8,7 +8,10 @@ export class FavoritesService {
   constructor(private storage: StorageService ) { }
 
   getFavoriteCoins(): Observable<any> {
-    return this.storage.getItem('favorites');
+    return this.storage.getItem('favorites')
+      .map(res => {
+        return res.split(',')
+      })
   }
 
   setFavoriteCoins(coins: Array<any> = []): void {

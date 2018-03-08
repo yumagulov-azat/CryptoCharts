@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatMenuModule } from '@angular/material/menu';
 
 /**
  * Angular material components
@@ -37,7 +38,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatCardModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    MatMenuModule
   ],
   declarations: [],
   exports: [
@@ -55,7 +57,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatCardModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    MatMenuModule
   ]
 })
 export class MaterialModule {

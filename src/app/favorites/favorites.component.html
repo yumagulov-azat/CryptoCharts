@@ -1,7 +1,15 @@
 <app-page>
   <app-page-content>
-    <div class="app-page-content-router-wrap">
-      <router-outlet></router-outlet>
-    </div>
+    <mat-toolbar class="app-page-content-toolbar">
+      <mat-toolbar-row>
+        <span>Favorites</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <section class="app-page-content-wrap">
+      <section class="favorites-coins">
+        <app-favorite-coin *ngFor="let coin of coins" [coin]="coin"></app-favorite-coin>
+      </section>
+    </section>
   </app-page-content>
 </app-page>

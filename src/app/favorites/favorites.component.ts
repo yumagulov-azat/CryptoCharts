@@ -8,16 +8,16 @@ import { FavoritesService } from './favorites.service'
 })
 export class FavoritesComponent implements OnInit {
 
-  toolbarTitle: string = 'Favorites';
+  coins: Array<any> = [];
 
   constructor(private favoritesService: FavoritesService) { }
 
   ngOnInit() {
-    this.favoritesService.setFavoriteCoins(['BTC', 'ETH']);
+    this.favoritesService.setFavoriteCoins(['BTC', 'ETH', 'LTC', 'XRP']);
 
     this.favoritesService.getFavoriteCoins()
       .subscribe((res: any) => {
-        console.log(res)
+        this.coins = res;
       });
   }
 

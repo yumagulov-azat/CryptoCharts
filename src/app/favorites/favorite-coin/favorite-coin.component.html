@@ -1,3 +1,24 @@
-<p>
-  favorite-coin works!
-</p>
+<mat-card *ngIf="!loading">
+  <mat-card-header>
+    <mat-card-title>{{ coinData.info.FullName }}</mat-card-title>
+    <mat-card-subtitle>{{ coinData.info.Name }}</mat-card-subtitle>
+    <span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>delete</mat-icon>
+          <span>Remove</span>
+        </button>
+      </mat-menu>
+    </span>
+  </mat-card-header>
+  <mat-card-content>
+    <app-line-chart
+      [data]="coinChartData"
+      [subchart]="false"
+      [height]="250">
+    </app-line-chart>
+  </mat-card-content>
+</mat-card>
