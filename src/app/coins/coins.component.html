@@ -2,9 +2,7 @@
   <app-page-nav [title]="'Coins'">
     <app-coins-nav [coinsList]="coinsList"></app-coins-nav>
   </app-page-nav>
-  <app-page-content [toolbarTitle]="toolbarTitle">
-    <div class="app-page-content-router-wrap">
-      <router-outlet></router-outlet>
-    </div>
+  <app-page-content>
+    <router-outlet></router-outlet>
   </app-page-content>
 </app-page>

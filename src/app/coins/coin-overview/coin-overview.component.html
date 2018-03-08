@@ -1,113 +1,123 @@
+<mat-toolbar class="app-page-content-toolbar">
+  <mat-toolbar-row>
+    <span>{{ coinName }}</span>
+    <span>
+      <mat-form-field *ngIf="coin" class="to-symbol-select">
+        <mat-select [(value)]="coin.finance.toSymbol" (selectionChange)="getCoinInfo(coin.finance.toSymbol)">
+          <mat-option *ngFor="let pair of coin.pairs" [value]="pair.toSymbol">
+            {{ pair.toSymbol }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+  </mat-toolbar-row>
+</mat-toolbar>
+
 <progress-loading [loading]="state.loading"></progress-loading>
 
-<div class="coin-overview" *ngIf="!state.error && !state.firstShow">
-  <mat-form-field>
-    <mat-select [(value)]="coin.finance.toSymbol" (selectionChange)="getCoinInfo(coin.finance.toSymbol)">
-      <mat-option *ngFor="let pair of coin.pairs" [value]="pair.toSymbol">
-        {{ pair.toSymbol }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+<section class="app-page-content-wrap">
 
-  <!-- Coin main info -->
-  <div class="coin-stats">
-    <div class="coin-stats__card">
-      <mat-card>
-        <mat-card-content>
-          <div class="coin-stats__card__title">
-            Price
-          </div>
-          <div class="coin-stats__card__value">
-            {{ coin.finance.price | cryptoCurrency:coin.finance.toSymbolDisplay }}
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="coin-stats__card" *ngIf="coin.finance.marketCap">
-      <mat-card>
-        <mat-card-content>
-          <div class="coin-stats__card__title">
-            Market Cap
-          </div>
-          <div class="coin-stats__card__value">
-            {{ coin.finance.marketCap | cryptoCurrency:coin.finance.toSymbolDisplay:'short' }}
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="coin-stats__card">
-      <mat-card>
-        <mat-card-content>
-          <div class="coin-stats__card__title">
-            24h change
-          </div>
-          <div class="coin-stats__card__value" [ngClass]="{'value-up': coin.finance.changePct24Hour > 0, 'value-down': coin.finance.changePct24Hour < 0}">
-            {{ coin.finance.changePct24Hour }}%
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
-
-  <!-- Coin chart -->
-  <mat-card>
-    <mat-card-content>
-      <app-coin-chart
-        [chartDataInput]="coin.history"
-        [coinName]="coinName"
-        [toSymbol]="coin.finance.toSymbol"
-        [toSymbolDisplay]="coin.finance.toSymbolDisplay"
-        [filter]="chartFilter"
-        (filterChanged)="getCoinHistory($event, coin.finance.toSymbol)">
-      </app-coin-chart>
-    </mat-card-content>
-  </mat-card>
-
-  <div class="coin-stats">
-    <div class="coin-stats__card">
-      <mat-card>
-        <mat-card-content>
-          <div class="coin-stats__card__title">
-            Volume 24H
-          </div>
-          <div class="coin-stats__card__value">
-            {{ coin.finance.volume24Hour | cryptoCurrency:coin.finance.toSymbolDisplay:'short' }}
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="coin-stats__card">
-      <mat-card>
-        <mat-card-content>
-          <div class="coin-stats__card__title">
-            Open 24H
-          </div>
-          <div class="coin-stats__card__value">
-            {{ coin.finance.open24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }}
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="coin-stats__card">
-      <mat-card>
-        <mat-card-content>
-          <div class="coin-stats__card__title">
-            Low/High 24H
-          </div>
-          <div class="coin-stats__card__value">
-            <div>
-              {{ coin.finance.low24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }} / {{ coin.finance.high24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }}
+  <div class="coin-overview" *ngIf="!state.error && !state.firstShow">
+    <!-- Coin main info -->
+    <div class="coin-stats">
+      <div class="coin-stats__card">
+        <mat-card>
+          <mat-card-content>
+            <div class="coin-stats__card__title">
+              Price
             </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
+            <div class="coin-stats__card__value">
+              {{ coin.finance.price | cryptoCurrency:coin.finance.toSymbolDisplay }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="coin-stats__card" *ngIf="coin.finance.marketCap">
+        <mat-card>
+          <mat-card-content>
+            <div class="coin-stats__card__title">
+              Market Cap
+            </div>
+            <div class="coin-stats__card__value">
+              {{ coin.finance.marketCap | cryptoCurrency:coin.finance.toSymbolDisplay:'short' }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="coin-stats__card">
+        <mat-card>
+          <mat-card-content>
+            <div class="coin-stats__card__title">
+              24h change
+            </div>
+            <div class="coin-stats__card__value" [ngClass]="{'value-up': coin.finance.changePct24Hour > 0, 'value-down': coin.finance.changePct24Hour < 0}">
+              {{ coin.finance.changePct24Hour }}%
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Coin chart -->
+    <mat-card>
+      <mat-card-content>
+        <app-coin-chart
+          [chartDataInput]="coin.history"
+          [coinName]="coinName"
+          [toSymbol]="coin.finance.toSymbol"
+          [toSymbolDisplay]="coin.finance.toSymbolDisplay"
+          [filter]="chartFilter"
+          (filterChanged)="getCoinHistory($event, coin.finance.toSymbol)">
+        </app-coin-chart>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="coin-stats">
+      <div class="coin-stats__card">
+        <mat-card>
+          <mat-card-content>
+            <div class="coin-stats__card__title">
+              Volume 24H
+            </div>
+            <div class="coin-stats__card__value">
+              {{ coin.finance.volume24Hour | cryptoCurrency:coin.finance.toSymbolDisplay:'short' }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="coin-stats__card">
+        <mat-card>
+          <mat-card-content>
+            <div class="coin-stats__card__title">
+              Open 24H
+            </div>
+            <div class="coin-stats__card__value">
+              {{ coin.finance.open24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="coin-stats__card">
+        <mat-card>
+          <mat-card-content>
+            <div class="coin-stats__card__title">
+              Low/High 24H
+            </div>
+            <div class="coin-stats__card__value">
+              <div>
+                {{ coin.finance.low24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }} / {{ coin.finance.high24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }}
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="coin-overview-error" *ngIf="state.error">
-  <mat-icon color="accent">cloud_off</mat-icon>
-  <div class="coin-stats__card__value">
-    API Error
+  <div class="coin-overview-error" *ngIf="state.error">
+    <mat-icon color="accent">cloud_off</mat-icon>
+    <div class="coin-stats__card__value">
+      API Error
+    </div>
   </div>
-</div>
+</section>

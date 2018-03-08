@@ -1,3 +1,7 @@
+.app-page-content-wrap {
+  padding: 0;
+}
+
 // Table styles
 .coins-list {
 
@@ -7,7 +11,7 @@
 
   .mat-header-row {
     position: sticky;
-    top: 0;
+    top: 64px;
     background: white;
     z-index: 2;
     min-height: 48px;

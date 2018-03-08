@@ -10,6 +10,7 @@ import { CoinsService } from './shared/coins.service';
 // Models
 import { CoinsList } from './shared/models/coins-list.model'
 
+
 /**
  * Coins module parent component
  */
@@ -23,9 +24,6 @@ export class CoinsComponent implements OnInit {
 
   coinsList: CoinsList[];
   coinsListSubscription: Subscription;
-
-  toolbarTitle = 'All coins';
-  showBackButton = false;
 
   constructor(private route: ActivatedRoute, private coinsService: CoinsService) {
 

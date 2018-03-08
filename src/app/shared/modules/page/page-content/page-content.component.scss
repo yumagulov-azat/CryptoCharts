@@ -5,15 +5,26 @@
   flex: 1 0 0;
   height: 100vh;
   max-height: 100vh;
-}
-
-::ng-deep .app-page-content-toolbar {
-  flex: 64px 0 0;
-}
-
-::ng-deep .app-page-content-router-wrap {
-  flex: 1 0 0;
   overflow: auto;
   -webkit-overflow-scroll: touch;
-  // padding: 16px;
+
+  ::ng-deep {
+    .app-page-content-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+
+      mat-toolbar-row {
+        justify-content: space-between;
+
+        .mat-form-field {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .app-page-content-wrap {
+      padding: 16px
+    }
+  }
 }

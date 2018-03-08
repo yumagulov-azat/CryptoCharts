@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 /**
 * App page content
@@ -11,11 +11,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PageContentComponent implements OnInit {
 
-  @Input() toolbarTitle: string = '';
-
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

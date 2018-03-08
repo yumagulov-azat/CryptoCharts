@@ -1,6 +1,11 @@
 :host {
   display: block;
-  padding: 16px;
+  // padding: 16px;
+}
+
+.to-symbol-select {
+  width: 70px;
+  font-size: 16px
 }
 
 mat-card {
