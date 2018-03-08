@@ -1,15 +1,16 @@
 <mat-toolbar class="app-page-content-toolbar">
   <mat-toolbar-row>
-    <span>{{ coinName }}</span>
     <span>
-      <mat-form-field *ngIf="coin" class="to-symbol-select">
-        <mat-select [(value)]="coin.finance.toSymbol" (selectionChange)="getCoinInfo(coin.finance.toSymbol)">
-          <mat-option *ngFor="let pair of coin.pairs" [value]="pair.toSymbol">
-            {{ pair.toSymbol }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      {{ coinName }}
     </span>
+    <span class="spacer"></span>
+    <mat-form-field *ngIf="coin" class="to-symbol-select">
+      <mat-select [(value)]="coin.finance.toSymbol" (selectionChange)="getCoinInfo(coin.finance.toSymbol)">
+        <mat-option *ngFor="let pair of coin.pairs" [value]="pair.toSymbol">
+          {{ pair.toSymbol }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </mat-toolbar-row>
 </mat-toolbar>
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import * as find from 'lodash/find';
+import find = require('lodash/find');
 
 // RxJs
 import { Observable } from 'rxjs/Observable';
