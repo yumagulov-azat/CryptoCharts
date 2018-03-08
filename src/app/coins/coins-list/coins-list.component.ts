@@ -135,5 +135,4 @@ export class CoinsListComponent implements OnInit {
         i++;
       });
   }
-
 }
