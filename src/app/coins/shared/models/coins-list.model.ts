@@ -10,5 +10,6 @@ export interface CoinsList {
   changePct24Hour: string;
   marketCap: number;
   history: Array<any>;
+  historyChange: number;
   conversionSymbol: string;
 }

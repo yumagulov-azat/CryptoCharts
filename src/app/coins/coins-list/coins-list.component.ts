@@ -32,7 +32,7 @@ export class CoinsListComponent implements OnInit {
   loading: boolean = true;
 
   // Data-table
-  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'sparkline'];
+  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'change7d', 'sparkline'];
   coinsList: any = new MatTableDataSource();
   pageSize: number = 50;
 
@@ -54,15 +54,15 @@ export class CoinsListComponent implements OnInit {
     this.route.paramMap
       .takeUntil(this.ngUnsubscribe)
       .subscribe((res: any) => {
-        this.paginator.pageIndex = res.params.page;
-        this.getCoinsList(this.pageSize, this.paginator.pageIndex - 1);
+        this.paginator.pageIndex = res.params.page - 1;
+        this.getCoinsList(this.pageSize, this.paginator.pageIndex);
 
         let metaPage: string = this.paginator.pageIndex > 1 ? ', page ' + this.paginator.pageIndex : '';
         this.meta.setTitle(`List${metaPage} | Coins`);
       });
 
     this.paginator.page.subscribe(res => {
-      this.router.navigate(['/coins/list/' + this.paginator.pageIndex]);
+      this.router.navigate(['/coins/list/', this.paginator.pageIndex + 1]);
     });
   }
 
@@ -124,6 +124,12 @@ export class CoinsListComponent implements OnInit {
     this.coinsListSubscription = this.coinsService.getCoinsHistory(coins, 6)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
+        // Change 7d
+        let historyFirst = res[0][0].close,
+            historyLast = res[0][res[0].length - 1].close;
+        this.coinsList.data[i].historyChange = (((historyLast-historyFirst)/historyFirst) * 100).toFixed(2)
+
+        // Pass chart data
         this.coinsList.data[i].history = {
           json: res[0],
           keys: {

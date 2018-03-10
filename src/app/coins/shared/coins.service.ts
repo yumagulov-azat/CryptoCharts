@@ -67,6 +67,7 @@ export class CoinsService {
               changePct24Hour: ((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100).toFixed(2),
               marketCap: priceInfo.PRICE * conversionInfo.Supply,
               history: null,
+              historyChange: 0,
               conversionSymbol: conversionInfo.Conversion == 'direct' ? 'USD' : conversionInfo.ConversionSymbol
             });
           });

@@ -37,6 +37,12 @@
         </mat-cell>
       </ng-container>
 
+      <!-- Market cap Column -->
+      <ng-container matColumnDef="marketCap">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Market cap</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.marketCap | cryptoCurrency:'$':'short' }}</mat-cell>
+      </ng-container>
+
       <!-- Chg. 24H Column -->
       <ng-container matColumnDef="changePct24Hour">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Chg. 24H</mat-header-cell>
@@ -47,17 +53,21 @@
         </mat-cell>
       </ng-container>
 
-      <!-- Market cap Column -->
-      <ng-container matColumnDef="marketCap">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Market cap</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.marketCap | cryptoCurrency:'$':'short' }}</mat-cell>
+      <!-- Chg. 7d Column -->
+      <ng-container matColumnDef="change7d">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Chg. 7d</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <div [ngClass]="{'value-up': row.historyChange > 0, 'value-down': row.historyChange < 0}">
+            {{ row.historyChange }}%
+          </div>
+        </mat-cell>
       </ng-container>
 
       <!-- 7d Chart (USD) Column -->
       <ng-container matColumnDef="sparkline">
         <mat-header-cell *matHeaderCellDef>7d Chart (USD)</mat-header-cell>
         <mat-cell *matCellDef="let row" class="coins-list-item__sparkline">
-          <app-sparkline [data]="row.history" [height]="60" [colors]="row.changePct24Hour > 0 ? ['#4caf50'] : ['#d81b60']"></app-sparkline>
+          <app-sparkline [data]="row.history" [height]="60" [colors]="row.historyChange > 0 ? ['#4caf50'] : ['#d81b60']" *ngIf="row.history != null"></app-sparkline>
         </mat-cell>
       </ng-container>
 
