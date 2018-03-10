@@ -1,14 +1,49 @@
-mat-card {
+.favorite-coin {
   margin-bottom: 16px;
-  
-  mat-card-header {
-    mat-card-title {
-      font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
-      margin-bottom: 5px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+
+    &__name {
+      span {
+        display: block;
+        font-size: 14px;
+        line-height: 14px;
+        color: rgba(0,0,0,.4)
+      }
+    }
+
+    &__btns {
+      button {
+        mat-icon {
+          opacity: .3;
+          transition: all .25s ease;
+        }
+
+        &:hover {
+          mat-icon {
+            opacity: 1;
+          }
+        }
+      }
     }
 
     .mat-card-header-text {
-      margin: 0
+      display: none;
     }
+  }
+
+  &__drag-handle {
+    cursor: move;
+  }
+}
+
+:host {
+  transition: transform .3s ease;
+  
+  &.gu-mirror {
+    transform: scale(0.6);
+    transform-origin: 100% 0%;
   }
 }

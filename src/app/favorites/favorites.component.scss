@@ -1,3 +1,5 @@
+@import 'node_modules/dragula/dist/dragula';
+
 .favorites-coins {
   display: flex;
   flex-wrap: wrap;
@@ -7,6 +9,13 @@
   app-favorite-coin {
     flex: 50% 0 0;
     max-width: 50%;
-    padding: 0 8px
+    padding: 0 8px;
+    transition: all .3s ease;
+  }
+
+  &.is-drag {
+    app-favorite-coin {
+      transform: scale(0.6);
+    }
   }
 }

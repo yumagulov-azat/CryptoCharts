@@ -17,25 +17,9 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() chartColors: Array<any> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
   @Input() subchart: boolean = true;
   @Input() toSymbolDisplay: string = '$';
-  @Input() axis: any = {
-    y: {
-      inner: true,
-      tick: {
-        count: 6,
-        format: (value)=> {
-          return this.utils.convertPriceToDisplay(this.toSymbolDisplay + ' ', value);
-        }
-      }
-    },
-    x: {
-      padding: 0,
-      tick: {
-        format: (date) => {
-          return moment(new Date(date * 1000)).format('DD MMM YYYY, HH:mm');
-        }
-      }
-    }
-  };
+  @Input() showY: boolean = true;
+  @Input() showX: boolean = true;
+  @Input() axis: any;
 
   chart: any;
   chartOptions: any;
@@ -49,6 +33,30 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    if(!this.axis) {
+      this.axis = {
+        y: {
+          show: this.showY,
+          inner: true,
+          tick: {
+            count: 6,
+            format: (value)=> {
+              return this.utils.convertPriceToDisplay(this.toSymbolDisplay + ' ', value);
+            }
+          }
+        },
+        x: {
+          show: this.showX,
+          padding: 0,
+          tick: {
+            format: (date) => {
+              return moment(new Date(date * 1000)).format('DD MMM YYYY, HH:mm');
+            }
+          }
+        }
+      };
+    }
+
     if (isPlatformBrowser(this.platformId)) {
       if (!this.chartOptions) { this.setChartOptions(); }
       this.chartOptions.data = this.data;

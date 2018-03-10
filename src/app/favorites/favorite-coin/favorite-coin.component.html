@@ -1,24 +1,35 @@
-<mat-card *ngIf="!loading">
-  <mat-card-header>
-    <mat-card-title>{{ coinData.info.FullName }}</mat-card-title>
-    <mat-card-subtitle>{{ coinData.info.Name }}</mat-card-subtitle>
-    <span>
+<mat-card *ngIf="!loading" class="favorite-coin">
+  <div class="favorite-coin__header">
+    <h2 class="favorite-coin__header__name mat-title">
+      {{ coinData.info.FullName }}
+      <span>{{ coinData.info.Name }}</span>
+    </h2>
+    <div class="favorite-coin__header__btns">
       <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
+        <mat-icon>more_horiz</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon class="favorite-coin__drag-handle">drag_handle</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>info</mat-icon>
+          <span>More</span>
+        </button>
         <button mat-menu-item>
           <mat-icon>delete</mat-icon>
           <span>Remove</span>
         </button>
       </mat-menu>
-    </span>
-  </mat-card-header>
+    </div>
+  </div>
   <mat-card-content>
     <app-line-chart
       [data]="coinChartData"
       [subchart]="false"
-      [height]="250">
+      [showY]="false"
+      [showX]="false"
+      [height]="200">
     </app-line-chart>
   </mat-card-content>
 </mat-card>

@@ -12,7 +12,7 @@ import { CoinSnapshot } from '../../coins/shared/models/coin-snapshot.model';
 @Component({
   selector: 'app-favorite-coin',
   templateUrl: './favorite-coin.component.html',
-  styleUrls: ['./favorite-coin.component.scss']
+  styleUrls: ['./favorite-coin.component.scss'],
 })
 export class FavoriteCoinComponent implements OnInit {
 
@@ -27,7 +27,6 @@ export class FavoriteCoinComponent implements OnInit {
   ngOnChanges() {
     this.coinsService.getCoinFullData(this.coin, 30)
       .subscribe(res => {
-        console.log(res)
         this.coinData = res;
         this.prepareChartData();
         this.loading = false;
