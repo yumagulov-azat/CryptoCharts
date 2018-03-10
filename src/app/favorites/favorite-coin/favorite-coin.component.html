@@ -1,37 +1,73 @@
-<mat-card *ngIf="!loading" class="favorite-coin">
-  <div class="favorite-coin__header">
-    <h2 class="favorite-coin__header__name mat-title">
-      {{ coinData.info.FullName }}
-      <span>{{ coinData.info.Name }}</span>
-    </h2>
-    <div class="favorite-coin__header__btns">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_horiz</mat-icon>
-      </button>
-      <button mat-icon-button>
-        <mat-icon class="favorite-coin__drag-handle">drag_handle</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>info</mat-icon>
-          <span>More</span>
+<mat-card class="favorite-coin">
+  <div *ngIf="!loading">
+    <!--  Header -->
+    <div class="favorite-coin__header">
+      <h2 class="favorite-coin__header__name mat-title">
+        {{ coinData.info.FullName }}
+        <span>{{ coinData.info.Name }}</span>
+      </h2>
+      <div class="favorite-coin__header__btns">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_horiz</mat-icon>
         </button>
-        <button mat-menu-item>
-          <mat-icon>delete</mat-icon>
-          <span>Remove</span>
+        <button mat-icon-button>
+          <mat-icon class="favorite-coin__drag-handle">drag_handle</mat-icon>
         </button>
-      </mat-menu>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/coins/' + coinData.info.Name]">
+            <mat-icon>info</mat-icon>
+            <span>More</span>
+          </button>
+          <button mat-menu-item (click)="deleteCoin(coinData.info.Name)">
+            <mat-icon>delete</mat-icon>
+            <span>Remove</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
+
+    <mat-card-content>
+      <!-- Stats -->
+      <div class="favorite-coin__stats">
+        <div class="favorite-coin__stats__item">
+          <div class="favorite-coin__stats__item__title">
+            Price
+          </div>
+          <div class="favorite-coin__stats__item__value">
+            {{ coinData.finance.price | cryptoCurrency:coinData.finance.toSymbolDisplay }}
+          </div>
+        </div>
+        <div class="favorite-coin__stats__item">
+          <div class="favorite-coin__stats__item__title">
+            Change 24h
+          </div>
+          <div class="favorite-coin__stats__item__value" [ngClass]="{'value-up': coinData.finance.changePct24Hour > 0, 'value-down': coinData.finance.changePct24Hour < 0}">
+            {{ coinData.finance.changePct24Hour }}%
+          </div>
+        </div>
+        <div class="favorite-coin__stats__item">
+          <div class="favorite-coin__stats__item__title">
+            Change 7d
+          </div>
+          <div class="favorite-coin__stats__item__value" [ngClass]="{'value-up': coinData.finance.changePct24Hour > 0, 'value-down': coinData.finance.changePct24Hour < 0}">
+            {{ coinData.finance.changePct24Hour }}%
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart  -->
+      <app-line-chart
+        [data]="coinChartData"
+        [subchart]="false"
+        [showY]="false"
+        [showX]="false"
+        [height]="150">
+      </app-line-chart>
+    </mat-card-content>
   </div>
-  <mat-card-content>
-    <app-line-chart
-      [data]="coinChartData"
-      [subchart]="false"
-      [showY]="false"
-      [showX]="false"
-      [height]="200">
-    </app-line-chart>
-  </mat-card-content>
+
+  <!-- Spinner  -->
+  <mat-spinner [diameter]="32" *ngIf="loading"></mat-spinner>
 </mat-card>
 
-<mat-icon class="favorite-coin-drag-indicator">add</mat-icon>
+<mat-icon class="favorite-coin-new-position">add</mat-icon>

@@ -1,0 +1,51 @@
+:host {
+  position: fixed;
+  z-index: 3;
+  bottom: 0;
+  right: 0;
+  left: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  background: #fff;
+  text-transform: uppercase;
+  color: rgba(255, 64, 129, 1);
+  opacity: .8;
+  transform: translateY(100%);
+  transition: all .3s ease;
+
+  mat-icon {
+    margin-right: 10px;
+    transition: all .3s ease;
+  }
+
+  > span {
+    display: inline-block;
+    transition: all .3s ease;
+  }
+
+  &.show {
+    transform: translateY(0%);
+  }
+
+  &.deleting {
+    opacity: 1;
+
+    mat-icon {
+      transform: translateX(55px);
+    }
+
+    > span {
+      // display: none;
+      transform: translateX(55px);
+      opacity: 0;
+    }
+  }
+
+  ::ng-deep {
+    app-favorite-coin {
+      display: none !important;
+    }
+  }
+}

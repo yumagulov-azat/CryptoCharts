@@ -1,10 +1,15 @@
 .favorite-coin {
   position: relative;
   margin-bottom: 16px;
+  min-height: 308px;
+  padding-bottom: 0;
+  padding-top: 18px;
 
   &__header {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid #efefef;
+    margin-bottom: 16px;
 
     &__name {
       span {
@@ -35,12 +40,61 @@
     }
   }
 
+  &__stats {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    &__item {
+      flex: 33.33333%;
+      max-width:: 33.33333%;
+
+      &__title {
+        color: rgba(0,0,0,.4);
+        margin-bottom: 5px;
+      }
+
+      &__value {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+  }
+
   &__drag-handle {
     cursor: move;
   }
+
+  mat-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -16px 0 0 -16px;
+    opacity: 0.5;
+  }
+
+  mat-card-content {
+    padding: 0;
+    margin-bottom: 0;
+  }
+
+  ::ng-deep {
+    // Chart
+    app-line-chart {
+      > .line-chart {
+        transform: translateY(8px);
+        margin: 0 -26px 0px -26px;
+
+        .c3-axis.c3-axis-x {
+          display: none;
+        }
+      }
+    }
+  }
 }
 
-.favorite-coin-drag-indicator {
+// Coin new position
+.favorite-coin-new-position {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -58,19 +112,19 @@
     transform: none !important;
 
     .favorite-coin {
-      opacity: 0.3;
+      opacity: 0.5;
       background: transparent;
       box-shadow: none;
       border: 2px dashed #000;
       height: 100%;
-      transform: scale(0.7);
+      transform: scale(0.8);
 
       > * {
         display: none;
       }
     }
 
-    .favorite-coin-drag-indicator {
+    .favorite-coin-new-position {
       opacity: 1;
       visibility: visible;
       font-size: 38px;

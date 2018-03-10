@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // RxJs
 import { Observable } from 'rxjs/Observable';
@@ -19,6 +19,7 @@ export class FavoriteCoinComponent implements OnInit {
   @Input() coin: any;
   coinData: CoinSnapshot;
   coinChartData: any;
+  @Output() coinDeleted: EventEmitter<any> = new EventEmitter();
 
   loading = true;
 
@@ -49,6 +50,10 @@ export class FavoriteCoinComponent implements OnInit {
       },
       type: 'area-spline'
     }
+  }
+
+  deleteCoin(coinName): void {
+    this.coinDeleted.emit(coinName);
   }
 
 }

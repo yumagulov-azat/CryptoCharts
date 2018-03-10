@@ -11,12 +11,14 @@ import { FavoritesService } from './favorites.service'
 export class FavoritesComponent implements OnInit {
 
   coins: Array<any> = [];
-  drag: boolean = false;
+  deletedCoins: Array<any> = [];
+
+  coinDeleting: boolean = false; // when coin over delete block
+  drag: boolean = false; // when coin draged
 
   constructor(private favoritesService: FavoritesService, private dragulaService: DragulaService) {
     dragulaService.setOptions('favorites-coins-bag', {
       moves: function (el, container, handle) {
-        console.log(handle.className)
         return handle.classList.contains('favorite-coin__drag-handle');
       }
     });
@@ -30,12 +32,18 @@ export class FavoritesComponent implements OnInit {
       this.onDrop();
     });
 
+    dragulaService.over.subscribe((value) => {
+      let [e, el, container] = value;
+      this.onOver(container)
+    });
+
     dragulaService.cancel.subscribe((value) => {
       this.drag = false;
     });
   }
 
   ngOnInit() {
+    // this.favoritesService.setFavoriteCoins(['BTC', 'DOGE', 'LTC']);
 
     this.favoritesService.getFavoriteCoins()
       .subscribe((res: any) => {
@@ -47,6 +55,25 @@ export class FavoritesComponent implements OnInit {
    * Save coins sort
    **/
   onDrop(): void {
+    this.favoritesService.setFavoriteCoins(this.coins);
+  }
+
+  /**
+   * On element over bag
+   **/
+  onOver(container): void {
+    if(container.tagName === 'APP-DROP-DELETE') {
+      this.coinDeleting = true;
+    } else {
+      this.coinDeleting = false;
+    }
+  }
+
+  /**
+   * Delete coin from favorites
+   **/
+  deleteCoin(coinName): void {
+    this.coins.splice(this.coins.indexOf(coinName), 1);
     this.favoritesService.setFavoriteCoins(this.coins);
   }
 

@@ -7,9 +7,18 @@
     </mat-toolbar>
 
     <section class="app-page-content-wrap">
-      <section class="favorites-coins" [dragula]='"favorites-coins-bag"' [dragulaModel]='coins' [ngClass]="{'is-drag' : drag}">
-        <app-favorite-coin *ngFor="let coin of coins" [coin]="coin"></app-favorite-coin>
+      <section class="favorites-coins"
+        [dragula]='"favorites-coins-bag"'
+        [dragulaModel]='coins'
+        [ngClass]="{'is-drag' : drag}">
+        <app-favorite-coin
+          *ngFor="let coin of coins; let i = index"
+          [coin]="coin"
+          (coinDeleted)="deleteCoin($event)"
+          >
+        </app-favorite-coin>
       </section>
+      <app-drop-delete [dragula]='"favorites-coins-bag"' [dragulaModel]='deletedCoins' [ngClass]="{'show' : drag, 'deleting' : coinDeleting }"></app-drop-delete>
     </section>
   </app-page-content>
 </app-page>
