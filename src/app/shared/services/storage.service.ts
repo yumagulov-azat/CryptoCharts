@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 
 @Injectable()
 export class StorageService {
@@ -11,11 +13,36 @@ export class StorageService {
     return Observable.of(localStorage.getItem(key));
   }
 
-  setItem(key: string, value: any): Observable<any> {
-    return Observable.of(localStorage.setItem(key, value));
+  setItem(key: string, value: any): void {
+    localStorage.setItem(key, value);
   }
 
-  addToArrayItem(key: string, value: any): void {
-    
+  getItemAsArray(key: string): Observable<Array<any>> {
+    return Observable.of(localStorage.getItem(key))
+      .map(res => {
+        return res.split(',');
+      });
+  }
+
+  addToArray(key: string, value: string): void {
+    if(!this.checkInArray(key, value)) {
+      let array = localStorage.getItem(key).split(',');
+      array.push(value);
+      this.setItem(key, array);
+    }
+  }
+
+  removeFromArray(key: string, value: string): void {
+    let array = localStorage.getItem(key).split(',');
+    array.splice(array.indexOf(value), 1);
+    this.setItem(key, array);
+  }
+
+  checkInArray(key: string, value: string): boolean {
+    let array = localStorage.getItem(key).split(',');
+    let element = array.find((element)=>{
+      return element == value;
+    });
+    return element ? true : false;
   }
 }

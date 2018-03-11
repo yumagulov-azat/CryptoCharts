@@ -12,4 +12,5 @@ export interface CoinsList {
   history: Array<any>;
   historyChange: number;
   conversionSymbol: string;
+  favorite: boolean;
 }

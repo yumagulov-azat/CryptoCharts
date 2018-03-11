@@ -4,11 +4,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 // Services
-import { CoinsService } from '../../coins/shared/coins.service';
+import { CoinsService } from '../../coins/coins.service';
 import { PageService } from '../../shared/modules/page/page.service';
 
 // Moels
-import { CoinSnapshot } from '../../coins/shared/models/coin-snapshot.model';
+import { CoinSnapshot } from '../../coins/models/coin-snapshot.model';
 
 @Component({
   selector: 'app-favorite-coin',

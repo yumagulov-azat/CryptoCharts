@@ -74,8 +74,8 @@
       <!-- Chg. 7d Column -->
       <ng-container matColumnDef="favorite">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row" class="coins-list-item__add-to-favorite">
-          <button mat-icon-button color="primary" (click)="addToFavorite(row); $event.stopPropagation();">
+        <mat-cell *matCellDef="let row" class="coins-list-item__add-to-favorite" [ngClass]="{'is-favorite' : row.favorite == true}">
+          <button mat-icon-button color="accent" (click)="addToFavorite(row); $event.stopPropagation();">
             <mat-icon>star</mat-icon>
           </button>
         </mat-cell>

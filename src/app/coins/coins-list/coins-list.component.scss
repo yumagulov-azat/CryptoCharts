@@ -94,13 +94,21 @@
   }
 
   &__add-to-favorite {
-    width: 30px;
-    max-width: 30px;
+    width: 40px;
+    max-width: 40px;
     text-align: center;
     margin-left: 8px;
     opacity: 0;
     transform: translateX(40px);
     transition: all .25s ease;
+
+    mat-icon {
+      font-size: 22px;
+    }
+    &.is-favorite {
+      opacity: .7;
+      transform: translateX(0);
+    }
   }
 
   &:hover {

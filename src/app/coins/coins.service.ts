@@ -13,7 +13,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/concatMap';
 
 // Services
-import { UtilsService } from '../../shared/services/utils.service';
+import { UtilsService } from '../shared/services/utils.service';
+import { FavoritesService } from '../favorites/favorites.service';
 
 // Models
 import { CoinsList } from './models/coins-list.model';
@@ -32,7 +33,7 @@ export class CoinsService {
   // CoinsList subject for pass it to coinsNav component
   coinsListSubject = new Subject<any>();
 
-  constructor(private http: HttpClient, private utils: UtilsService) {
+  constructor(private http: HttpClient, private utils: UtilsService, private favoritesService: FavoritesService) {
 
   }
 
@@ -68,7 +69,8 @@ export class CoinsService {
               marketCap: priceInfo.PRICE * conversionInfo.Supply,
               history: null,
               historyChange: 0,
-              conversionSymbol: conversionInfo.Conversion == 'direct' ? 'USD' : conversionInfo.ConversionSymbol
+              conversionSymbol: conversionInfo.Conversion == 'direct' ? 'USD' : conversionInfo.ConversionSymbol,
+              favorite: this.favoritesService.checkFavorite(coinInfo.Name)
             });
           });
 

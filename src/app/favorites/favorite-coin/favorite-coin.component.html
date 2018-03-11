@@ -39,15 +39,15 @@
         </div>
         <div class="favorite-coin__stats__item">
           <div class="favorite-coin__stats__item__title">
-            Change 24h
+            Market Cap
           </div>
-          <div class="favorite-coin__stats__item__value" [ngClass]="{'value-up': coinData.finance.changePct24Hour > 0, 'value-down': coinData.finance.changePct24Hour < 0}">
-            {{ coinData.finance.changePct24Hour }}%
+          <div class="favorite-coin__stats__item__value">
+            {{ coinData.finance.marketCap | cryptoCurrency:coinData.finance.toSymbolDisplay:'short' }}
           </div>
         </div>
         <div class="favorite-coin__stats__item">
           <div class="favorite-coin__stats__item__title">
-            Change 7d
+            Change 24h
           </div>
           <div class="favorite-coin__stats__item__value" [ngClass]="{'value-up': coinData.finance.changePct24Hour > 0, 'value-down': coinData.finance.changePct24Hour < 0}">
             {{ coinData.finance.changePct24Hour }}%

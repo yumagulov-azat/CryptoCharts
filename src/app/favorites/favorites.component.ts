@@ -41,10 +41,11 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.favoritesService.setFavoriteCoins(['BTC', 'DOGE', 'LTC']);
+    // this.favoritesService.setFavoriteCoins(['BTC', 'DOGE', 'LTC']);
 
     this.favoritesService.getFavoriteCoins()
       .subscribe((res: any) => {
+        console.log(res)
         this.coins = res;
       });
   }
@@ -75,7 +76,7 @@ export class FavoritesComponent implements OnInit {
    **/
   deleteCoin(coinName): void {
     this.coins.splice(this.coins.indexOf(coinName), 1);
-    this.favoritesService.setFavoriteCoins(this.coins);
+    this.favoritesService.deleteCoin(coinName);
   }
 
 }

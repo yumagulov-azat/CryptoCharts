@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import find = require('lodash/find');
 
 // Models
-import { ChartFilter } from '../shared/models/chart-filter.model';
+import { ChartFilter } from '../models/chart-filter.model';
 
 
 /**

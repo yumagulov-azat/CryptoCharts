@@ -10,11 +10,12 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/switchMap';
 
 // Services
-import { CoinsService } from '../shared/coins.service';
+import { CoinsService } from '../coins.service';
+import { FavoritesService } from '../../favorites/favorites.service';
 import { PageService } from '../../shared/modules/page/page.service';
 
 // Models
-import { CoinsList } from '../shared/models/coins-list.model';
+import { CoinsList } from '../models/coins-list.model';
 
 
 /**
@@ -46,6 +47,7 @@ export class CoinsListComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private meta: MetaService,
+              private favoritesService: FavoritesService,
               private pageService: PageService) {
 
   }
@@ -145,6 +147,11 @@ export class CoinsListComponent implements OnInit {
    * Add coin to favorite
    **/
   addToFavorite(coin): void {
-    console.log(coin)
+    if(!coin.favorite) {
+      this.favoritesService.addCoin(coin.name);
+    } else {
+      this.favoritesService.deleteCoin(coin.name);
+    }
+    coin.favorite = !coin.favorite;
   }
 }

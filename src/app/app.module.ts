@@ -9,7 +9,8 @@ import { MetaModule, MetaLoader, MetaStaticLoader, PageTitlePositioning } from '
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoinsService } from './coins/shared/coins.service';
+import { CoinsService } from './coins/coins.service';
+import { FavoritesService } from './favorites/favorites.service';
 import { UtilsService } from './shared/services/utils.service';
 import { NotificationsService } from './shared/services/notifications.service';
 import { StorageService } from './shared/services/storage.service';
@@ -45,7 +46,8 @@ export function metaFactory(): MetaLoader {
     UtilsService,
     NotificationsService,
     StorageService,
-    CoinsService
+    CoinsService,
+    FavoritesService
   ],
   bootstrap: [
     AppComponent

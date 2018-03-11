@@ -7,13 +7,13 @@ import { Subject } from "rxjs/Subject";
 import 'rxjs/add/operator/takeUntil';
 
 // Services
-import { CoinsService } from '../shared/coins.service';
+import { CoinsService } from '../coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
 import { PageService } from '../../shared/modules/page/page.service';
 
 // Models
-import { CoinSnapshot } from '../shared/models/coin-snapshot.model';
-import { ChartFilter } from '../shared/models/chart-filter.model';
+import { CoinSnapshot } from '../models/coin-snapshot.model';
+import { ChartFilter } from '../models/chart-filter.model';
 
 
 /**

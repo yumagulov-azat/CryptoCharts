@@ -5,10 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from "rxjs";
 
 // Services
-import { CoinsService } from './shared/coins.service';
+import { CoinsService } from './coins.service';
 
 // Models
-import { CoinsList } from './shared/models/coins-list.model'
+import { CoinsList } from './models/coins-list.model'
 
 
 /**
