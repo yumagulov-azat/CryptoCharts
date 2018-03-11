@@ -12,12 +12,8 @@ import { trigger, style, animate, transition } from '@angular/animations';
     trigger(
       'enterAnimation', [
         transition(':enter', [
-          style({transform: 'translateY(100%)', opacity: 0}),
-          animate('300ms', style({transform: 'translateY(0)', opacity: 1}))
-        ]),
-        transition(':leave', [
-          style({transform: 'translateY(0)', opacity: 1}),
-          animate('300ms', style({transform: 'translateY(100%)', opacity: 0}))
+          style({transform: 'translateY(100px)', opacity: 0}),
+          animate('0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)', style({transform: 'translateY(0)', opacity: 1}))
         ])
       ]
     )
