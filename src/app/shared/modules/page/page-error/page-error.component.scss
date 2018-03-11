@@ -1,0 +1,28 @@
+
+.page-error {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+
+  &__icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+    height: auto;
+    width: auto;
+  }
+
+  &__head {
+    margin-bottom: 10px;
+    opacity: 0.8;
+    font-size: 24px;
+    font-weight: 300;
+  }
+}

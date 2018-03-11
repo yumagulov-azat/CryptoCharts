@@ -11,7 +11,7 @@ import 'rxjs/add/operator/switchMap';
 
 // Services
 import { CoinsService } from '../shared/coins.service';
-import { NotificationsService } from '../../shared/services/notifications.service';
+import { PageService } from '../../shared/modules/page/page.service';
 
 // Models
 import { CoinsList } from '../shared/models/coins-list.model';
@@ -32,7 +32,7 @@ export class CoinsListComponent implements OnInit {
   loading: boolean = true;
 
   // Data-table
-  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'change7d', 'sparkline'];
+  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'change7d', 'sparkline', 'favorite'];
   coinsList: any = new MatTableDataSource();
   pageSize: number = 50;
 
@@ -45,8 +45,8 @@ export class CoinsListComponent implements OnInit {
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
               private router: Router,
-              private notifications: NotificationsService,
-              private meta: MetaService) {
+              private meta: MetaService,
+              private pageService: PageService) {
 
   }
 
@@ -89,8 +89,7 @@ export class CoinsListComponent implements OnInit {
       .subscribe((res: CoinsList[]) => {
         this.renderData(res);
       }, error => {
-        this.notifications.show('API Error');
-        this.loading = false;
+        this.pageService.showError();
       });
   }
 
@@ -140,5 +139,12 @@ export class CoinsListComponent implements OnInit {
         };
         i++;
       });
+  }
+
+  /**
+   * Add coin to favorite
+   **/
+  addToFavorite(coin): void {
+    console.log(coin)
   }
 }

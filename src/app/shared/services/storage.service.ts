@@ -14,4 +14,8 @@ export class StorageService {
   setItem(key: string, value: any): Observable<any> {
     return Observable.of(localStorage.setItem(key, value));
   }
+
+  addToArrayItem(key: string, value: any): void {
+    
+  }
 }

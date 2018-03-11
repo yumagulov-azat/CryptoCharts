@@ -18,7 +18,11 @@
           >
         </app-favorite-coin>
       </section>
-      <app-drop-delete [dragula]='"favorites-coins-bag"' [dragulaModel]='deletedCoins' [ngClass]="{'show' : drag, 'deleting' : coinDeleting }"></app-drop-delete>
+      <app-drop-delete
+        [dragula]='"favorites-coins-bag"'
+        [dragulaModel]='deletedCoins'
+        [ngClass]="{'show' : drag, 'deleting' : coinDeleting }">
+      </app-drop-delete>
     </section>
   </app-page-content>
 </app-page>

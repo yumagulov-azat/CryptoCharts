@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 // Services
 import { CoinsService } from '../../coins/shared/coins.service';
+import { PageService } from '../../shared/modules/page/page.service';
 
 // Moels
 import { CoinSnapshot } from '../../coins/shared/models/coin-snapshot.model';
@@ -21,17 +22,24 @@ export class FavoriteCoinComponent implements OnInit {
   coinChartData: any;
   @Output() coinDeleted: EventEmitter<any> = new EventEmitter();
 
-  loading = true;
+  state: any = {
+    loading: <boolean>true,
+    error: <boolean>false
+  }
 
-  constructor(private coinsService: CoinsService) { }
+  constructor(
+    private coinsService: CoinsService,
+    private pageService: PageService) { }
 
   ngOnChanges() {
     this.coinsService.getCoinFullData(this.coin, 30)
       .subscribe(res => {
         this.coinData = res;
         this.prepareChartData();
-        this.loading = false;
-      })
+        this.state.loading = false;
+      }, err => {
+        this.pageService.showError();
+      });
   }
 
   ngOnInit() {

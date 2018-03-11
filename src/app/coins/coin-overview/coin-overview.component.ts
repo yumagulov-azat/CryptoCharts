@@ -9,6 +9,7 @@ import 'rxjs/add/operator/takeUntil';
 // Services
 import { CoinsService } from '../shared/coins.service';
 import { NotificationsService } from '../../shared/services/notifications.service';
+import { PageService } from '../../shared/modules/page/page.service';
 
 // Models
 import { CoinSnapshot } from '../shared/models/coin-snapshot.model';
@@ -46,6 +47,7 @@ export class CoinOverviewComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private notifications: NotificationsService,
+              private pageService: PageService,
               private meta: MetaService) {
 
   }
@@ -83,9 +85,7 @@ export class CoinOverviewComponent implements OnInit {
         this.state.error = false;
         this.state.firstShow = false;
       }, err => {
-        this.notifications.show('API Error');
-        this.state.loading = false;
-        this.state.error = true;
+        this.pageService.showError();
       });
   }
 

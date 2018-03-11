@@ -13,7 +13,7 @@ export class FavoritesComponent implements OnInit {
   coins: Array<any> = [];
   deletedCoins: Array<any> = [];
 
-  coinDeleting: boolean = false; // when coin over delete block
+  coinDeleting: boolean = false; // when coin enter delete block
   drag: boolean = false; // when coin draged
 
   constructor(private favoritesService: FavoritesService, private dragulaService: DragulaService) {
@@ -28,13 +28,11 @@ export class FavoritesComponent implements OnInit {
     });
 
     dragulaService.dropModel.subscribe((value) => {
-      this.drag = false;
       this.onDrop();
     });
 
     dragulaService.over.subscribe((value) => {
-      let [e, el, container] = value;
-      this.onOver(container)
+      this.onOver(value);
     });
 
     dragulaService.cancel.subscribe((value) => {
@@ -43,7 +41,7 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.favoritesService.setFavoriteCoins(['BTC', 'DOGE', 'LTC']);
+    this.favoritesService.setFavoriteCoins(['BTC', 'DOGE', 'LTC']);
 
     this.favoritesService.getFavoriteCoins()
       .subscribe((res: any) => {
@@ -52,16 +50,19 @@ export class FavoritesComponent implements OnInit {
   }
 
   /**
-   * Save coins sort
+   * Save coins sorting
    **/
   onDrop(): void {
+    this.drag = false;
     this.favoritesService.setFavoriteCoins(this.coins);
   }
 
   /**
    * On element over bag
    **/
-  onOver(container): void {
+  onOver(value): void {
+    let [e, el, container] = value;
+
     if(container.tagName === 'APP-DROP-DELETE') {
       this.coinDeleting = true;
     } else {

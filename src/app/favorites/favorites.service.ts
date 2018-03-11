@@ -14,8 +14,12 @@ export class FavoritesService {
       })
   }
 
-  setFavoriteCoins(coins: Array<any> = []): void {
+  setFavoriteCoins(coins: Array<any>): void {
     this.storage.setItem('favorites', coins);
+  }
+
+  addCoin(coin: string): void {
+
   }
 
 }

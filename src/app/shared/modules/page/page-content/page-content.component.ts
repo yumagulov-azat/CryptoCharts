@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageService } from '../page.service';
 
 /**
 * App page content
@@ -11,10 +12,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageContentComponent implements OnInit {
 
-  constructor() { }
+  error: boolean = false;
+  errorMesage: string;
+  constructor(private pageService: PageService) { }
 
   ngOnInit() {
-    
+    this.pageService.pageError
+      .subscribe(res => {
+        this.error = res.show;
+        this.errorMesage = res.message;
+      });
   }
 
 }

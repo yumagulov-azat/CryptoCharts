@@ -1,5 +1,5 @@
 <mat-card class="favorite-coin">
-  <div *ngIf="!loading">
+  <div *ngIf="!state.loading">
     <!--  Header -->
     <div class="favorite-coin__header">
       <h2 class="favorite-coin__header__name mat-title">
@@ -67,7 +67,7 @@
   </div>
 
   <!-- Spinner  -->
-  <mat-spinner [diameter]="32" *ngIf="loading"></mat-spinner>
+  <mat-spinner [diameter]="32" *ngIf="state.loading"></mat-spinner>
 </mat-card>
 
 <mat-icon class="favorite-coin-new-position">add</mat-icon>
