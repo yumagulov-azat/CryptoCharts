@@ -30,14 +30,10 @@ export class StorageService {
 
   addToArray(key: string, value: string): void {
     if(!this.checkInArray(key, value)) {
-      let array = localStorage.getItem(key);
+      let array: any = localStorage.getItem(key);
 
-      if(array ){
-        array.split(',');
-
-        if(typeof array != 'array'){
-          array = [array];
-        }
+      if(array != '') {
+        array = array.split(',');
       } else {
         array = [];
       }
