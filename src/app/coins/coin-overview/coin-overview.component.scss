@@ -1,6 +1,13 @@
 :host {
   display: block;
-  // padding: 16px;
+
+  .app-page-content-toolbar {
+    mat-toolbar-row {
+      button {
+        margin-left: 16px;
+      }
+    }
+  }
 }
 
 .to-symbol-select {

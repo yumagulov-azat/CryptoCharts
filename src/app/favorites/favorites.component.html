@@ -23,6 +23,8 @@
         [dragulaModel]='deletedCoins'
         [ngClass]="{'show' : drag, 'deleting' : coinDeleting }">
       </app-drop-delete>
+
+      <app-favorites-empty *ngIf="!coins"></app-favorites-empty>
     </section>
   </app-page-content>
 </app-page>

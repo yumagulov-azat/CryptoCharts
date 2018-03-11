@@ -37,7 +37,7 @@
             {{ coinData.finance.price | cryptoCurrency:coinData.finance.toSymbolDisplay }}
           </div>
         </div>
-        <div class="favorite-coin__stats__item">
+        <div class="favorite-coin__stats__item" *ngIf="coinData.finance.marketCap">
           <div class="favorite-coin__stats__item__title">
             Market Cap
           </div>
@@ -61,7 +61,8 @@
         [subchart]="false"
         [showY]="false"
         [showX]="false"
-        [height]="150">
+        [height]="150"
+        [chartColors]="coinData.finance.changePct24Hour > 0 ? ['#673ab7'] : ['#E91E63']">
       </app-line-chart>
     </mat-card-content>
   </div>

@@ -20,13 +20,28 @@ export class StorageService {
   getItemAsArray(key: string): Observable<Array<any>> {
     return Observable.of(localStorage.getItem(key))
       .map(res => {
-        return res.split(',');
+        if(res) {
+          return res.split(',');
+        } else {
+          return null;
+        }
       });
   }
 
   addToArray(key: string, value: string): void {
     if(!this.checkInArray(key, value)) {
-      let array = localStorage.getItem(key).split(',');
+      let array = localStorage.getItem(key);
+
+      if(array ){
+        array.split(',');
+
+        if(typeof array != 'array'){
+          array = [array];
+        }
+      } else {
+        array = [];
+      }
+
       array.push(value);
       this.setItem(key, array);
     }

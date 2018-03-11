@@ -10,7 +10,7 @@ import { FavoritesService } from './favorites.service'
 })
 export class FavoritesComponent implements OnInit {
 
-  coins: Array<any> = [];
+  coins: Array<any>;
   deletedCoins: Array<any> = [];
 
   coinDeleting: boolean = false; // when coin enter delete block
@@ -42,11 +42,13 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit() {
     // this.favoritesService.setFavoriteCoins(['BTC', 'DOGE', 'LTC']);
+    // this.favoritesService.setFavoriteCoins('');
 
     this.favoritesService.getFavoriteCoins()
       .subscribe((res: any) => {
-        console.log(res)
-        this.coins = res;
+        if(res) {
+          this.coins = res;
+        }
       });
   }
 

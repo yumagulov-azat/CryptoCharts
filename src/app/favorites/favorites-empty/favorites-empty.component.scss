@@ -1,0 +1,40 @@
+:host {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 64px;
+}
+
+.favorites-coins-empty {
+  text-align: center;
+
+  &__icon {
+    mat-icon {
+      font-size: 40px;
+      margin-bottom: 25px;
+      height: auto;
+      width: auto;
+    }
+  }
+
+  &__title {
+    margin-bottom: 10px;
+    opacity: 0.8;
+    font-size: 28px;
+    font-weight: 300;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: rgba(0,0,0,.5)
+  }
+
+  button {
+    margin-top: 40px;
+  }
+}
