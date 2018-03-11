@@ -1,12 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { FavoritesService } from './favorites.service'
+import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.scss'],
-  viewProviders: [ DragulaService ]
+  viewProviders: [ DragulaService ],
+  animations: [
+    trigger(
+      'enterAnimation', [
+        transition(':enter', [
+          style({transform: 'translateY(100%)', opacity: 0}),
+          animate('300ms', style({transform: 'translateY(0)', opacity: 1}))
+        ]),
+        transition(':leave', [
+          style({transform: 'translateY(0)', opacity: 1}),
+          animate('300ms', style({transform: 'translateY(100%)', opacity: 0}))
+        ])
+      ]
+    )
+  ]
 })
 export class FavoritesComponent implements OnInit {
 

@@ -24,7 +24,7 @@
         [ngClass]="{'show' : drag, 'deleting' : coinDeleting }">
       </app-drop-delete>
 
-      <app-favorites-empty *ngIf="!coins"></app-favorites-empty>
+      <app-favorites-empty *ngIf="!coins || coins.length < 1" [@enterAnimation]></app-favorites-empty>
     </section>
   </app-page-content>
 </app-page>
