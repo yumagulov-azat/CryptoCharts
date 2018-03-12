@@ -5,7 +5,8 @@ import { StorageService } from '../shared/services/storage.service';
 @Injectable()
 export class FavoritesService {
 
-  constructor(private storage: StorageService ) { }
+  constructor(private storage: StorageService) {
+  }
 
   /**
    * Get all favorite coins

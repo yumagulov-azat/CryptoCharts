@@ -27,9 +27,9 @@ export class FavoriteCoinComponent implements OnInit {
     error: <boolean>false
   }
 
-  constructor(
-    private coinsService: CoinsService,
-    private pageService: PageService) { }
+  constructor(private coinsService: CoinsService,
+              private pageService: PageService) {
+  }
 
   ngOnChanges() {
     this.coinsService.getCoinFullData(this.coin, 30)

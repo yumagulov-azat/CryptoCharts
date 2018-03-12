@@ -7,13 +7,13 @@ import { trigger, style, animate, transition } from '@angular/animations';
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.scss'],
-  viewProviders: [ DragulaService ],
+  viewProviders: [DragulaService],
   animations: [
     trigger(
       'enterAnimation', [
         transition(':enter', [
           style({transform: 'translateY(100px)', opacity: 0}),
-          animate('0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)', style({transform: 'translateY(0)', opacity: 1}))
+          animate('0.6s cubic-bezier(0.075, 0.82, 0.165, 1)', style({transform: 'translateY(0)', opacity: 1}))
         ])
       ]
     )
@@ -52,12 +52,9 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.favoritesService.setFavoriteCoins(['BTC', 'DOGE', 'LTC']);
-    // this.favoritesService.setFavoriteCoins('');
-
     this.favoritesService.getFavoriteCoins()
       .subscribe((res: any) => {
-        if(res) {
+        if (res) {
           this.coins = res;
         }
       });
@@ -77,7 +74,7 @@ export class FavoritesComponent implements OnInit {
   onOver(value): void {
     let [e, el, container] = value;
 
-    if(container.tagName === 'APP-DROP-DELETE') {
+    if (container.tagName === 'APP-DROP-DELETE') {
       this.coinDeleting = true;
     } else {
       this.coinDeleting = false;

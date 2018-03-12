@@ -8,14 +8,14 @@
 
     <section class="app-page-content-wrap">
       <section class="favorites-coins"
-        [dragula]='"favorites-coins-bag"'
-        [dragulaModel]='coins'
-        [ngClass]="{'is-drag' : drag}">
+               [dragula]='"favorites-coins-bag"'
+               [dragulaModel]='coins'
+               [ngClass]="{'is-drag' : drag}">
         <app-favorite-coin
           *ngFor="let coin of coins; let i = index"
           [coin]="coin"
           (coinDeleted)="deleteCoin($event)"
-          >
+          [@enterAnimation]>
         </app-favorite-coin>
       </section>
       <app-drop-delete
