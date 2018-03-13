@@ -43,11 +43,11 @@ export class CoinsService {
    * @param page
    * @returns {Observable<CoinsList[]>}
    */
-  getCoinsList(limit: number = 50, page: number = 0): Observable<CoinsList[]> {
+  getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): Observable<CoinsList[]> {
     const params = new HttpParams()
       .set('limit', limit.toString())
       .set('page', page.toString())
-      .set('tsym', 'USD');
+      .set('tsym', toSymbol);
 
     const coinsList: CoinsList[] = [];
 
@@ -57,7 +57,13 @@ export class CoinsService {
           res.Data.forEach((item, index) => {
             const coinInfo: any       = item.CoinInfo,
                   conversionInfo: any = item.ConversionInfo,
-                  priceInfo: any      = this.utils.unpack(conversionInfo.RAW[0]);
+                  priceInfo: any;
+
+            if(conversionInfo.RAW.length > 1) {
+              priceInfo = this.utils.cccUnpackMulti(conversionInfo.RAW)
+            } else {
+              priceInfo = this.utils.cccUnpack(conversionInfo.RAW[0]);
+            }
 
             coinsList.push({
               position: page * limit + (index + 1),
@@ -69,8 +75,9 @@ export class CoinsService {
               marketCap: priceInfo.PRICE * conversionInfo.Supply,
               history: null,
               historyChange: 0,
-              conversionSymbol: conversionInfo.Conversion == 'direct' ? 'USD' : conversionInfo.ConversionSymbol,
-              favorite: this.favoritesService.checkFavorite(coinInfo.Name)
+              conversionSymbol: toSymbol,
+              favorite: this.favoritesService.checkFavorite(coinInfo.Name),
+              toSymbolDisplay: this.utils.getSymbolFromCurrency(toSymbol),
             });
           });
 

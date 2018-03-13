@@ -83,13 +83,14 @@ export class CoinsListComponent implements OnInit {
    * @param limit
    * @param page
    */
-  getCoinsList(limit: number = 50, page: number = 0): void {
+  getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): void {
     this.loading = true;
 
-    this.coinsService.getCoinsList(limit, page)
+    this.coinsService.getCoinsList(limit, page, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((res: CoinsList[]) => {
         this.renderData(res);
+        this.pageService.hideError();
       }, error => {
         this.pageService.showError();
       });
@@ -153,5 +154,9 @@ export class CoinsListComponent implements OnInit {
       this.favoritesService.deleteCoin(coin.name);
     }
     coin.favorite = !coin.favorite;
+  }
+
+  changeSymbol(symbol): void {
+    this.getCoinsList(this.pageSize, this.paginator.pageIndex, symbol)
   }
 }

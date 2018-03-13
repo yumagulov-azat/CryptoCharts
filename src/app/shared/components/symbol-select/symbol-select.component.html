@@ -1,0 +1,7 @@
+<mat-form-field>
+  <mat-select [(value)]="symbolSelected" (selectionChange)="changeSymbol()">
+    <mat-option *ngFor="let symbolsItem of symbols" [value]="symbolsItem">
+      {{ symbolsItem }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

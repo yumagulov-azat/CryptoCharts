@@ -16,6 +16,7 @@ export class SparklineComponent implements OnInit, OnChanges {
   @Input() height = 50;
   @Input() width = 200;
   @Input() colors = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
+  @Input() toSymbolDisplay: string = '$';
 
   chart: any;
   chartOptions: any;
@@ -70,7 +71,7 @@ export class SparklineComponent implements OnInit, OnChanges {
           show: false,
           tick: {
             format: (value)=> {
-              return this.utils.convertPriceToDisplay('$', value);
+              return this.utils.convertPriceToDisplay(this.toSymbolDisplay, value);
             }
           }
         },

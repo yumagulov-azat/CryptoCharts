@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as symbolFromCurrency from 'currency-symbol-map';
 
-/**
- * Methods from cryptocompare CCC.utils
- */
 
 @Injectable()
 export class UtilsService {
@@ -47,7 +44,11 @@ export class UtilsService {
     }
   }
 
-  unpack(value) {
+  /**
+   * Method from cryptocompare CCC.utils
+   */
+
+  cccUnpack(value): any {
     let valuesArray = value.split('~');
     let valuesArrayLenght = valuesArray.length;
     let mask = valuesArray[valuesArrayLenght - 1];
@@ -73,7 +74,23 @@ export class UtilsService {
     return unpackedCurrent;
   };
 
-  convertPriceToDisplay(symbol, value, type: string = '', fullNumbers: boolean = false) {
+  cccUnpackMulti(value: Array<any>): any {
+    let PRICE: number = 1,
+        OPEN24HOUR: number = 1;
+
+    value.forEach((item) => {
+      let itemUnpack: any = this.cccUnpack(item);
+      PRICE = PRICE * itemUnpack.PRICE;
+      OPEN24HOUR = OPEN24HOUR * itemUnpack.OPEN24HOUR;
+    });
+
+    return {
+      PRICE: PRICE,
+      OPEN24HOUR: OPEN24HOUR
+    }
+  }
+
+  convertPriceToDisplay(symbol, value, type: string = '', fullNumbers: boolean = false): string {
     let prefix = '';
     let valueSign = 1;
     value = parseFloat(value);

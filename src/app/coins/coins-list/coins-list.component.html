@@ -1,6 +1,8 @@
 <mat-toolbar class="app-page-content-toolbar">
   <mat-toolbar-row>
     <span>All coins</span>
+    <span class="spacer"></span>
+    <app-symbol-select (symbolChange)="changeSymbol($event)"></app-symbol-select>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -33,14 +35,14 @@
       <ng-container matColumnDef="price">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <span>{{ row.price | cryptoCurrency }}</span>
+          <span>{{ row.price | cryptoCurrency:row.toSymbolDisplay }}</span>
         </mat-cell>
       </ng-container>
 
       <!-- Market cap Column -->
       <ng-container matColumnDef="marketCap">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Market cap</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.marketCap | cryptoCurrency:'$':'short' }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.marketCap | cryptoCurrency:row.toSymbolDisplay:'short' }}</mat-cell>
       </ng-container>
 
       <!-- Chg. 24H Column -->
@@ -67,7 +69,13 @@
       <ng-container matColumnDef="sparkline">
         <mat-header-cell *matHeaderCellDef>7d Chart (USD)</mat-header-cell>
         <mat-cell *matCellDef="let row" class="coins-list-item__sparkline">
-          <app-sparkline [data]="row.history" [height]="60" [colors]="row.historyChange > 0 ? ['#4caf50'] : ['#d81b60']" *ngIf="row.history != null"></app-sparkline>
+          <app-sparkline
+            [data]="row.history"
+            [height]="60"
+            [colors]="row.historyChange > 0 ? ['#4caf50'] : ['#d81b60']"
+            [toSymbolDisplay]="row.toSymbolDisplay"
+            *ngIf="row.history != null">
+          </app-sparkline>
         </mat-cell>
       </ng-container>
 

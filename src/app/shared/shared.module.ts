@@ -6,6 +6,7 @@ import { PageModule } from './modules/page/page.module';
 import { ChartsModule } from './modules/charts/charts.module';
 import { ProgressLoadingComponent } from './components/progress-loading/progress-loading.component';
 import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
+import { SymbolSelectComponent } from './components/symbol-select/symbol-select.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
   ],
   declarations: [
     ProgressLoadingComponent,
-    CryptoCurrencyPipe
+    CryptoCurrencyPipe,
+    SymbolSelectComponent
   ],
   exports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
     PageModule,
     ChartsModule,
     ProgressLoadingComponent,
-    CryptoCurrencyPipe
+    CryptoCurrencyPipe,
+    SymbolSelectComponent
   ]
 })
 export class SharedModule { }
