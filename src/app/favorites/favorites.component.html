@@ -4,6 +4,13 @@
       <mat-toolbar-row>
         <span>Favorites</span>
         <span class="spacer"></span>
+        <mat-form-field *ngIf="historyLimit">
+          <mat-select [(value)]="historyLimit">
+            <mat-option *ngFor="let limit of historyLimits" [value]="limit.value">
+              {{ limit.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <app-symbol-select [symbols]="toSymbols" (symbolChange)="toSymbol = $event"></app-symbol-select>
       </mat-toolbar-row>
     </mat-toolbar>
@@ -17,6 +24,7 @@
           *ngFor="let coin of coins; let i = index"
           [coin]="coin"
           [toSymbol]="toSymbol"
+          [historyLimit]="historyLimit"
           (coinDeleted)="deleteCoin($event)"
           [@enterAnimation]>
         </app-favorite-coin>

@@ -19,12 +19,14 @@ export class FavoriteCoinComponent implements OnInit {
 
   @Input() coin: string;
   @Input() toSymbol: string;
+  @Input() historyLimit: number;
   @Output() coinDeleted: EventEmitter<any> = new EventEmitter();
 
   coinData: CoinSnapshot;
   coinChartData: any;
 
   toSymbolDisplay: string = '$';
+
 
   state: any = {
     loading: <boolean>true,
@@ -36,7 +38,7 @@ export class FavoriteCoinComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.coinsService.getCoinFullData(this.coin, 30, this.toSymbol)
+    this.coinsService.getCoinFullData(this.coin, this.historyLimit, this.toSymbol)
       .subscribe(res => {
         this.coinData = res;
         this.toSymbolDisplay = this.coinData.finance.toSymbolDisplay;

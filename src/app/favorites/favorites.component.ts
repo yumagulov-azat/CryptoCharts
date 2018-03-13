@@ -37,7 +37,18 @@ export class FavoritesComponent implements OnInit {
     "GBP",
     "JPY",
     "KRW",
-  ]
+  ];
+
+  historyLimit: number = 30;
+  historyLimits: Array<any> = [
+    {value: 59, viewValue: '1 hour', type: 'histominute'},
+    {value: 23, viewValue: '1 day', type: 'histohour'},
+    {value: 6, viewValue: '1 week', type: 'histoday'},
+    {value: 30, viewValue: '1 month', type: 'histoday'},
+    {value: 90, viewValue: '3 month', type: 'histoday'},
+    {value: 180, viewValue: '6 month', type: 'histoday'},
+    {value: 364, viewValue: '1 year', type: 'histoday'}
+  ];
 
   constructor(private favoritesService: FavoritesService, private dragulaService: DragulaService) {
     dragulaService.setOptions('favorites-coins-bag', {
