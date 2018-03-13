@@ -27,6 +27,18 @@ export class FavoritesComponent implements OnInit {
   coinDeleting: boolean = false; // when coin enter delete block
   drag: boolean = false; // when coin draged
 
+  toSymbol: string = 'USD';
+  toSymbols: Array<string> = [
+    "USD",
+    "RUB",
+    "BTC",
+    "ETH",
+    "EUR",
+    "GBP",
+    "JPY",
+    "KRW",
+  ]
+
   constructor(private favoritesService: FavoritesService, private dragulaService: DragulaService) {
     dragulaService.setOptions('favorites-coins-bag', {
       moves: function (el, container, handle) {
@@ -87,6 +99,13 @@ export class FavoritesComponent implements OnInit {
   deleteCoin(coinName): void {
     this.coins.splice(this.coins.indexOf(coinName), 1);
     this.favoritesService.deleteCoin(coinName);
+  }
+
+  /**
+   *
+   */
+  updateCoins(toSymbol): void {
+
   }
 
 }

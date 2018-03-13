@@ -3,6 +3,14 @@
     <mat-toolbar class="app-page-content-toolbar">
       <mat-toolbar-row>
         <span>Favorites</span>
+        <span class="spacer"></span>
+        <mat-form-field class="to-symbol-select">
+          <mat-select [(value)]="toSymbol" (selectionChange)="updateCoins(toSymbol)">
+            <mat-option *ngFor="let symbol of toSymbols" [value]="symbol">
+              {{ symbol }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </mat-toolbar-row>
     </mat-toolbar>
 
@@ -14,6 +22,7 @@
         <app-favorite-coin
           *ngFor="let coin of coins; let i = index"
           [coin]="coin"
+          [toSymbol]="toSymbol"
           (coinDeleted)="deleteCoin($event)"
           [@enterAnimation]>
         </app-favorite-coin>

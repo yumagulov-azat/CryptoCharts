@@ -17,10 +17,14 @@ import { CoinSnapshot } from '../../coins/models/coin-snapshot.model';
 })
 export class FavoriteCoinComponent implements OnInit {
 
-  @Input() coin: any;
+  @Input() coin: string;
+  @Input() toSymbol: string;
+  @Output() coinDeleted: EventEmitter<any> = new EventEmitter();
+
   coinData: CoinSnapshot;
   coinChartData: any;
-  @Output() coinDeleted: EventEmitter<any> = new EventEmitter();
+
+  toSymbolDisplay: string = '$';
 
   state: any = {
     loading: <boolean>true,
@@ -32,11 +36,12 @@ export class FavoriteCoinComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.coinsService.getCoinFullData(this.coin, 30)
+    this.coinsService.getCoinFullData(this.coin, 30, this.toSymbol)
       .subscribe(res => {
         this.coinData = res;
-        this.prepareChartData();
+        this.toSymbolDisplay = this.coinData.finance.toSymbolDisplay;
         this.state.loading = false;
+        this.prepareChartData();
       }, err => {
         this.pageService.showError();
       });
