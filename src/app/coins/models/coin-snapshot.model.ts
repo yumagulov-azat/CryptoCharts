@@ -7,4 +7,5 @@ export interface CoinSnapshot {
   history: Array<any>;
   exchanges: Array<any>;
   pairs: Array<any>;
+  toSymbols: Array<any>;
 }

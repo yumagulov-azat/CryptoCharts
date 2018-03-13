@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { SymbolSelectComponent } from '../../shared/components/symbol-select/symbol-select.component'
 
 // RxJs
 import { Subscription } from "rxjs";
@@ -39,6 +40,7 @@ export class CoinsListComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(SymbolSelectComponent) symbolSelect: SymbolSelectComponent;
 
   coinsListSubscription: Subscription;
 
@@ -57,7 +59,7 @@ export class CoinsListComponent implements OnInit {
       .takeUntil(this.ngUnsubscribe)
       .subscribe((res: any) => {
         this.paginator.pageIndex = res.params.page - 1;
-        this.getCoinsList(this.pageSize, this.paginator.pageIndex);
+        this.getCoinsList(this.pageSize, this.paginator.pageIndex, this.symbolSelect.symbolSelected);
 
         let metaPage: string = this.paginator.pageIndex > 1 ? ', page ' + this.paginator.pageIndex : '';
         this.meta.setTitle(`List${metaPage} | Coins`);
@@ -129,7 +131,7 @@ export class CoinsListComponent implements OnInit {
         // Change 7d
         let historyFirst = res[0][0].close,
             historyLast = res[0][res[0].length - 1].close;
-        this.coinsList.data[i].historyChange = (((historyLast-historyFirst)/historyFirst) * 100).toFixed(2)
+        this.coinsList.data[i].historyChange = historyLast && historyFirst ? (((historyLast-historyFirst)/historyFirst) * 100).toFixed(2) : 0
 
         // Pass chart data
         this.coinsList.data[i].history = {
@@ -156,7 +158,7 @@ export class CoinsListComponent implements OnInit {
     coin.favorite = !coin.favorite;
   }
 
-  changeSymbol(symbol): void {
-    this.getCoinsList(this.pageSize, this.paginator.pageIndex, symbol)
+  changeSymbol(symbol: any): void {
+    // this.getCoinsList(pageSize, paginator.pageIndex, $event);
   }
 }

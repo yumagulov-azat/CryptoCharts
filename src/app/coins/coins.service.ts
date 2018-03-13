@@ -49,15 +49,16 @@ export class CoinsService {
       .set('page', page.toString())
       .set('tsym', toSymbol);
 
-    const coinsList: CoinsList[] = [];
+    let coinsList: CoinsList[] = [];
 
     return this.http.get<CoinsList[]>(this.API_URL + '/top/totalvol', {params: params})
       .map((res: any) => {
         if (res.Message == 'Success' && res.Data.length > 0) {
           res.Data.forEach((item, index) => {
             const coinInfo: any       = item.CoinInfo,
-                  conversionInfo: any = item.ConversionInfo,
-                  priceInfo: any;
+                  conversionInfo: any = item.ConversionInfo || { Supply: 0, RAW: [""]};
+
+            let priceInfo: any;
 
             if(conversionInfo.RAW.length > 1) {
               priceInfo = this.utils.cccUnpackMulti(conversionInfo.RAW)
@@ -70,9 +71,9 @@ export class CoinsService {
               name: coinInfo.Name,
               fullName: coinInfo.FullName,
               imageUrl: coinInfo.ImageUrl,
-              price: priceInfo.PRICE,
-              changePct24Hour: ((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100).toFixed(2),
-              marketCap: priceInfo.PRICE * conversionInfo.Supply,
+              price: priceInfo.PRICE || 0,
+              changePct24Hour: priceInfo.PRICE ? ((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100).toFixed(2) : 0,
+              marketCap: priceInfo.PRICE * conversionInfo.Supply || 0,
               history: null,
               historyChange: 0,
               conversionSymbol: toSymbol,
@@ -104,7 +105,8 @@ export class CoinsService {
       finance: {},
       history: [],
       exchanges: [],
-      pairs: []
+      pairs: [],
+      toSymbols: []
     };
 
 
@@ -149,6 +151,7 @@ export class CoinsService {
                 volume24Hour: finance.VOLUME24HOUR,
               };
               coinSnapshot.pairs = pairs.Data;
+              coinSnapshot.toSymbols = pairs.Data.map((item: any) => item.toSymbol);
               coinSnapshot.exchanges = res[0].Data.Exchanges;
 
               return coinSnapshot;

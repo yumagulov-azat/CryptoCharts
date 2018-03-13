@@ -4,13 +4,7 @@
       {{ coinName }}
     </span>
     <span class="spacer"></span>
-    <mat-form-field *ngIf="coin" class="to-symbol-select">
-      <mat-select [(value)]="coin.finance.toSymbol" (selectionChange)="getCoinInfo(coin.finance.toSymbol)">
-        <mat-option *ngFor="let pair of coin.pairs" [value]="pair.toSymbol">
-          {{ pair.toSymbol }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <app-symbol-select *ngIf="coin" [symbols]="coin.toSymbols" [symbolSelected]="coin.finance.toSymbol" (symbolChange)="getCoinInfo($event)"></app-symbol-select>
   </mat-toolbar-row>
 </mat-toolbar>
 
