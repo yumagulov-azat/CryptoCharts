@@ -4,7 +4,7 @@
       {{ coinName }}
     </span>
     <span class="spacer"></span>
-    <app-symbol-select *ngIf="coin" [symbols]="coin.toSymbols" [symbolSelected]="coin.finance.toSymbol" (symbolChange)="getCoinInfo($event)"></app-symbol-select>
+    <app-symbol-select *ngIf="coin" [symbols]="coin.toSymbols" [symbolSelected]="toSymbol" (symbolChange)="toSymbolChanged($event)"></app-symbol-select>
   </mat-toolbar-row>
 </mat-toolbar>
 

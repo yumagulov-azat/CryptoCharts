@@ -2,7 +2,7 @@
   <mat-toolbar-row>
     <span>All coins</span>
     <span class="spacer"></span>
-    <app-symbol-select (symbolChange)="getCoinsList(pageSize, paginator.pageIndex, $event);"></app-symbol-select>
+    <app-symbol-select [symbolSelected]="toSymbol" (symbolChange)="toSymbolChanged($event);"></app-symbol-select>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -90,7 +90,7 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/{{ row.name }}"
+      <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/{{ row.name }}/{{ toSymbol }}"
                class="coins-list-item"></mat-row>
     </mat-table>
     <mat-paginator #paginator

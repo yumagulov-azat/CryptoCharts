@@ -91,7 +91,7 @@ export class FavoritesComponent implements OnInit {
   onOver(value): void {
     const [e, el, container] = value;
 
-    if (container.tagName === 'APP-DROP-DELETE') {
+    if (container.tagName === 'APP-FAVORITES-DROP-DELETE') {
       this.coinDeleting = true;
     } else {
       this.coinDeleting = false;

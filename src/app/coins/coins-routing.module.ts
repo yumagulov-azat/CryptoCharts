@@ -15,14 +15,14 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'list/1'
+        redirectTo: 'list/USD/1'
       },
       {
         path: 'list',
-        redirectTo: 'list/1'
+        redirectTo: 'list/USD/1'
       },
       {
-        path: 'list/:page',
+        path: 'list/:toSymbol/:page',
         component: CoinsListComponent,
         data: {
           meta: {
@@ -31,7 +31,7 @@ const routes: Routes = [
         }
       },
       {
-        path: ':name',
+        path: ':coinName/:toSymbol',
         component: CoinOverviewComponent
       }
     ]
