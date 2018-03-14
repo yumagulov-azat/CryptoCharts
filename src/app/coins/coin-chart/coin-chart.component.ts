@@ -21,8 +21,8 @@ export class CoinChartComponent implements OnInit, OnChanges {
   @Input() chartData: any;
   @Input() coinName: string;
   @Input() toSymbol: string;
-  @Input() toSymbolDisplay: string = '$';
-  @Input() showToolbar: boolean = true;
+  @Input() toSymbolDisplay = '$';
+  @Input() showToolbar = true;
   @Input() filter: ChartFilter;
   @Output() filterChanged: EventEmitter<ChartFilter> = new EventEmitter();
 
@@ -61,7 +61,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
           period: res.chartPeriod,
           periodType: find(this.chartPeriodList, {'value': res.chartPeriod}).type,
           data: res.chartDataShow,
-        }
+        };
         this.filterChanged.emit(filter);
       });
   }
@@ -81,6 +81,6 @@ export class CoinChartComponent implements OnInit, OnChanges {
         value: this.chartFilterForm.get('chartDataShow').value,
       },
       type: 'area-spline'
-    }
+    };
   }
 }

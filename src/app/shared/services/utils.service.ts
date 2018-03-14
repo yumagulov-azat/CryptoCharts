@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import * as symbolFromCurrency from 'currency-symbol-map';
 
+/**
+ * Utils
+ */
+
+// TODO: Refract CCC.utils methods to static typing
 
 @Injectable()
 export class UtilsService {
 
+  // Fields from CCC.utils
   FIELDS = {
     'TYPE'            : 0x0       // hex for binary 0, it is a special case of fields that are always there
     , 'MARKET'          : 0x0       // hex for binary 0, it is a special case of fields that are always there
@@ -30,14 +36,19 @@ export class UtilsService {
     , 'HIGH24HOUR'      : 0x10000   // hex for binary 10000000000000000
     , 'LOW24HOUR'       : 0x20000   // hex for binary 100000000000000000
     , 'LASTMARKET'      : 0x40000   // hex for binary 1000000000000000000, this is a special case and will only appear on CCCAGG messages
-  }
+  };
 
   constructor() { }
 
+  /**
+   * Takes currency symbol(USD) and returns display symbol($)
+   * @param currency
+   * @returns string
+   */
   getSymbolFromCurrency(currency: string): string {
-    let displaySymbol = symbolFromCurrency(currency);
+    const displaySymbol: string = symbolFromCurrency(currency);
 
-    if(displaySymbol) {
+    if (displaySymbol) {
       return displaySymbol;
     } else {
       return currency;
@@ -45,23 +56,22 @@ export class UtilsService {
   }
 
   /**
-   * Method from cryptocompare CCC.utils
+   * CCC.utils
+   * Unpack coversion info
    */
 
   cccUnpack(value): any {
-    let valuesArray = value.split('~');
-    let valuesArrayLenght = valuesArray.length;
-    let mask = valuesArray[valuesArrayLenght - 1];
-    let maskInt = parseInt(mask, 16);
-    let unpackedCurrent = {};
+    const valuesArray = value.split('~');
+    const valuesArrayLenght = valuesArray.length;
+    const mask = valuesArray[valuesArrayLenght - 1];
+    const maskInt = parseInt(mask, 16);
+    const unpackedCurrent = {};
     let currentField = 0;
-    for (let property in this.FIELDS) {
+    for (const property in this.FIELDS) {
       if (this.FIELDS[property] === 0) {
         unpackedCurrent[property] = valuesArray[currentField];
         currentField++;
       } else if (maskInt & this.FIELDS[property]) {
-        //i know this is a hack, for cccagg, future code please don't hate me:(, i did this to avoid
-        //subscribing to trades as well in order to show the last market
         if (property === 'LASTMARKET') {
           unpackedCurrent[property] = valuesArray[currentField];
         } else {
@@ -72,14 +82,19 @@ export class UtilsService {
     }
 
     return unpackedCurrent;
-  };
+  }
 
+  /**
+   * Unpack conversion info when conversiontype="multiply"
+   * @param value
+   * @returns {{PRICE: number, OPEN24HOUR: number}}
+   */
   cccUnpackMulti(value: Array<any>): any {
-    let PRICE: number = 1,
-        OPEN24HOUR: number = 1;
+    let PRICE = 1,
+        OPEN24HOUR = 1;
 
     value.forEach((item) => {
-      let itemUnpack: any = this.cccUnpack(item);
+      const itemUnpack: any = this.cccUnpack(item);
       PRICE = PRICE * itemUnpack.PRICE;
       OPEN24HOUR = OPEN24HOUR * itemUnpack.OPEN24HOUR;
     });
@@ -87,9 +102,18 @@ export class UtilsService {
     return {
       PRICE: PRICE,
       OPEN24HOUR: OPEN24HOUR
-    }
+    };
   }
 
+  /**
+   * CCC.utils
+   * Convert long numbers to short, eg 140 B
+   * @param symbol
+   * @param value
+   * @param type
+   * @param fullNumbers
+   * @returns {string}
+   */
   convertPriceToDisplay(symbol, value, type: string = '', fullNumbers: boolean = false): string {
     let prefix = '';
     let valueSign = 1;
@@ -148,10 +172,15 @@ export class UtilsService {
 
       return prefix + this.noExponents((valueSign * valueAbs).toPrecision(decimalsOnSmallNumbers));
     }
-  };
+  }
 
+  /**
+   * CCC.utils
+   * @param value
+   * @returns {string}
+   */
   private noExponents(value) {
-    let data = String(value).split(/[eE]/);
+    const data = String(value).split(/[eE]/);
     if (data.length == 1) { return data[0]; }
 
     let  z = '', sign = value < 0 ? '-' : '',
@@ -166,14 +195,20 @@ export class UtilsService {
     mag -= str.length;
     while (mag--) { z += '0'; }
     return str + z;
-  };
+  }
 
+  /**
+   * CCC.utils
+   * @param value
+   * @param decimals
+   * @returns {string}
+   */
   private filterNumberFunctionPolyfill(value, decimals) {
-    let decimalsDenominator = Math.pow(10, decimals);
-    let numberWithCorrectDecimals = Math.round(value * decimalsDenominator) / decimalsDenominator;
-    let parts = numberWithCorrectDecimals.toString().split('.');
+    const decimalsDenominator = Math.pow(10, decimals);
+    const numberWithCorrectDecimals = Math.round(value * decimalsDenominator) / decimalsDenominator;
+    const parts = numberWithCorrectDecimals.toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return parts.join('.');
-  };
+  }
 
 }

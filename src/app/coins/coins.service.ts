@@ -4,7 +4,7 @@ import find = require('lodash/find');
 
 // RxJs
 import { Observable } from 'rxjs/Observable';
-import { Subject } from "rxjs/Subject";
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
@@ -57,19 +57,19 @@ export class CoinsService {
       .set('page', page.toString())
       .set('tsym', toSymbol);
 
-    let coinsList: CoinsList[] = [];
+    const coinsList: CoinsList[] = [];
 
     return this.http.get<CoinsList[]>(this.API_URL + '/top/totalvol', {params: params})
       .map((res: any) => {
-        if (res.Message == 'Success' && res.Data.length > 0) {
+        if (res.Message === 'Success' && res.Data.length > 0) {
           res.Data.forEach((item, index) => {
             const coinInfo: any       = item.CoinInfo,
-                  conversionInfo: any = item.ConversionInfo || { Supply: 0, RAW: [""]};
+                  conversionInfo: any = item.ConversionInfo || { Supply: 0, RAW: ['']};
 
             let priceInfo: any;
 
-            if(conversionInfo.RAW.length > 1) {
-              priceInfo = this.utils.cccUnpackMulti(conversionInfo.RAW)
+            if (conversionInfo.RAW.length > 1) {
+              priceInfo = this.utils.cccUnpackMulti(conversionInfo.RAW);
             } else {
               priceInfo = this.utils.cccUnpack(conversionInfo.RAW[0]);
             }
@@ -113,7 +113,7 @@ export class CoinsService {
   getCoinFullData(coinName: string, historyLimit: number = 7, toSymbol: string = 'USD'): Observable<CoinSnapshot> {
     this.loadingService.showLoading();
 
-    let coinSnapshot: CoinSnapshot = {
+    const coinSnapshot: CoinSnapshot = {
       info: {},
       finance: {},
       history: [],
@@ -141,7 +141,7 @@ export class CoinsService {
 
         return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
           .map((res: any) => {
-            if (res[0].Response == 'Success') {
+            if (res[0].Response === 'Success') {
               const finance = res[0].Data.AggregatedData;
 
               coinSnapshot.info = res[0].Data.CoinInfo;

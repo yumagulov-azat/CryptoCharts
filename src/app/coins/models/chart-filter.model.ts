@@ -1,5 +1,5 @@
 export interface ChartFilter {
-  period: number,
-  periodType: string,
-  data: Array<string>
+  period: number;
+  periodType: string;
+  data: Array<string>;
 }

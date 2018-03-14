@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
+/**
+ * Notifications servise
+ */
+
 @Injectable()
 export class NotificationsService {
 

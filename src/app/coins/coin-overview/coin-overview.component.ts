@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 
 // RxJs
-import { Subject } from "rxjs/Subject";
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
 // Services
@@ -25,7 +25,7 @@ import { ChartFilter } from '../models/chart-filter.model';
   templateUrl: './coin-overview.component.html',
   styleUrls: ['./coin-overview.component.scss']
 })
-export class CoinOverviewComponent implements OnInit {
+export class CoinOverviewComponent implements OnInit, OnDestroy {
 
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -35,11 +35,10 @@ export class CoinOverviewComponent implements OnInit {
     period: 30,
     periodType: 'histoday',
     data: ['close']
-  }
+  };
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
-              private router: Router,
               private notifications: NotificationsService,
               private pageService: PageService,
               private meta: MetaService) {

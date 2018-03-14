@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // RxJs
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs/Subscription';
 
 // Services
 import { CoinsService } from './coins.service';
 
 // Models
-import { CoinsList } from './models/coins-list.model'
+import { CoinsList } from './models/coins-list.model';
 
 
 /**
@@ -31,7 +31,7 @@ export class CoinsComponent implements OnInit {
 
   ngOnInit() {
     // Do not make unnecessary requests
-    if (this.route.snapshot.children[0].url[0].path == 'list') {
+    if (this.route.snapshot.children[0].url[0].path === 'list') {
       this.coinsListSubscription = this.coinsService.coinsListSubject
         .subscribe((res: CoinsList[]) => {
           this.coinsList = res;

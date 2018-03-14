@@ -11,7 +11,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PageComponent implements OnInit {
 
-  @Input() loading: boolean = true;
+  @Input() loading = true;
 
   constructor() { }
 

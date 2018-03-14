@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
-import { FavoritesService } from './favorites.service'
+import { FavoritesService } from './favorites.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
@@ -24,22 +24,12 @@ export class FavoritesComponent implements OnInit {
   coins: Array<any>;
   deletedCoins: Array<any> = [];
 
-  coinDeleting: boolean = false; // when coin enter delete block
-  drag: boolean = false; // when coin draged
+  coinDeleting = false; // when coin enter delete block
+  drag = false; // when coin draged
 
-  toSymbol: string = 'USD';
-  toSymbols: Array<string> = [
-    "USD",
-    "RUB",
-    "BTC",
-    "ETH",
-    "EUR",
-    "GBP",
-    "JPY",
-    "KRW",
-  ];
+  toSymbol = 'USD';
 
-  historyLimit: number = 30;
+  historyLimit = 30;
   historyLimits: Array<any> = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
     {value: 23, viewValue: '1 day', type: 'histohour'},
@@ -57,14 +47,17 @@ export class FavoritesComponent implements OnInit {
       }
     });
 
+    // Set drag true for animation
     dragulaService.drag.subscribe((value) => {
       this.drag = true;
     });
 
+    // Save sorting when drop
     dragulaService.dropModel.subscribe((value) => {
       this.onDrop();
     });
 
+    // Check bag
     dragulaService.over.subscribe((value) => {
       this.onOver(value);
     });
@@ -93,9 +86,10 @@ export class FavoritesComponent implements OnInit {
 
   /**
    * On element over bag
-   **/
+   * @param value
+   */
   onOver(value): void {
-    let [e, el, container] = value;
+    const [e, el, container] = value;
 
     if (container.tagName === 'APP-DROP-DELETE') {
       this.coinDeleting = true;
@@ -106,17 +100,11 @@ export class FavoritesComponent implements OnInit {
 
   /**
    * Delete coin from favorites
-   **/
+   * @param coinName
+   */
   deleteCoin(coinName): void {
     this.coins.splice(this.coins.indexOf(coinName), 1);
     this.favoritesService.deleteCoin(coinName);
-  }
-
-  /**
-   *
-   */
-  updateCoins(toSymbol): void {
-
   }
 
 }

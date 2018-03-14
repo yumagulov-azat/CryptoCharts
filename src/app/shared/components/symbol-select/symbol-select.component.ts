@@ -1,5 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+/**
+ * Currency symbol select component
+ */
+
 @Component({
   selector: 'app-symbol-select',
   templateUrl: './symbol-select.component.html',
@@ -8,16 +12,16 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class SymbolSelectComponent implements OnInit {
 
   @Input() symbols: Array<string> = [
-    "USD",
-    "RUB",
-    "BTC",
-    "ETH",
-    "EUR",
-    "GBP",
-    "JPY",
-    "KRW",
+    'USD',
+    'RUB',
+    'BTC',
+    'ETH',
+    'EUR',
+    'GBP',
+    'JPY',
+    'KRW',
   ];
-  @Input() symbolSelected: string = 'USD';
+  @Input() symbolSelected = 'USD';
   @Input() storageKey: Array<string>;
   @Output() symbolChange: EventEmitter<string> = new EventEmitter();
 
@@ -28,6 +32,6 @@ export class SymbolSelectComponent implements OnInit {
   }
 
   changeSymbol() {
-    this.symbolChange.emit(this.symbolSelected)
+    this.symbolChange.emit(this.symbolSelected);
   }
 }

@@ -12,15 +12,16 @@ import { PageService } from '../page.service';
 })
 export class PageContentComponent implements OnInit {
 
-  error: boolean = false;
-  errorMesage: string;
+  error = false;
+  errorMessage: string;
+
   constructor(private pageService: PageService) { }
 
   ngOnInit() {
     this.pageService.pageError
       .subscribe(res => {
         this.error = res.show;
-        this.errorMesage = res.message;
+        this.errorMessage = res.message;
       });
   }
 

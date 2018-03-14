@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PageErrorComponent implements OnInit {
 
-  @Input() errorMesage: string = '';
+  @Input() errorMessage = '';
 
   constructor() { }
 

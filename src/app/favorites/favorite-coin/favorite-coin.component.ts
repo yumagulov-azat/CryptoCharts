@@ -1,7 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
-// RxJs
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
 // Services
 import { CoinsService } from '../../coins/coins.service';
@@ -15,7 +12,7 @@ import { CoinSnapshot } from '../../coins/models/coin-snapshot.model';
   templateUrl: './favorite-coin.component.html',
   styleUrls: ['./favorite-coin.component.scss'],
 })
-export class FavoriteCoinComponent implements OnInit {
+export class FavoriteCoinComponent implements OnInit, OnChanges {
 
   @Input() coin: string;
   @Input() toSymbol: string;
@@ -25,13 +22,13 @@ export class FavoriteCoinComponent implements OnInit {
   coinData: CoinSnapshot;
   coinChartData: any;
 
-  toSymbolDisplay: string = '$';
+  toSymbolDisplay = '$';
 
 
   state: any = {
     loading: <boolean>true,
     error: <boolean>false
-  }
+  };
 
   constructor(private coinsService: CoinsService,
               private pageService: PageService) {
@@ -64,9 +61,13 @@ export class FavoriteCoinComponent implements OnInit {
         value: ['close'],
       },
       type: 'area-spline'
-    }
+    };
   }
 
+  /**
+   * Delete coin from favorites
+   * @param coinName
+   */
   deleteCoin(coinName): void {
     this.coinDeleted.emit(coinName);
   }

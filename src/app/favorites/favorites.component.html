@@ -11,7 +11,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <app-symbol-select [symbols]="toSymbols" (symbolChange)="toSymbol = $event"></app-symbol-select>
+        <app-symbol-select (symbolChange)="toSymbol = $event"></app-symbol-select>
       </mat-toolbar-row>
     </mat-toolbar>
 
@@ -29,11 +29,11 @@
           [@enterAnimation]>
         </app-favorite-coin>
       </section>
-      <app-drop-delete
+      <app-favorites-drop-delete
         [dragula]='"favorites-coins-bag"'
         [dragulaModel]='deletedCoins'
         [ngClass]="{'show' : drag, 'deleting' : coinDeleting }">
-      </app-drop-delete>
+      </app-favorites-drop-delete>
 
       <app-favorites-empty *ngIf="!coins || coins.length < 1" [@enterAnimation]></app-favorites-empty>
     </section>

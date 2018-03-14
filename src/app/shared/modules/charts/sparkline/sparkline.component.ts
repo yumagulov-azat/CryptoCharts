@@ -16,12 +16,14 @@ export class SparklineComponent implements OnInit, OnChanges {
   @Input() height = 50;
   @Input() width = 200;
   @Input() colors = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
-  @Input() toSymbolDisplay: string = '$';
+  @Input() toSymbolDisplay = '$';
 
   chart: any;
   chartOptions: any;
 
-  constructor(private utils: UtilsService, private el: ElementRef, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private utils: UtilsService,
+              private el: ElementRef,
+              @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
 
@@ -31,7 +33,9 @@ export class SparklineComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (isPlatformBrowser(this.platformId)) {
-      if (!this.chartOptions) { this.setChartOptions(); }
+      if (!this.chartOptions) {
+        this.setChartOptions();
+      }
       this.chartOptions.data = this.data;
 
       if (this.data) {
@@ -70,7 +74,7 @@ export class SparklineComponent implements OnInit, OnChanges {
         y: {
           show: false,
           tick: {
-            format: (value)=> {
+            format: (value) => {
               return this.utils.convertPriceToDisplay(this.toSymbolDisplay + ' ', value);
             }
           }

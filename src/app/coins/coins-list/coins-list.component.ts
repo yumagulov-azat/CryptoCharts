@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
-import { SymbolSelectComponent } from '../../shared/components/symbol-select/symbol-select.component'
+import { SymbolSelectComponent } from '../../shared/components/symbol-select/symbol-select.component';
 
 // RxJs
-import { Subscription } from "rxjs";
-import { Subject } from "rxjs/Subject";
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/switchMap';
 
@@ -28,7 +28,7 @@ import { CoinsList } from '../models/coins-list.model';
   templateUrl: './coins-list.component.html',
   styleUrls: ['./coins-list.component.scss']
 })
-export class CoinsListComponent implements OnInit {
+export class CoinsListComponent implements OnInit, OnDestroy {
 
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -60,7 +60,7 @@ export class CoinsListComponent implements OnInit {
         this.paginator.pageIndex = res.params.page - 1;
         this.getCoinsList(this.pageSize, this.paginator.pageIndex, this.symbolSelect.symbolSelected);
 
-        let metaPage: string = this.paginator.pageIndex > 1 ? ', page ' + this.paginator.pageIndex : '';
+        const metaPage: string = this.paginator.pageIndex > 1 ? ', page ' + this.paginator.pageIndex : '';
         this.meta.setTitle(`List${metaPage} | Coins`);
       });
 
@@ -83,6 +83,7 @@ export class CoinsListComponent implements OnInit {
    * Get coins list
    * @param limit
    * @param page
+   * @param toSymbol
    */
   getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): void {
     this.coinsService.getCoinsList(limit, page, toSymbol)
@@ -112,23 +113,23 @@ export class CoinsListComponent implements OnInit {
    * because paralell loading is very slow
    */
   renderSparklines(): void {
-    let coins = this.coinsList.data.map(item => {
+    const coins = this.coinsList.data.map(item => {
       return {
         name: item.name
-      }
+      };
     });
 
-    if(this.coinsListSubscription) this.coinsListSubscription.unsubscribe();
+    if (this.coinsListSubscription) { this.coinsListSubscription.unsubscribe(); }
 
     let i = 0;
     this.coinsListSubscription = this.coinsService.getCoinsHistory(coins, 6, 'histoday', this.symbolSelect.symbolSelected)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
-        if(res.length > 0) {
+        if (res.length > 0) {
           // Change 7d
-          let historyFirst = res[0].close,
+          const historyFirst = res[0].close,
               historyLast = res[res.length - 1].close;
-          this.coinsList.data[i].historyChange = historyLast && historyFirst ? (((historyLast-historyFirst)/historyFirst) * 100).toFixed(2) : 0
+          this.coinsList.data[i].historyChange = historyLast && historyFirst ? (((historyLast - historyFirst) / historyFirst) * 100).toFixed(2) : 0;
 
           // Pass chart data
           this.coinsList.data[i].history = {
@@ -148,7 +149,7 @@ export class CoinsListComponent implements OnInit {
    * Add coin to favorite
    **/
   addToFavorite(coin): void {
-    if(!coin.favorite) {
+    if (!coin.favorite) {
       this.favoritesService.addCoin(coin.name);
     } else {
       this.favoritesService.deleteCoin(coin.name);

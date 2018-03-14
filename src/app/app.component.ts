@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  appNav: Array<any> = [
+  appNav: AppNav[] = [
     {
       name: 'Favorites',
       link: '/favorites',
@@ -29,4 +29,10 @@ export class AppComponent {
       icon: 'view_list'
     }
   ];
+}
+
+export interface AppNav {
+  name: string;
+  link: string;
+  icon: string;
 }

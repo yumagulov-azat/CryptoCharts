@@ -11,7 +11,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PageNavComponent implements OnInit {
 
-  @Input() title: string = '';
+  @Input() title = '';
 
   constructor() { }
 

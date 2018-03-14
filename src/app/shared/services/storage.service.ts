@@ -4,6 +4,11 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
+/**
+ * Storage service.
+ * LocalStorage
+ */
+
 @Injectable()
 export class StorageService {
 
@@ -20,7 +25,7 @@ export class StorageService {
   getItemAsArray(key: string): Observable<Array<any>> {
     return Observable.of(localStorage.getItem(key))
       .map(res => {
-        if(res) {
+        if (res) {
           return res.split(',');
         } else {
           return null;
@@ -29,10 +34,10 @@ export class StorageService {
   }
 
   addToArray(key: string, value: string): void {
-    if(!this.checkInArray(key, value)) {
+    if (!this.checkInArray(key, value)) {
       let array: any = localStorage.getItem(key);
 
-      if(array != '') {
+      if (array !== '') {
         array = array.split(',');
       } else {
         array = [];
@@ -44,15 +49,15 @@ export class StorageService {
   }
 
   removeFromArray(key: string, value: string): void {
-    let array = localStorage.getItem(key).split(',');
+    const array = localStorage.getItem(key).split(',');
     array.splice(array.indexOf(value), 1);
     this.setItem(key, array);
   }
 
   checkInArray(key: string, value: string): boolean {
-    let array = localStorage.getItem(key).split(',');
-    let element = array.find((element)=>{
-      return element == value;
+    const array = localStorage.getItem(key).split(',');
+    const element = array.find((element) => {
+      return element === value;
     });
     return element ? true : false;
   }

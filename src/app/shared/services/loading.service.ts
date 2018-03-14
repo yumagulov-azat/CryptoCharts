@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Subject } from "rxjs/Subject";
+import { Subject } from 'rxjs/Subject';
+
+/**
+ * Loading state service
+ */
 
 @Injectable()
 export class LoadingService {
 
-  loading: Subject<boolean> = new Subject()
+  loading: Subject<boolean> = new Subject();
 
   constructor() { }
 

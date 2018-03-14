@@ -13,18 +13,20 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   // Input variables
   @Input() data: any;
-  @Input() height: number = 400;
+  @Input() height = 400;
   @Input() chartColors: Array<any> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
-  @Input() subchart: boolean = true;
-  @Input() toSymbolDisplay: string = '$';
-  @Input() showY: boolean = true;
-  @Input() showX: boolean = true;
+  @Input() subchart = true;
+  @Input() toSymbolDisplay = '$';
+  @Input() showY = true;
+  @Input() showX = true;
   @Input() axis: any;
 
   chart: any;
   chartOptions: any;
 
-  constructor(private utils: UtilsService, private el: ElementRef, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private utils: UtilsService,
+              private el: ElementRef,
+              @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
 
@@ -33,14 +35,14 @@ export class LineChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if(!this.axis) {
+    if (!this.axis) {
       this.axis = {
         y: {
           show: this.showY,
           inner: true,
           tick: {
             count: 6,
-            format: (value)=> {
+            format: (value) => {
               return this.utils.convertPriceToDisplay(this.toSymbolDisplay + ' ', value);
             }
           }
@@ -58,7 +60,9 @@ export class LineChartComponent implements OnInit, OnChanges {
     }
 
     if (isPlatformBrowser(this.platformId)) {
-      if (!this.chartOptions) { this.setChartOptions(); }
+      if (!this.chartOptions) {
+        this.setChartOptions();
+      }
       this.chartOptions.data = this.data;
 
       if (this.data) {

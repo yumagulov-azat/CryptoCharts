@@ -9,6 +9,8 @@ import { MetaModule, MetaLoader, MetaStaticLoader, PageTitlePositioning } from '
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+// Services
 import { CoinsService } from './coins/coins.service';
 import { FavoritesService } from './favorites/favorites.service';
 import { UtilsService } from './shared/services/utils.service';
