@@ -71,7 +71,7 @@ export class SparklineComponent implements OnInit, OnChanges {
           show: false,
           tick: {
             format: (value)=> {
-              return this.utils.convertPriceToDisplay(this.toSymbolDisplay, value);
+              return this.utils.convertPriceToDisplay(this.toSymbolDisplay + ' ', value);
             }
           }
         },

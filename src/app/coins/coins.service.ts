@@ -7,14 +7,15 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from "rxjs/Subject";
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/zip';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/concatMap';
+import 'rxjs/add/operator/finally';
 
 // Services
 import { UtilsService } from '../shared/services/utils.service';
 import { FavoritesService } from '../favorites/favorites.service';
+import { LoadingService } from '../shared/services/loading.service';
 
 // Models
 import { CoinsList } from './models/coins-list.model';
@@ -33,7 +34,12 @@ export class CoinsService {
   // CoinsList subject for pass it to coinsNav component
   coinsListSubject = new Subject<any>();
 
-  constructor(private http: HttpClient, private utils: UtilsService, private favoritesService: FavoritesService) {
+  constructor(
+    private http: HttpClient,
+    private utils: UtilsService,
+    private favoritesService: FavoritesService,
+    private loadingService: LoadingService
+  ) {
 
   }
 
@@ -44,6 +50,8 @@ export class CoinsService {
    * @returns {Observable<CoinsList[]>}
    */
   getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): Observable<CoinsList[]> {
+    this.loadingService.showLoading();
+
     const params = new HttpParams()
       .set('limit', limit.toString())
       .set('page', page.toString())
@@ -72,7 +80,7 @@ export class CoinsService {
               fullName: coinInfo.FullName,
               imageUrl: coinInfo.ImageUrl,
               price: priceInfo.PRICE || 0,
-              changePct24Hour: priceInfo.PRICE ? ((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100).toFixed(2) : 0,
+              changePct24Hour: priceInfo.PRICE && priceInfo.OPEN24HOUR ? Math.round(((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100) * 100) / 100 : 0,
               marketCap: priceInfo.PRICE * conversionInfo.Supply || 0,
               history: null,
               historyChange: 0,
@@ -88,6 +96,9 @@ export class CoinsService {
         } else {
           throw new Error('Coin list empty');
         }
+      })
+      .finally(() => {
+        this.loadingService.hideLoading();
       });
   }
 
@@ -100,6 +111,8 @@ export class CoinsService {
    * @returns {any}
    */
   getCoinFullData(coinName: string, historyLimit: number = 7, toSymbol: string = 'USD'): Observable<CoinSnapshot> {
+    this.loadingService.showLoading();
+
     let coinSnapshot: CoinSnapshot = {
       info: {},
       finance: {},
@@ -159,6 +172,9 @@ export class CoinsService {
               throw new Error('Coin data empty');
             }
           });
+      })
+      .finally(() => {
+        this.loadingService.hideLoading();
       });
 
   }
@@ -172,6 +188,8 @@ export class CoinsService {
    * @returns {Observable<R>}
    */
   getCoinHistory(coinName: string, limit: number = 365, type: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
+    this.loadingService.showLoading();
+
     const params = new HttpParams()
       .set('limit', limit.toString())
       .set('fsym', coinName)
@@ -180,6 +198,9 @@ export class CoinsService {
     return this.http.get(this.API_URL + '/' + type, {params: params})
       .map((res: any) => {
         return res.Data;
+      })
+      .finally(() => {
+        this.loadingService.hideLoading();
       });
   }
 
@@ -199,12 +220,10 @@ export class CoinsService {
         coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol));
       });
 
-      return Observable.zip(
-        Observable.from(coinsRequests)
-          .concatMap((value) => {
-            return value;
-          })
-      );
+      return Observable.from(coinsRequests)
+        .concatMap((value) => {
+          return value;
+        });
     } else {
       throw new Error('Coins list empty');
     }

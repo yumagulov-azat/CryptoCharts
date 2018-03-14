@@ -14,6 +14,7 @@ import { FavoritesService } from './favorites/favorites.service';
 import { UtilsService } from './shared/services/utils.service';
 import { NotificationsService } from './shared/services/notifications.service';
 import { StorageService } from './shared/services/storage.service';
+import { LoadingService } from './shared/services/loading.service';
 
 export function metaFactory(): MetaLoader {
   return new MetaStaticLoader({
@@ -47,7 +48,8 @@ export function metaFactory(): MetaLoader {
     NotificationsService,
     StorageService,
     CoinsService,
-    FavoritesService
+    FavoritesService,
+    LoadingService
   ],
   bootstrap: [
     AppComponent

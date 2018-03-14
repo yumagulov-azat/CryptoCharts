@@ -6,8 +6,8 @@ export interface CoinsList {
   name: string;
   fullName: string;
   imageUrl: string;
-  price: string;
-  changePct24Hour: string;
+  price: number;
+  changePct24Hour: number;
   marketCap: number;
   history: Array<any>;
   historyChange: number;

@@ -8,11 +8,11 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<progress-loading [loading]="state.loading"></progress-loading>
+<app-loading></app-loading>
 
 <section class="app-page-content-wrap">
 
-  <div class="coin-overview" *ngIf="!state.error && !state.firstShow">
+  <div class="coin-overview" *ngIf="coin">
     <!-- Coin main info -->
     <div class="coin-stats">
       <div class="coin-stats__card">
@@ -106,13 +106,6 @@
           </mat-card-content>
         </mat-card>
       </div>
-    </div>
-  </div>
-
-  <div class="coin-overview-error" *ngIf="state.error">
-    <mat-icon color="accent">cloud_off</mat-icon>
-    <div class="coin-stats__card__value">
-      API Error
     </div>
   </div>
 </section>

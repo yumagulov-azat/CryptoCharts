@@ -8,7 +8,7 @@
 
 <section class="app-page-content-wrap">
   <div class="coins-list">
-    <progress-loading [loading]="loading"></progress-loading>
+    <app-loading></app-loading>
     <mat-table #table [dataSource]="coinsList" matSort>
 
       <!-- Position Column -->

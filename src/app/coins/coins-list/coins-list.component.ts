@@ -31,7 +31,6 @@ import { CoinsList } from '../models/coins-list.model';
 export class CoinsListComponent implements OnInit {
 
   ngUnsubscribe: Subject<void> = new Subject<void>();
-  loading: boolean = true;
 
   // Data-table
   displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'change7d', 'sparkline', 'favorite'];
@@ -86,8 +85,6 @@ export class CoinsListComponent implements OnInit {
    * @param page
    */
   getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): void {
-    this.loading = true;
-
     this.coinsService.getCoinsList(limit, page, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((res: CoinsList[]) => {
@@ -106,7 +103,6 @@ export class CoinsListComponent implements OnInit {
   renderData(data: CoinsList[]): void {
     this.coinsList.data = data;
     this.coinsList.sort = this.sort;
-    this.loading = false;
     this.renderSparklines();
   }
 
@@ -125,23 +121,25 @@ export class CoinsListComponent implements OnInit {
     if(this.coinsListSubscription) this.coinsListSubscription.unsubscribe();
 
     let i = 0;
-    this.coinsListSubscription = this.coinsService.getCoinsHistory(coins, 6)
+    this.coinsListSubscription = this.coinsService.getCoinsHistory(coins, 6, 'histoday', this.symbolSelect.symbolSelected)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
-        // Change 7d
-        let historyFirst = res[0][0].close,
-            historyLast = res[0][res[0].length - 1].close;
-        this.coinsList.data[i].historyChange = historyLast && historyFirst ? (((historyLast-historyFirst)/historyFirst) * 100).toFixed(2) : 0
+        if(res.length > 0) {
+          // Change 7d
+          let historyFirst = res[0].close,
+              historyLast = res[res.length - 1].close;
+          this.coinsList.data[i].historyChange = historyLast && historyFirst ? (((historyLast-historyFirst)/historyFirst) * 100).toFixed(2) : 0
 
-        // Pass chart data
-        this.coinsList.data[i].history = {
-          json: res[0],
-          keys: {
-            x: 'time',
-            value: ['close'],
-          },
-          type: 'area-spline'
-        };
+          // Pass chart data
+          this.coinsList.data[i].history = {
+            json: res,
+            keys: {
+              x: 'time',
+              value: ['close'],
+            },
+            type: 'area-spline'
+          };
+        }
         i++;
       });
   }
@@ -158,7 +156,4 @@ export class CoinsListComponent implements OnInit {
     coin.favorite = !coin.favorite;
   }
 
-  changeSymbol(symbol: any): void {
-    // this.getCoinsList(pageSize, paginator.pageIndex, $event);
-  }
 }

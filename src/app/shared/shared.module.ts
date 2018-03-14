@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from './modules/material/material.module';
 import { PageModule } from './modules/page/page.module';
 import { ChartsModule } from './modules/charts/charts.module';
-import { ProgressLoadingComponent } from './components/progress-loading/progress-loading.component';
+import { LoadingComponent } from './components/loading/loading.component';
 import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
 import { SymbolSelectComponent } from './components/symbol-select/symbol-select.component';
 
@@ -16,7 +16,7 @@ import { SymbolSelectComponent } from './components/symbol-select/symbol-select.
     ChartsModule
   ],
   declarations: [
-    ProgressLoadingComponent,
+    LoadingComponent,
     CryptoCurrencyPipe,
     SymbolSelectComponent
   ],
@@ -25,7 +25,7 @@ import { SymbolSelectComponent } from './components/symbol-select/symbol-select.
     MaterialModule,
     PageModule,
     ChartsModule,
-    ProgressLoadingComponent,
+    LoadingComponent,
     CryptoCurrencyPipe,
     SymbolSelectComponent
   ]

@@ -29,12 +29,6 @@ export class CoinOverviewComponent implements OnInit {
 
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  state: any = {
-    loading: <boolean>true,
-    firstShow: <boolean>true,
-    error: <boolean>false,
-  };
-
   coin: CoinSnapshot;
   coinName: string;
   chartFilter: ChartFilter = {
@@ -75,15 +69,11 @@ export class CoinOverviewComponent implements OnInit {
    * @param toSymbol
    */
   getCoinInfo(toSymbol: string = 'USD'): void {
-    this.state.loading = true;
 
     this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
-        this.state.loading = false;
-        this.state.error = false;
-        this.state.firstShow = false;
       }, err => {
         this.pageService.showError();
       });
@@ -96,17 +86,13 @@ export class CoinOverviewComponent implements OnInit {
    * @param toSymbol
    */
   getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
-    this.state.loading = true;
-
     this.coinsService.getCoinHistory(this.coinName, filter.period, filter.periodType, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(res => {
         this.coin.history = res;
         this.chartFilter = filter;
-        this.state.loading = false;
       }, err => {
         this.notifications.show('API Error');
-        this.state.loading = false;
       });
   }
 
