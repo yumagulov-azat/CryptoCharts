@@ -1,6 +1,6 @@
 <app-page>
   <app-page-nav [title]="'Coins'">
-    <app-coins-nav [coinsList]="coinsList"></app-coins-nav>
+    <app-coins-nav *ngIf="coinsList" [coinsList]="coinsList"></app-coins-nav>
   </app-page-nav>
   <app-page-content>
     <router-outlet></router-outlet>

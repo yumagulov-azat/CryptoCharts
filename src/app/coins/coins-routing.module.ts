@@ -4,8 +4,8 @@ import { MetaGuard } from '@ngx-meta/core';
 
 // Components
 import { CoinsComponent } from './coins.component';
-import { CoinsListComponent } from './coins-list/coins-list.component';
-import { CoinOverviewComponent } from './coin-overview/coin-overview.component';
+import { CoinsListComponent } from './pages/coins-list/coins-list.component';
+import { CoinOverviewComponent } from './pages/coin-overview/coin-overview.component';
 
 const routes: Routes = [
   {
@@ -13,6 +13,7 @@ const routes: Routes = [
     component: CoinsComponent,
     canActivateChild: [MetaGuard],
     children: [
+      // List paths
       {
         path: '',
         redirectTo: 'list/USD/1'
@@ -29,6 +30,12 @@ const routes: Routes = [
             title: 'List | Coins'
           }
         }
+      },
+
+      // Coin paths
+      {
+        path: ':coinName',
+        redirectTo: ':coinName/USD'
       },
       {
         path: ':coinName/:toSymbol',

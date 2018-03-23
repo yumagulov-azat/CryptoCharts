@@ -3,7 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import find = require('lodash/find');
 
 // Models
-import { ChartFilter } from '../models/chart-filter.model';
+import { ChartFilter } from '../../models/chart-filter.model';
+import { HistoryLimit } from '../../models/history-limit';
 
 
 /**
@@ -26,20 +27,14 @@ export class CoinChartComponent implements OnInit, OnChanges {
   @Input() filter: ChartFilter;
   @Output() filterChanged: EventEmitter<ChartFilter> = new EventEmitter();
 
-  // Form group for chart filter
-  chartFilterForm = new FormGroup({
-    chartPeriod: new FormControl(30),
-    chartDataShow: new FormControl(['close'])
-  });
-
   // chartDataShow options
-  chartDataList: Array<any> = [
+  chartDataList: ChartData[] = [
     {value: 'close', viewValue: 'Close'},
     {value: 'open', viewValue: 'Open'},
   ];
 
   // chartPeriod options
-  chartPeriodList: Array<any> = [
+  historyLimits: HistoryLimit[] = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
     {value: 23, viewValue: '1 day', type: 'histohour'},
     {value: 6, viewValue: '1 week', type: 'histoday'},
@@ -48,6 +43,12 @@ export class CoinChartComponent implements OnInit, OnChanges {
     {value: 180, viewValue: '6 month', type: 'histoday'},
     {value: 364, viewValue: '1 year', type: 'histoday'}
   ];
+
+  // Form group for chart filter
+  chartFilterForm = new FormGroup({
+    historyLimit: new FormControl(this.historyLimits[3]),
+    chartDataShow: new FormControl(['close'])
+  });
 
 
   constructor() {
@@ -58,8 +59,8 @@ export class CoinChartComponent implements OnInit, OnChanges {
     this.chartFilterForm.valueChanges
       .subscribe(res => {
         const filter: ChartFilter = {
-          period: res.chartPeriod,
-          periodType: find(this.chartPeriodList, {'value': res.chartPeriod}).type,
+          period: res.historyLimit.value,
+          periodType: res.historyLimit.type,
           data: res.chartDataShow,
         };
         this.filterChanged.emit(filter);
@@ -83,4 +84,9 @@ export class CoinChartComponent implements OnInit, OnChanges {
       type: 'area-spline'
     };
   }
+}
+
+export interface ChartData {
+  value: string;
+  viewValue: string;
 }

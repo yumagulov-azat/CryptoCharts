@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 // Models
-import { CoinsList } from '../models/coins-list.model';
+import { CoinsList } from '../../models/coins-list.model';
 
 
 /**
@@ -16,7 +17,6 @@ import { CoinsList } from '../models/coins-list.model';
 export class CoinsNavComponent implements OnInit {
 
   @Input() coinsList: CoinsList[];
-
 
   constructor() {
   }

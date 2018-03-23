@@ -7,10 +7,10 @@ import { CoinsRoutingModule } from './coins-routing.module';
 
 // Components
 import { CoinsComponent } from './coins.component';
-import { CoinsNavComponent } from './coins-nav/coins-nav.component';
-import { CoinsListComponent } from './coins-list/coins-list.component';
-import { CoinOverviewComponent } from './coin-overview/coin-overview.component';
-import { CoinChartComponent } from './coin-chart/coin-chart.component';
+import { CoinsListComponent } from './pages/coins-list/coins-list.component';
+import { CoinOverviewComponent } from './pages/coin-overview/coin-overview.component';
+import { CoinsNavComponent } from './components/coins-nav/coins-nav.component';
+import { CoinChartComponent } from './components/coin-chart/coin-chart.component';
 
 @NgModule({
   imports: [

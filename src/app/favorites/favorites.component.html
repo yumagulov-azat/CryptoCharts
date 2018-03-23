@@ -6,7 +6,7 @@
         <span class="spacer"></span>
         <mat-form-field *ngIf="historyLimit">
           <mat-select [(value)]="historyLimit">
-            <mat-option *ngFor="let limit of historyLimits" [value]="limit.value">
+            <mat-option *ngFor="let limit of historyLimits" [value]="limit">
               {{ limit.viewValue }}
             </mat-option>
           </mat-select>

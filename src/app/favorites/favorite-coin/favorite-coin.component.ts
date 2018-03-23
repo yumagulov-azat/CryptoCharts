@@ -4,8 +4,9 @@ import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angu
 import { CoinsService } from '../../coins/coins.service';
 import { PageService } from '../../shared/modules/page/page.service';
 
-// Moels
+// Models
 import { CoinSnapshot } from '../../coins/models/coin-snapshot.model';
+import { HistoryLimit } from '../../coins/models/history-limit';
 
 @Component({
   selector: 'app-favorite-coin',
@@ -16,7 +17,7 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
 
   @Input() coin: string;
   @Input() toSymbol: string;
-  @Input() historyLimit: number;
+  @Input() historyLimit: HistoryLimit;
   @Output() coinDeleted: EventEmitter<any> = new EventEmitter();
 
   coinData: CoinSnapshot;
@@ -35,7 +36,7 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.coinsService.getCoinFullData(this.coin, this.historyLimit, this.toSymbol)
+    this.coinsService.getCoinFullData(this.coin, this.historyLimit.value, this.historyLimit.type, this.toSymbol)
       .subscribe(res => {
         this.coinData = res;
         this.toSymbolDisplay = this.coinData.finance.toSymbolDisplay;

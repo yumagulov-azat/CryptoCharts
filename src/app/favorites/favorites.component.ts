@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { FavoritesService } from './favorites.service';
 import { trigger, style, animate, transition } from '@angular/animations';
+import { HistoryLimit } from '../coins/models/history-limit';
 
 @Component({
   selector: 'app-favorites',
@@ -29,8 +30,7 @@ export class FavoritesComponent implements OnInit {
 
   toSymbol = 'USD';
 
-  historyLimit = 30;
-  historyLimits: Array<any> = [
+  historyLimits: HistoryLimit[] = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
     {value: 23, viewValue: '1 day', type: 'histohour'},
     {value: 6, viewValue: '1 week', type: 'histoday'},
@@ -39,6 +39,7 @@ export class FavoritesComponent implements OnInit {
     {value: 180, viewValue: '6 month', type: 'histoday'},
     {value: 364, viewValue: '1 year', type: 'histoday'}
   ];
+  historyLimit: HistoryLimit = this.historyLimits[3];
 
   constructor(private favoritesService: FavoritesService, private dragulaService: DragulaService) {
     dragulaService.setOptions('favorites-coins-bag', {

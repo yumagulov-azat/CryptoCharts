@@ -100,7 +100,7 @@
             </div>
             <div class="coin-stats__card__value">
               <div>
-                {{ coin.finance.low24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }} / {{ coin.finance.high24Hour | cryptoCurrency:coin.finance.toSymbolDisplay }}
+                {{ coin.finance.low24Hour | cryptoCurrency:coin.finance.toSymbolDisplay:'short' }} / {{ coin.finance.high24Hour | cryptoCurrency:coin.finance.toSymbolDisplay:'short' }}
               </div>
             </div>
           </mat-card-content>

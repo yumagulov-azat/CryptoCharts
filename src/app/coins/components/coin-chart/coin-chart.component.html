@@ -4,9 +4,9 @@
   </h2>
   <form [formGroup]="chartFilterForm" class="coin-chart-toolbar__filter">
     <mat-form-field>
-      <mat-select placeholder="Period" formControlName="chartPeriod">
-        <mat-option *ngFor="let period of chartPeriodList" [value]="period.value">
-          {{ period.viewValue }}
+      <mat-select placeholder="Period" formControlName="historyLimit">
+        <mat-option *ngFor="let limit of historyLimits" [value]="limit">
+          {{ limit.viewValue }}
         </mat-option>
       </mat-select>
     </mat-form-field>

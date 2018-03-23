@@ -110,7 +110,7 @@ export class CoinsService {
    * @param toSymbol
    * @returns {any}
    */
-  getCoinFullData(coinName: string, historyLimit: number = 7, toSymbol: string = 'USD'): Observable<CoinSnapshot> {
+  getCoinFullData(coinName: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
     this.loadingService.showLoading();
 
     const coinSnapshot: CoinSnapshot = {
@@ -137,7 +137,7 @@ export class CoinsService {
         const coinInfoRequest = this.http.get<CoinSnapshot>(this.API_URL + '/top/exchanges/full', {params: params});
 
         // Request coin history by days
-        const coinDaysHistoryRequest = this.getCoinHistory(coinName, historyLimit, 'histoday', toSymbol);
+        const coinDaysHistoryRequest = this.getCoinHistory(coinName, historyLimit, historyType, toSymbol);
 
         return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
           .map((res: any) => {
@@ -187,15 +187,15 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  getCoinHistory(coinName: string, limit: number = 365, type: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
+  getCoinHistory(coinName: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
     this.loadingService.showLoading();
 
     const params = new HttpParams()
-      .set('limit', limit.toString())
+      .set('limit', historyLimit.toString())
       .set('fsym', coinName)
       .set('tsym', toSymbol);
 
-    return this.http.get(this.API_URL + '/' + type, {params: params})
+    return this.http.get(this.API_URL + '/' + historyType, {params: params})
       .map((res: any) => {
         return res.Data;
       })

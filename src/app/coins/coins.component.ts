@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // RxJs
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 // Services
 import { CoinsService } from './coins.service';
@@ -20,7 +21,9 @@ import { CoinsList } from './models/coins-list.model';
   templateUrl: './coins.component.html',
   styleUrls: ['./coins.component.scss']
 })
-export class CoinsComponent implements OnInit {
+export class CoinsComponent implements OnInit, OnDestroy {
+
+  ngUnsubscribe: Subject<void> = new Subject<void>();
 
   coinsList: CoinsList[];
   coinsListSubscription: Subscription;
@@ -33,16 +36,25 @@ export class CoinsComponent implements OnInit {
     // Do not make unnecessary requests
     if (this.route.snapshot.children[0].url[0].path === 'list') {
       this.coinsListSubscription = this.coinsService.coinsListSubject
+        .takeUntil(this.ngUnsubscribe)
         .subscribe((res: CoinsList[]) => {
           this.coinsList = res;
           this.coinsListSubscription.unsubscribe();
         });
     } else {
       this.coinsService.getCoinsList()
+        .takeUntil(this.ngUnsubscribe)
         .subscribe((res: CoinsList[]) => {
           this.coinsList = res;
         });
     }
   }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+
 
 }

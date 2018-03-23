@@ -7,13 +7,13 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
 // Services
-import { CoinsService } from '../coins.service';
-import { NotificationsService } from '../../shared/services/notifications.service';
-import { PageService } from '../../shared/modules/page/page.service';
+import { CoinsService } from '../../coins.service';
+import { NotificationsService } from '../../../shared/services/notifications.service';
+import { PageService } from '../../../shared/modules/page/page.service';
 
 // Models
-import { CoinSnapshot } from '../models/coin-snapshot.model';
-import { ChartFilter } from '../models/chart-filter.model';
+import { CoinSnapshot } from '../../models/coin-snapshot.model';
+import { ChartFilter } from '../../models/chart-filter.model';
 
 
 /**
@@ -71,7 +71,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * Get coin info
    */
   getCoinInfo(): void {
-    this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period, this.toSymbol)
+    this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period, this.chartFilter.periodType, this.toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
