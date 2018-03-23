@@ -8,9 +8,26 @@
     <nav>
       <ul>
         <li *ngFor="let item of appNav">
-          <button mat-button routerLink="{{ item.link }}" routerLinkActive="active">
+          <button mat-button routerLink="{{ item.link }}" routerLinkActive="active" class="app-sidenav-btn">
             <mat-icon>{{ item.icon }}</mat-icon>
             <span>{{ item.name }}</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <nav class="app-sidenav__bottom-nav">
+      <ul>
+        <li>
+          <button mat-button  class="app-sidenav-btn">
+            <mat-icon>share</mat-icon>
+            <span>Share</span>
+          </button>
+        </li>
+        <li>
+          <button mat-button  class="app-sidenav-btn">
+            <mat-icon>face</mat-icon>
+            <span>Author</span>
           </button>
         </li>
       </ul>

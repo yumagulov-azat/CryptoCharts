@@ -3,6 +3,8 @@
 }
 
 .app-sidenav {
+  display: flex;
+  flex-direction: column;
   width: 80px;
   height: 100vh;
   background: #673ab7;
@@ -27,43 +29,47 @@
 
       li {
         border-bottom: 1px solid rgba(0, 0, 0, .1);
-
-        .mat-button {
-          width: 80px;
-          min-width: 80px;
-          max-width: 80px;
-          height: 80px;
-          white-space: normal;
-          color: rgba(255, 255, 255, .8);
-          transition: all .25s ease;
-
-          .mat-button-focus-overlay {
-            transition: all .25s ease;
-          }
-
-          .mat-icon {
-            width: 100%;
-            height: 36px;
-            font-size: 28px;
-          }
-
-          span {
-            display: block;
-            line-height: 14px;
-            font-size: 12px;
-            font-weight: 400;
-          }
-
-          &:hover {
-            color: rgba(255, 255, 255, 1);
-          }
-
-          &.active {
-            background: rgba(0, 0, 0, .15);
-          }
-        }
       }
     }
+  }
+
+  &__bottom-nav {
+    margin-top: auto;
+  }
+}
+
+.app-sidenav-btn {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  height: 80px;
+  white-space: normal;
+  color: rgba(255, 255, 255, .8);
+  transition: all .25s ease;
+
+  .mat-button-focus-overlay {
+    transition: all .25s ease;
+  }
+
+  .mat-icon {
+    width: 100%;
+    height: 36px;
+    font-size: 28px;
+  }
+
+  span {
+    display: block;
+    line-height: 14px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  &.active {
+    background: rgba(0, 0, 0, .15);
   }
 }
 
