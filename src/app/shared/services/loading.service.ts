@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class LoadingService {
 
-  loading: Subject<boolean> = new Subject();
+  loading = new Subject<boolean>();
 
   constructor() { }
 

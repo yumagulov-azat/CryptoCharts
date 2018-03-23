@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import find = require('lodash/find');
 
 // Models
 import { ChartFilter } from '../../models/chart-filter.model';

@@ -6,6 +6,7 @@
   width: 80px;
   height: 100vh;
   background: #673ab7;
+  transform: none;
 
   &__toolbar {
     height: 64px;
@@ -64,4 +65,8 @@
       }
     }
   }
+}
+
+.app-main-content {
+  margin-left: 80px;
 }

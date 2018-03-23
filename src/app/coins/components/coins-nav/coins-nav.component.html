@@ -3,7 +3,7 @@
     <h4 mat-line>All coins</h4>
   </a>
   <mat-divider></mat-divider>
-  <a mat-list-item routerLink="{{ coin.name }}" routerLinkActive="active" [routerLinkActiveOptions]="{exact:false}" *ngFor="let coin of coinsList">
+  <a mat-list-item routerLink="{{ coin.name }}/{{ toSymbol }}" routerLinkActive="active" [routerLinkActiveOptions]="{exact:false}" *ngFor="let coin of coinsList">
     <h4 mat-line>{{ coin.fullName }}</h4>
     <p mat-line>{{ coin.name }}</p>
   </a>

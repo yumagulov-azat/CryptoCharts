@@ -10,8 +10,9 @@ import { AppComponent } from './app.component';
     AppModule,
     ServerModule,
     ServerTransferStateModule,
-    ModuleMapLoaderModule
+    ModuleMapLoaderModule,
   ],
   bootstrap: [AppComponent],
+
 })
 export class AppServerModule {}

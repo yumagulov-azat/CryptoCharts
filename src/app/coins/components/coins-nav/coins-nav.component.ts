@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+// Services
+import { CoinsService } from '../../coins.service';
+
 // Models
 import { CoinsList } from '../../models/coins-list.model';
 
@@ -17,11 +20,14 @@ import { CoinsList } from '../../models/coins-list.model';
 export class CoinsNavComponent implements OnInit {
 
   @Input() coinsList: CoinsList[];
+  toSymbol: string = 'USD';
 
-  constructor() {
+  constructor(private coinsService: CoinsService) {
   }
 
   ngOnInit() {
-
+    this.coinsService.toSymbol.subscribe(res => {
+      this.toSymbol = res;
+    })
   }
 }

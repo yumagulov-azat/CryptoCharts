@@ -56,6 +56,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
         this.toSymbol = route.params.toSymbol;
         this.meta.setTitle(`${this.coinName} → ${this.toSymbol} | Coins`);
         this.getCoinInfo();
+        this.coinsService.toSymbol.next(this.toSymbol);
       });
   }
 
@@ -77,10 +78,11 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
         this.coin = coin;
         this.pageService.hideError();
 
-        if(!this.coin.toSymbols.find((item: string) => item === this.toSymbol )) {
+        if(!this.coin.toSymbols.filter((item: string) => item === this.toSymbol )) {
           this.router.navigate(['/coins/', this.coinName, this.coin.toSymbols[0]]);
         }
       }, err => {
+        console.error(err);
         this.pageService.showError();
       });
   }

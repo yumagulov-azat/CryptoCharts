@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import find = require('lodash/find');
 
 // RxJs
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
@@ -33,6 +33,7 @@ export class CoinsService {
 
   // CoinsList subject for pass it to coinsNav component
   coinsListSubject = new Subject<any>();
+  toSymbol = new BehaviorSubject<string>('');
 
   constructor(
     private http: HttpClient,
@@ -127,7 +128,7 @@ export class CoinsService {
       .flatMap((pairs: any) => {
 
         // Find USD. If USD not found, get first pair
-        toSymbol = find(pairs.Data, {toSymbol: toSymbol}) ? toSymbol : pairs.Data[0].toSymbol;
+        toSymbol = pairs.Data.filter(item => item.toSymbol == toSymbol) ? toSymbol : pairs.Data[0].toSymbol;
 
         const params = new HttpParams()
           .set('fsym', coinName)
@@ -216,6 +217,7 @@ export class CoinsService {
     const coinsRequests = [];
 
     if (coinsList.length > 0) {
+      console.log(coinsList)
       coinsList.forEach((coin) => {
         coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol));
       });

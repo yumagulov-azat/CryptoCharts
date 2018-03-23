@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
@@ -45,7 +46,8 @@ export class CoinsListComponent implements OnInit, OnDestroy {
               private router: Router,
               private meta: MetaService,
               private favoritesService: FavoritesService,
-              private pageService: PageService) {
+              private pageService: PageService,
+              @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
 
@@ -60,6 +62,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
       .subscribe((route: any) => {
         this.paginator.pageIndex = route.params.page - 1;
         this.toSymbol = route.params.toSymbol;
+        this.coinsService.toSymbol.next(this.toSymbol);
 
         this.setPageTitle();
         this.getCoinsList(this.pageSize, this.paginator.pageIndex, this.toSymbol);
@@ -88,9 +91,13 @@ export class CoinsListComponent implements OnInit, OnDestroy {
       .subscribe((coinsListData: CoinsList[]) => {
         this.coinsList.data = coinsListData;
         this.coinsList.sort = this.sort;
-        this.renderSparklines();
         this.pageService.hideError();
-      }, error => {
+
+        if (isPlatformBrowser(this.platformId)) {
+          this.renderSparklines();
+        }
+      }, err => {
+        console.error(err);
         this.pageService.showError();
       });
   }

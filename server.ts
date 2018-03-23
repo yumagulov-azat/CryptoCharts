@@ -3,22 +3,41 @@ import 'reflect-metadata';
 import {enableProdMode} from '@angular/core';
 
 import * as express from 'express';
+
 import {join} from 'path';
 import {readFileSync} from 'fs';
+
+const PORT = process.env.PORT || 4001;
+const DIST_FOLDER = join(process.cwd(), 'dist');
+
+/**
+ * Fix document is not defined and window is not defined
+ */
+const template = readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
+const domino = require('domino');
+const fs = require('fs');
+const path = require('path');
+const win = domino.createWindow(template);
+
+win.SVGPathElement = function () {};
+global['window'] = win;
+Object.defineProperty(win.document.body.style, 'transform', {
+  value: () => {
+    return {
+      enumerable: true,
+      configurable: true
+    };
+  },
+});
+global['document'] = win.document;
+global['navigator'] = win.navigator;
+global['CSS'] = undefined;
 
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
 // Express server
 const app = express();
-
-const PORT = process.env.PORT || 4000;
-const DIST_FOLDER = join(process.cwd(), 'dist');
-
-// Our index.html we'll use as our template
-const template = readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
-
-// * NOTE :: leave this as require() since this file is built Dynamically from webpack
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main.bundle');
 
 // Express Engine
@@ -26,7 +45,7 @@ import {ngExpressEngine} from '@nguniversal/express-engine';
 // Import module map for lazy loading
 import {provideModuleMap} from '@nguniversal/module-map-ngfactory-loader';
 
-// Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
+
 app.engine('html', ngExpressEngine({
   bootstrap: AppServerModuleNgFactory,
   providers: [
