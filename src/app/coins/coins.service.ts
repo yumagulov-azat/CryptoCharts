@@ -16,6 +16,7 @@ import 'rxjs/add/operator/finally';
 import { UtilsService } from '../shared/services/utils.service';
 import { FavoritesService } from '../favorites/favorites.service';
 import { LoadingService } from '../shared/services/loading.service';
+import { StorageService } from '../shared/services/storage.service';
 
 // Models
 import { CoinsList } from './models/coins-list.model';
@@ -39,9 +40,12 @@ export class CoinsService {
     private http: HttpClient,
     private utils: UtilsService,
     private favoritesService: FavoritesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private storageService: StorageService
   ) {
-
+    this.storageService.getItem('main-to-symbol').subscribe(res => {
+      this.toSymbol.next(res);
+    });
   }
 
   /**
@@ -217,7 +221,6 @@ export class CoinsService {
     const coinsRequests = [];
 
     if (coinsList.length > 0) {
-      console.log(coinsList)
       coinsList.forEach((coin) => {
         coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol));
       });

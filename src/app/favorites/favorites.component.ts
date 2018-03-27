@@ -4,6 +4,8 @@ import { FavoritesService } from './favorites.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { HistoryLimit } from '../coins/models/history-limit';
 
+import { StorageService } from '../shared/services/storage.service'
+
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
@@ -25,10 +27,10 @@ export class FavoritesComponent implements OnInit {
   coins: Array<any>;
   deletedCoins: Array<any> = [];
 
-  coinDeleting = false; // when coin enter delete block
-  drag = false; // when coin draged
+  coinDeleting: boolean = false; // when coin enter delete block
+  drag: boolean = false; // when coin draged
 
-  toSymbol = 'USD';
+  toSymbol: string = 'USD';
 
   historyLimits: HistoryLimit[] = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
@@ -41,7 +43,11 @@ export class FavoritesComponent implements OnInit {
   ];
   historyLimit: HistoryLimit = this.historyLimits[3];
 
-  constructor(private favoritesService: FavoritesService, private dragulaService: DragulaService) {
+  constructor(
+    private favoritesService: FavoritesService,
+    private dragulaService: DragulaService,
+    private storage: StorageService
+  ) {
     dragulaService.setOptions('favorites-coins-bag', {
       moves: function (el, container, handle) {
         return handle.classList.contains('favorite-coin__drag-handle');
@@ -69,6 +75,12 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.storage.getItem('main-to-symbol').subscribe(res => {
+      if(res) {
+        this.toSymbol = res;
+      }
+    });
+
     this.favoritesService.getFavoriteCoins()
       .subscribe((res: any) => {
         if (res) {

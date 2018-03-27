@@ -60,12 +60,15 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .takeUntil(this.ngUnsubscribe)
       .subscribe((route: any) => {
-        this.paginator.pageIndex = route.params.page - 1;
-        this.toSymbol = route.params.toSymbol;
-        this.coinsService.toSymbol.next(this.toSymbol);
-
-        this.setPageTitle();
-        this.getCoinsList(this.pageSize, this.paginator.pageIndex, this.toSymbol);
+        if(route.params.toSymbol && route.params.page) {
+          this.paginator.pageIndex = route.params.page - 1;
+          this.toSymbol = route.params.toSymbol;
+          this.coinsService.toSymbol.next(this.toSymbol);
+          this.setPageTitle();
+          this.getCoinsList(this.pageSize, this.paginator.pageIndex, this.toSymbol);
+        } else {
+          this.router.navigate(['/coins/list/', 'USD', 1]);
+        }
       });
   }
 
