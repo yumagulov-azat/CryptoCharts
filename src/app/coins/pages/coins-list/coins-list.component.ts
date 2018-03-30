@@ -52,23 +52,23 @@ export class CoinsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    // When paginator page changed change url
     this.paginator.page
       .subscribe((page: any) => {
         this.router.navigate(['/coins/list/', this.toSymbol, this.paginator.pageIndex + 1]);
       });
 
+    // Get params from url then get coins list
     this.route.paramMap
       .takeUntil(this.ngUnsubscribe)
       .subscribe((route: any) => {
-        if(route.params.toSymbol && route.params.page) {
-          this.paginator.pageIndex = route.params.page - 1;
-          this.toSymbol = route.params.toSymbol;
-          this.coinsService.toSymbol.next(this.toSymbol);
-          this.setPageTitle();
-          this.getCoinsList(this.pageSize, this.paginator.pageIndex, this.toSymbol);
-        } else {
-          this.router.navigate(['/coins/list/', 'USD', 1]);
-        }
+        this.paginator.pageIndex = route.params.page - 1;
+        this.toSymbol = route.params.toSymbol;
+
+        this.getCoinsList();
+        this.setPageTitle();
+        this.coinsService.toSymbol.next(this.toSymbol);
       });
   }
 
@@ -88,7 +88,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    * @param page
    * @param toSymbol
    */
-  getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): void {
+  getCoinsList(limit: number = this.pageSize, page: number = this.paginator.pageIndex, toSymbol: string = this.toSymbol): void {
     this.coinsService.getCoinsList(limit, page, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coinsListData: CoinsList[]) => {

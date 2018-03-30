@@ -4,7 +4,7 @@ import { FavoritesService } from './favorites.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { HistoryLimit } from '../coins/models/history-limit';
 
-import { StorageService } from '../shared/services/storage.service'
+import { CoinsService } from '../coins/coins.service';
 
 @Component({
   selector: 'app-favorites',
@@ -46,7 +46,7 @@ export class FavoritesComponent implements OnInit {
   constructor(
     private favoritesService: FavoritesService,
     private dragulaService: DragulaService,
-    private storage: StorageService
+    private coinsService: CoinsService
   ) {
     dragulaService.setOptions('favorites-coins-bag', {
       moves: function (el, container, handle) {
@@ -75,7 +75,7 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.storage.getItem('main-to-symbol').subscribe(res => {
+    this.coinsService.toSymbol.subscribe(res => {
       if(res) {
         this.toSymbol = res;
       }
@@ -118,6 +118,15 @@ export class FavoritesComponent implements OnInit {
   deleteCoin(coinName): void {
     this.coins.splice(this.coins.indexOf(coinName), 1);
     this.favoritesService.deleteCoin(coinName);
+  }
+
+  /**
+   * When toSymbol chaged
+   * @param toSymbol
+   */
+  toSymbolChanged(toSymbol: string): void {
+    this.toSymbol = toSymbol;
+    this.coinsService.toSymbol.next(this.toSymbol);
   }
 
 }

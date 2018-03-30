@@ -39,6 +39,10 @@
 }
 
 .app-sidenav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 80px;
   min-width: 80px;
   max-width: 80px;

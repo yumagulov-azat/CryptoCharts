@@ -24,8 +24,7 @@ export class SymbolSelectComponent implements OnInit {
     'KRW',
   ];
   @Input() symbolSelected = 'USD';
-  @Input() storageKey: string;
-  @Output() symbolChange: EventEmitter<string> = new EventEmitter();
+  @Output() symbolChanged: EventEmitter<string> = new EventEmitter();
 
   constructor(
     private storage: StorageService
@@ -36,10 +35,6 @@ export class SymbolSelectComponent implements OnInit {
   }
 
   changeSymbol() {
-    this.symbolChange.emit(this.symbolSelected);
-
-    if(this.storageKey) {
-      this.storage.setItem(this.storageKey, this.symbolSelected);
-    }
+    this.symbolChanged.emit(this.symbolSelected);
   }
 }
