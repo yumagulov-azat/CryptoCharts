@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 // Services
 import { CoinsService } from '../../coins.service';
@@ -22,12 +22,20 @@ export class CoinsNavComponent implements OnInit {
   @Input() coinsList: CoinsList[];
   toSymbol: string = 'USD';
 
-  constructor(private coinsService: CoinsService) {
+  constructor(
+    private coinsService: CoinsService,
+    private router: Router,
+  ) {
+
   }
 
   ngOnInit() {
     this.coinsService.toSymbol.subscribe(res => {
       this.toSymbol = res;
     })
+  }
+
+  isLinkActive(instruction: any[]): boolean {
+    return this.router.isActive(this.router.createUrlTree(instruction), false);
   }
 }

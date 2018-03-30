@@ -16,10 +16,14 @@ const routes: Routes = [
       // List paths
       {
         path: '',
-        redirectTo: 'list/USD/1'
+        redirectTo: 'list/USD/1',
       },
       {
         path: 'list',
+        redirectTo: 'list/USD/1'
+      },
+      {
+        path: 'list/:toSymbol',
         redirectTo: 'list/USD/1'
       },
       {
@@ -29,16 +33,16 @@ const routes: Routes = [
           meta: {
             title: 'List | Coins'
           }
-        }
+        },
       },
 
       // Coin paths
       {
-        path: ':coinName',
+        path: 'overview/:coinName',
         redirectTo: ':coinName/USD'
       },
       {
-        path: ':coinName/:toSymbol',
+        path: 'overview/:coinName/:toSymbol',
         component: CoinOverviewComponent
       }
     ]

@@ -8,7 +8,7 @@
     <nav>
       <ul>
         <li *ngFor="let item of appNav">
-          <a mat-button routerLink="{{ item.link }}" routerLinkActive="active" class="app-sidenav-btn">
+          <a mat-button routerLink="{{item.link}}" routerLinkActive="active" class="app-sidenav-btn">
             <mat-icon>{{ item.icon }}</mat-icon>
             <span>{{ item.name }}</span>
           </a>

@@ -50,7 +50,8 @@ export class StorageService {
     if (!this.checkInArray(key, value) && isPlatformBrowser(this.platformId)) {
       let array: any = localStorage.getItem(key);
 
-      if (array !== '') {
+      if (array && array !== '') {
+        console.log(array)
         array = array.split(',');
       } else {
         array = [];

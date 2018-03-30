@@ -80,7 +80,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
         this.pageService.hideError();
 
         if(!this.coin.toSymbols.filter((item: string) => item === this.toSymbol ).length) {
-          this.router.navigate(['/coins/', this.coinName, this.coin.toSymbols[0]]);
+          this.router.navigate(['/coins/overview/', this.coinName, this.coin.toSymbols[0]]);
         }
       }, err => {
         console.error(err);
@@ -110,7 +110,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * @param toSymbol
    */
   toSymbolChanged(toSymbol): void {
-    this.router.navigate(['/coins/', this.coinName, toSymbol]);
+    this.router.navigate(['/coins/overview/', this.coinName, toSymbol]);
   }
 
 }

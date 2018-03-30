@@ -90,7 +90,7 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/{{ row.name }}/{{ toSymbol }}"
+      <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/overview/{{ row.name }}/{{ toSymbol }}"
                class="coins-list-item"></mat-row>
     </mat-table>
     <mat-paginator #paginator

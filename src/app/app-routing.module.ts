@@ -26,7 +26,7 @@ const routes: Routes = [
       meta: {
         title: 'Coins'
       }
-    }
+    },
   },
   {
     path: 'exchanges',
