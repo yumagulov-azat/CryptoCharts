@@ -2,7 +2,7 @@
   <mat-toolbar-row>
     <span>All coins</span>
     <span class="spacer"></span>
-    <app-symbol-select [symbolSelected]="toSymbol" (symbolChange)="toSymbolChanged($event);"></app-symbol-select>
+    <app-symbol-select [symbolSelected]="toSymbol" (symbolChanged)="toSymbolChanged($event);"></app-symbol-select>
   </mat-toolbar-row>
 </mat-toolbar>
 

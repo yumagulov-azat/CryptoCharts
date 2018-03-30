@@ -54,9 +54,10 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
       .subscribe((route: any) => {
         this.coinName = route.params.coinName;
         this.toSymbol = route.params.toSymbol;
-        this.meta.setTitle(`${this.coinName} → ${this.toSymbol} | Coins`);
+
         this.getCoinInfo();
         this.coinsService.toSymbol.next(this.toSymbol);
+        this.meta.setTitle(`${this.coinName} → ${this.toSymbol} | Coins`);
       });
   }
 
@@ -72,13 +73,13 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * Get coin info
    */
   getCoinInfo(): void {
-    this.coinsService.getCoinFullData(this.coinName, this.chartFilter.period, this.chartFilter.periodType, this.toSymbol)
+    this.coinsService.getCoinData(this.coinName, this.chartFilter.period, this.chartFilter.periodType, this.toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
         this.pageService.hideError();
 
-        if(!this.coin.toSymbols.filter((item: string) => item === this.toSymbol )) {
+        if(!this.coin.toSymbols.filter((item: string) => item === this.toSymbol ).length) {
           this.router.navigate(['/coins/', this.coinName, this.coin.toSymbols[0]]);
         }
       }, err => {

@@ -36,7 +36,7 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.coinsService.getCoinFullData(this.coin, this.historyLimit.value, this.historyLimit.type, this.toSymbol)
+    this.coinsService.getCoinData(this.coin, this.historyLimit.value, this.historyLimit.type, this.toSymbol)
       .subscribe(res => {
         this.coinData = res;
         this.toSymbolDisplay = this.coinData.finance.toSymbolDisplay;

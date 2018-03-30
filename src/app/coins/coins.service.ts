@@ -16,6 +16,7 @@ import 'rxjs/add/operator/finally';
 import { UtilsService } from '../shared/services/utils.service';
 import { FavoritesService } from '../favorites/favorites.service';
 import { LoadingService } from '../shared/services/loading.service';
+import { StorageService } from '../shared/services/storage.service';
 
 // Models
 import { CoinsList } from './models/coins-list.model';
@@ -31,7 +32,6 @@ export class CoinsService {
 
   private API_URL = 'https://min-api.cryptocompare.com/data';
 
-  // CoinsList subject for pass it to coinsNav component
   coinsListSubject = new Subject<any>();
   toSymbol = new BehaviorSubject<string>('');
 
@@ -39,8 +39,25 @@ export class CoinsService {
     private http: HttpClient,
     private utils: UtilsService,
     private favoritesService: FavoritesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private storageService: StorageService
   ) {
+
+    // Get toSymbol from storage
+    this.storageService.getItem('toSymbol').subscribe((res: string) => {
+      if(res !== '') {
+        this.toSymbol.next(res);
+      } else {
+        this.toSymbol.next('USD');
+      }
+    });
+
+    // Save toSymbol to storage
+    this.toSymbol.subscribe(res => {
+      if(res !== '') {
+        this.storageService.setItem('toSymbol', res)
+      }
+    });
 
   }
 
@@ -111,7 +128,7 @@ export class CoinsService {
    * @param toSymbol
    * @returns {any}
    */
-  getCoinFullData(coinName: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
+  getCoinData(coinName: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
     this.loadingService.showLoading();
 
     const coinSnapshot: CoinSnapshot = {
@@ -128,7 +145,7 @@ export class CoinsService {
       .flatMap((pairs: any) => {
 
         // Find USD. If USD not found, get first pair
-        toSymbol = pairs.Data.filter(item => item.toSymbol == toSymbol) ? toSymbol : pairs.Data[0].toSymbol;
+        toSymbol = pairs.Data.filter(item => item.toSymbol == toSymbol).length ? toSymbol : pairs.Data[0].toSymbol;
 
         const params = new HttpParams()
           .set('fsym', coinName)
@@ -217,7 +234,6 @@ export class CoinsService {
     const coinsRequests = [];
 
     if (coinsList.length > 0) {
-      console.log(coinsList)
       coinsList.forEach((coin) => {
         coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol));
       });

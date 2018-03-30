@@ -31,7 +31,7 @@ export function metaFactory(): MetaLoader {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'crypto-charts'}),

@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { StorageService } from '../../services/storage.service';
+
 /**
  * Currency symbol select component
  */
@@ -22,16 +24,17 @@ export class SymbolSelectComponent implements OnInit {
     'KRW',
   ];
   @Input() symbolSelected = 'USD';
-  @Input() storageKey: Array<string>;
-  @Output() symbolChange: EventEmitter<string> = new EventEmitter();
+  @Output() symbolChanged: EventEmitter<string> = new EventEmitter();
 
-  constructor() { }
+  constructor(
+    private storage: StorageService
+  ) { }
 
   ngOnInit() {
 
   }
 
   changeSymbol() {
-    this.symbolChange.emit(this.symbolSelected);
+    this.symbolChanged.emit(this.symbolSelected);
   }
 }

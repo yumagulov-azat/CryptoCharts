@@ -12,7 +12,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <app-symbol-select (symbolChange)="toSymbol = $event"></app-symbol-select>
+          <app-symbol-select [symbolSelected]="toSymbol" (symbolChanged)="toSymbolChanged($event)"></app-symbol-select>
         </div>
       </mat-toolbar-row>
     </mat-toolbar>
