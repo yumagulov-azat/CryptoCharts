@@ -25,8 +25,8 @@
             <img src="https://www.cryptocompare.com{{ row.imageUrl }}" width="24">
           </div>
           <div class="coins-list-item__name__text">
-            {{ row.fullName }}
-            <span>{{ row.name }}</span>
+            {{ row.name }}
+            <span>{{ row.symbol }}</span>
           </div>
         </mat-cell>
       </ng-container>
@@ -90,7 +90,7 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/overview/{{ row.name }}/{{ toSymbol }}"
+      <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="/coins/overview/{{ row.symbol }}/{{ toSymbol }}"
                class="coins-list-item"></mat-row>
     </mat-table>
     <mat-paginator #paginator

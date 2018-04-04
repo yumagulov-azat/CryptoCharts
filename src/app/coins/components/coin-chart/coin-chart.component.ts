@@ -19,7 +19,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
 
   @Input() chartDataInput: any;
   @Input() chartData: any;
-  @Input() coinName: string;
+  @Input() coinSymbol: string;
   @Input() toSymbol: string;
   @Input() toSymbolDisplay = '$';
   @Input() showToolbar = true;
@@ -27,7 +27,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
   @Output() filterChanged: EventEmitter<ChartFilter> = new EventEmitter();
 
   // chartDataShow options
-  chartDataList: ChartData[] = [
+  chartDataList: chartDataList[] = [
     {value: 'close', viewValue: 'Close'},
     {value: 'open', viewValue: 'Open'},
   ];
@@ -85,7 +85,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
   }
 }
 
-export interface ChartData {
+export interface chartDataList {
   value: string;
   viewValue: string;
 }

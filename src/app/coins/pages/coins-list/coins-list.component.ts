@@ -113,7 +113,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
   renderSparklines(): void {
     const coins = this.coinsList.data.map(item => {
       return {
-        name: item.name
+        name: item.symbol
       };
     });
 
