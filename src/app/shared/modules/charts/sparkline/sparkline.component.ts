@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformServer } from '@angular/common';
 import { UtilsService } from '../../../services/utils.service';
 import * as c3 from 'c3';
 import * as moment from 'moment';
@@ -13,17 +13,17 @@ export class SparklineComponent implements OnInit, OnChanges {
 
   // Input variables
   @Input() data: any;
-  @Input() height = 50;
-  @Input() width = 200;
-  @Input() colors = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
-  @Input() toSymbolDisplay = '$';
+  @Input() height: number = 50;
+  @Input() width: number = 200;
+  @Input() colors: Array<string> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
+  @Input() toSymbolDisplay: string = '$';
 
   chart: any;
-  chartOptions: any;
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
-              @Inject(PLATFORM_ID) private platformId: Object) {
+              @Inject(PLATFORM_ID) private platformId: Object
+  ) {
 
   }
 
@@ -31,27 +31,30 @@ export class SparklineComponent implements OnInit, OnChanges {
 
   }
 
+  /**
+   * Generate sparkline chart or reload data on changes
+   */
   ngOnChanges() {
-    if (isPlatformBrowser(this.platformId)) {
-      if (!this.chartOptions) {
-        this.setChartOptions();
-      }
-      this.chartOptions.data = this.data;
+    // Stop render if platform is server
+    if (isPlatformServer(this.platformId)) return;
+    if (!this.data) return;
 
-      if (this.data) {
-        if (this.chart) {
-          this.chart.load(this.data);
-        } else {
-          this.chart = c3.generate(this.chartOptions);
-        }
-      }
+    // Render chart
+    if (this.chart) {
+    this.chart.load(this.data);
+    } else {
+      this.chart = c3.generate(this.chartOptions);
     }
   }
 
-  setChartOptions(): void {
-    this.chartOptions = {
+
+  /**
+   * Chart options for c3
+   */
+  get chartOptions(): any {
+    return {
       bindto: this.el.nativeElement.children[0],
-      data: [],
+      data: this.data || [],
       size: {
         height: this.height,
         width: this.width,
