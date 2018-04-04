@@ -1,5 +1,6 @@
 <mat-card class="favorite-coin">
   <div *ngIf="!state.loading">
+
     <!--  Header -->
     <div class="favorite-coin__header">
       <h2 class="favorite-coin__header__name mat-title">
@@ -56,15 +57,17 @@
       </div>
 
       <!-- Chart  -->
-      <app-line-chart
-        [data]="coinChartData"
-        [toSymbolDisplay]="toSymbolDisplay"
-        [subchart]="false"
-        [showY]="false"
-        [showX]="false"
-        [height]="150"
-        [chartColors]="coinData.finance.changePct24Hour > 0 ? ['#4caf50'] : ['#E91E63']">
-      </app-line-chart>
+      <div class="favorite-coin__chart">
+        <app-line-chart
+          [data]="coinChartData"
+          [toSymbolDisplay]="toSymbolDisplay"
+          [subchart]="false"
+          [showY]="false"
+          [showX]="false"
+          [height]="150"
+          [chartColors]="coinData.finance.changePct24Hour > 0 ? ['#4caf50'] : ['#E91E63']">
+        </app-line-chart>
+      </div>
     </mat-card-content>
   </div>
 

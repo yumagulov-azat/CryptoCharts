@@ -22,8 +22,7 @@ export class SparklineComponent implements OnInit, OnChanges {
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
-              @Inject(PLATFORM_ID) private platformId: Object
-  ) {
+              @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
 
@@ -41,7 +40,7 @@ export class SparklineComponent implements OnInit, OnChanges {
 
     // Render chart
     if (this.chart) {
-    this.chart.load(this.data);
+      this.chart.load(this.data);
     } else {
       this.chart = c3.generate(this.chartOptions);
     }

@@ -73,8 +73,7 @@
             [data]="row.history"
             [height]="60"
             [colors]="row.historyChange > 0 ? ['#4caf50'] : ['#d81b60']"
-            [toSymbolDisplay]="row.toSymbolDisplay"
-            *ngIf="row.history != null">
+            [toSymbolDisplay]="row.toSymbolDisplay">
           </app-sparkline>
         </mat-cell>
       </ng-container>

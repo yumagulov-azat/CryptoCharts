@@ -96,10 +96,10 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         this.coinsList.sort = this.sort;
         this.pageService.hideError();
 
+        // TODO Remove setTimeout
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
             this.renderSparklines();
-            console.log('render sparklines')
           }, 100);
         }
       }, err => {

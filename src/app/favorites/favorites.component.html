@@ -1,9 +1,13 @@
 <app-page>
   <app-page-content>
+
+    <!-- Page toolbar -->
     <mat-toolbar class="app-page-content-toolbar">
       <mat-toolbar-row>
         <span>Favorites</span>
         <span class="spacer"></span>
+
+        <!-- toSymbol select-->
         <div *ngIf="coins">
           <mat-form-field *ngIf="historyLimit">
             <mat-select [(value)]="historyLimit">
@@ -12,32 +16,42 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+
+          <!-- Period select-->
           <app-symbol-select [symbolSelected]="toSymbol" (symbolChanged)="toSymbolChanged($event)"></app-symbol-select>
         </div>
       </mat-toolbar-row>
     </mat-toolbar>
 
+    <!-- Page content -->
     <section class="app-page-content-wrap">
       <section class="favorites-coins"
                [dragula]='"favorites-coins-bag"'
-               [dragulaModel]='coins'
-               [ngClass]="{'is-drag' : drag}">
+               [dragulaModel]='coins'>
+
+        <!-- Favorite coin card-->
         <app-favorite-coin
           *ngFor="let coin of coins; let i = index"
           [coin]="coin"
           [toSymbol]="toSymbol"
           [historyLimit]="historyLimit"
           (coinDeleted)="deleteCoin($event)"
-          [@enterAnimation]>
+          [@enterAnimation]
+          [ngClass]="{'is-dragged' : drag}">
         </app-favorite-coin>
       </section>
+
+      <!-- Drop to delete -->
       <app-favorites-drop-delete
         [dragula]='"favorites-coins-bag"'
         [dragulaModel]='deletedCoins'
         [ngClass]="{'show' : drag, 'deleting' : coinDeleting }">
       </app-favorites-drop-delete>
 
+      <!-- Favorites empty message-->
       <app-favorites-empty *ngIf="!coins || coins.length < 1" [@enterAnimation]></app-favorites-empty>
+
     </section>
+
   </app-page-content>
 </app-page>
