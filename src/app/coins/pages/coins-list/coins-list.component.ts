@@ -97,7 +97,10 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         this.pageService.hideError();
 
         if (isPlatformBrowser(this.platformId)) {
-          this.renderSparklines();
+          setTimeout(() => {
+            this.renderSparklines();
+            console.log('render sparklines')
+          }, 100);
         }
       }, err => {
         console.error(err);
@@ -150,9 +153,9 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    **/
   addToFavorite(coin): void {
     if (!coin.favorite) {
-      this.favoritesService.addCoin(coin.name);
+      this.favoritesService.addCoin(coin.symbol);
     } else {
-      this.favoritesService.deleteCoin(coin.name);
+      this.favoritesService.deleteCoin(coin.symbol);
     }
     coin.favorite = !coin.favorite;
   }

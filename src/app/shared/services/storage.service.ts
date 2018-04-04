@@ -15,7 +15,8 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 export class StorageService {
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  }
 
   getItem(key: string): Observable<any> {
     if (isPlatformBrowser(this.platformId)) {
@@ -47,18 +48,19 @@ export class StorageService {
   }
 
   addToArray(key: string, value: string): void {
-    if (!this.checkInArray(key, value) && isPlatformBrowser(this.platformId)) {
+    if (isPlatformBrowser(this.platformId)) {
       let array: any = localStorage.getItem(key);
 
       if (array && array !== '') {
-        console.log(array)
         array = array.split(',');
       } else {
         array = [];
       }
 
-      array.push(value);
-      this.setItem(key, array);
+      if (!array.find((item) => item === value )) {
+        array.push(value);
+        this.setItem(key, array);
+      }
     }
   }
 
@@ -74,7 +76,7 @@ export class StorageService {
     if (isPlatformBrowser(this.platformId)) {
       const array = localStorage.getItem(key);
 
-      if(array) {
+      if (array) {
         const element = array.split(',').find((element) => {
           return element === value;
         });

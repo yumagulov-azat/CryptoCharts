@@ -30,6 +30,8 @@ export class CoinChartComponent implements OnInit, OnChanges {
   chartDataList: chartDataList[] = [
     {value: 'close', viewValue: 'Close'},
     {value: 'open', viewValue: 'Open'},
+    {value: 'high', viewValue: 'High'},
+    {value: 'low', viewValue: 'Low'},
   ];
 
   // chartPeriod options

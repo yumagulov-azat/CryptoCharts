@@ -35,7 +35,7 @@ export class CoinsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Do not make unnecessary requests
     if (this.route.snapshot.children[0].url[0].path === 'list') {
-      this.coinsListSubscription = this.coinsService.coinsListSubject
+      this.coinsListSubscription = this.coinsService.coinsList
         .takeUntil(this.ngUnsubscribe)
         .subscribe((res: CoinsList[]) => {
           this.coinsList = res;

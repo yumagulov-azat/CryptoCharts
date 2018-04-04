@@ -32,7 +32,7 @@ export class CoinsService {
 
   private API_URL = 'https://min-api.cryptocompare.com/data';
 
-  coinsListSubject = new Subject<any>();
+  coinsList = new Subject<any>();
   toSymbol = new BehaviorSubject<string>('');
 
   constructor(
@@ -65,6 +65,7 @@ export class CoinsService {
    * Get coins list
    * @param limit
    * @param page
+   * @param toSymbol
    * @returns {Observable<CoinsList[]>}
    */
   getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): Observable<CoinsList[]> {
@@ -108,7 +109,7 @@ export class CoinsService {
             });
           });
 
-          this.coinsListSubject.next(coinsList);
+          this.coinsList.next(coinsList);
           return coinsList;
 
         } else {
@@ -125,10 +126,11 @@ export class CoinsService {
    * Get coin data
    * @param coinName
    * @param historyLimit
+   * @param historyType
    * @param toSymbol
    * @returns {any}
    */
-  getCoinData(coinName: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
+  getCoinData(coinSymbol: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
     this.loadingService.showLoading();
 
     const coinSnapshot: CoinSnapshot = {
@@ -140,21 +142,21 @@ export class CoinsService {
       toSymbols: []
     };
 
-    return this.http.get('https://min-api.cryptocompare.com/data/top/pairs?fsym=' + coinName + '&limit=20')
+    return this.http.get(this.API_URL + '/top/pairs?fsym=' + coinSymbol + '&limit=20')
       .flatMap((pairs: any) => {
 
         // Find USD. If USD not found, get first pair
-        toSymbol = pairs.Data.filter(item => item.toSymbol == toSymbol).length ? toSymbol : pairs.Data[0].toSymbol;
+        toSymbol = pairs.Data.find(item => item.toSymbol == toSymbol) ? toSymbol : pairs.Data[0].toSymbol;
 
         const params = new HttpParams()
-          .set('fsym', coinName)
+          .set('fsym', coinSymbol)
           .set('tsym', toSymbol);
 
         // Request coin main info
         const coinInfoRequest = this.http.get<CoinSnapshot>(this.API_URL + '/top/exchanges/full', {params: params});
 
         // Request coin history by days
-        const coinDaysHistoryRequest = this.getCoinHistory(coinName, historyLimit, historyType, toSymbol);
+        const coinDaysHistoryRequest = this.getCoinHistory(coinSymbol, historyLimit, historyType, toSymbol);
 
         return Observable.forkJoin([coinInfoRequest, coinDaysHistoryRequest])
           .map((res: any) => {
@@ -204,12 +206,12 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  getCoinHistory(coinName: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
+  getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
     this.loadingService.showLoading();
 
     const params = new HttpParams()
       .set('limit', historyLimit.toString())
-      .set('fsym', coinName)
+      .set('fsym', coinSymbol)
       .set('tsym', toSymbol);
 
     return this.http.get(this.API_URL + '/' + historyType, {params: params})

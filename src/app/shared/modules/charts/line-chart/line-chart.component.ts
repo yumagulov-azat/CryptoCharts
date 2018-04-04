@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit, Input, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 
 // 3rd
@@ -13,7 +13,7 @@ import { UtilsService } from '../../../services/utils.service';
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.scss']
 })
-export class LineChartComponent implements OnInit, OnChanges {
+export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   @Input() data: any;
@@ -26,6 +26,7 @@ export class LineChartComponent implements OnInit, OnChanges {
   @Input() axis: any;
 
   chart: any;
+  chartValues: Array<string> = [''];
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
@@ -35,6 +36,16 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   ngOnInit() {
 
+  }
+
+  ngAfterViewInit() {
+    // Hack :(
+    // C3js not show chart after ssr
+    if (!isPlatformServer(this.platformId)) {
+      setTimeout(() => {
+        this.chart.resize();
+      }, 100);
+    }
   }
 
   /**

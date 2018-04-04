@@ -79,7 +79,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
         this.coin = coin;
         this.pageService.hideError();
 
-        if(!this.coin.toSymbols.filter((item: string) => item === this.toSymbol ).length) {
+        if(!this.coin.toSymbols.find((item: string) => item === this.toSymbol )) {
           this.router.navigate(['/coins/overview/', this.coinSymbol, this.coin.toSymbols[0]]);
         }
       }, err => {

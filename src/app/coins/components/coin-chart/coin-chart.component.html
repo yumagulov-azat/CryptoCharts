@@ -10,13 +10,6 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Data" formControlName="chartDataShow" multiple>
-        <mat-option *ngFor="let data of chartDataList" [value]="data.value">
-          {{ data.viewValue }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
   </form>
 </div>
 

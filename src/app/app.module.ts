@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -35,6 +35,7 @@ export function metaFactory(): MetaLoader {
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'crypto-charts'}),
+    BrowserTransferStateModule,
     HttpClientModule,
     TransferHttpCacheModule,
     BrowserAnimationsModule,
