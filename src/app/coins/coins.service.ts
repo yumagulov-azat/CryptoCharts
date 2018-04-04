@@ -94,8 +94,8 @@ export class CoinsService {
 
             coinsList.push({
               position: page * limit + (index + 1),
-              name: coinInfo.Name,
-              fullName: coinInfo.FullName,
+              symbol: coinInfo.Name,
+              name: coinInfo.FullName,
               imageUrl: coinInfo.ImageUrl,
               price: priceInfo.PRICE || 0,
               changePct24Hour: priceInfo.PRICE && priceInfo.OPEN24HOUR ? Math.round(((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100) * 100) / 100 : 0,
@@ -139,7 +139,6 @@ export class CoinsService {
       pairs: [],
       toSymbols: []
     };
-
 
     return this.http.get('https://min-api.cryptocompare.com/data/top/pairs?fsym=' + coinName + '&limit=20')
       .flatMap((pairs: any) => {

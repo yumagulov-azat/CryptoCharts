@@ -1,7 +1,7 @@
 <mat-toolbar class="app-page-content-toolbar">
   <mat-toolbar-row>
     <span>
-      {{ coinName }}
+      <span *ngIf="coin">{{ coin.info.FullName }} |</span> {{ coinSymbol }}
     </span>
     <span class="spacer"></span>
     <app-symbol-select *ngIf="coin" [symbols]="coin.toSymbols" [symbolSelected]="toSymbol" (symbolChanged)="toSymbolChanged($event)"></app-symbol-select>
@@ -58,7 +58,7 @@
       <mat-card-content>
         <app-coin-chart
           [chartDataInput]="coin.history"
-          [coinName]="coinName"
+          [coinSymbol]="coinSymbol"
           [toSymbol]="coin.finance.toSymbol"
           [toSymbolDisplay]="coin.finance.toSymbolDisplay"
           [filter]="chartFilter"

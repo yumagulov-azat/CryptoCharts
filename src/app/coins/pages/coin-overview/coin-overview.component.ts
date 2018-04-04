@@ -29,7 +29,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
 
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  coinName: string;
+  coinSymbol: string;
   toSymbol: string;
 
   coin: CoinSnapshot;
@@ -52,12 +52,12 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .takeUntil(this.ngUnsubscribe)
       .subscribe((route: any) => {
-        this.coinName = route.params.coinName;
+        this.coinSymbol = route.params.coinSymbol;
         this.toSymbol = route.params.toSymbol;
 
         this.getCoinInfo();
         this.coinsService.toSymbol.next(this.toSymbol);
-        this.meta.setTitle(`${this.coinName} → ${this.toSymbol} | Coins`);
+        this.meta.setTitle(`${this.coinSymbol} → ${this.toSymbol} | Coins`);
       });
   }
 
@@ -73,14 +73,14 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * Get coin info
    */
   getCoinInfo(): void {
-    this.coinsService.getCoinData(this.coinName, this.chartFilter.period, this.chartFilter.periodType, this.toSymbol)
+    this.coinsService.getCoinData(this.coinSymbol, this.chartFilter.period, this.chartFilter.periodType, this.toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
         this.pageService.hideError();
 
         if(!this.coin.toSymbols.filter((item: string) => item === this.toSymbol ).length) {
-          this.router.navigate(['/coins/overview/', this.coinName, this.coin.toSymbols[0]]);
+          this.router.navigate(['/coins/overview/', this.coinSymbol, this.coin.toSymbols[0]]);
         }
       }, err => {
         console.error(err);
@@ -95,7 +95,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * @param toSymbol
    */
   getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
-    this.coinsService.getCoinHistory(this.coinName, filter.period, filter.periodType, toSymbol)
+    this.coinsService.getCoinHistory(this.coinSymbol, filter.period, filter.periodType, toSymbol)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((history: any) => {
         this.coin.history = history;
@@ -110,7 +110,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * @param toSymbol
    */
   toSymbolChanged(toSymbol): void {
-    this.router.navigate(['/coins/overview/', this.coinName, toSymbol]);
+    this.router.navigate(['/coins/overview/', this.coinSymbol, toSymbol]);
   }
 
 }

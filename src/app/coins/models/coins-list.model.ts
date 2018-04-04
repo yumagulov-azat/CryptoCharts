@@ -3,8 +3,8 @@
  */
 export interface CoinsList {
   position: number;
+  symbol: string;
   name: string;
-  fullName: string;
   imageUrl: string;
   price: number;
   changePct24Hour: number;

@@ -38,11 +38,11 @@ const routes: Routes = [
 
       // Coin paths
       {
-        path: 'overview/:coinName',
-        redirectTo: ':coinName/USD'
+        path: 'overview/:coinSymbol',
+        redirectTo: ':coinSymbol/USD'
       },
       {
-        path: 'overview/:coinName/:toSymbol',
+        path: 'overview/:coinSymbol/:toSymbol',
         component: CoinOverviewComponent
       }
     ]

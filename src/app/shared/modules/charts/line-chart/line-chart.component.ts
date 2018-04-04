@@ -1,8 +1,12 @@
 import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { UtilsService } from '../../../services/utils.service';
+import { isPlatformServer } from '@angular/common';
+
+// 3rd
 import * as c3 from 'c3';
 import * as moment from 'moment';
+
+// Services
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-line-chart',
@@ -11,18 +15,17 @@ import * as moment from 'moment';
 })
 export class LineChartComponent implements OnInit, OnChanges {
 
-  // Input variables
+
   @Input() data: any;
-  @Input() height = 400;
+  @Input() height: number = 400;
   @Input() chartColors: Array<any> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
-  @Input() subchart = true;
-  @Input() toSymbolDisplay = '$';
-  @Input() showY = true;
-  @Input() showX = true;
+  @Input() subchart: boolean = true;
+  @Input() toSymbolDisplay: string = '$';
+  @Input() showY: boolean = true;
+  @Input() showX: boolean = true;
   @Input() axis: any;
 
   chart: any;
-  chartOptions: any;
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
@@ -34,7 +37,15 @@ export class LineChartComponent implements OnInit, OnChanges {
 
   }
 
+  /**
+   * Generate chart or reload data on changes
+   */
   ngOnChanges() {
+    // Stop render if platform is server
+    if (isPlatformServer(this.platformId)) return;
+    if (!this.data) return;
+
+    // Prepare chart axis options
     if (!this.axis) {
       this.axis = {
         y: {
@@ -59,26 +70,21 @@ export class LineChartComponent implements OnInit, OnChanges {
       };
     }
 
-    if (isPlatformBrowser(this.platformId)) {
-      if (!this.chartOptions) {
-        this.setChartOptions();
-      }
-      this.chartOptions.data = this.data;
-
-      if (this.data) {
-        if (this.chart) {
-          this.chart.load(this.data);
-        } else {
-          this.chart = c3.generate(this.chartOptions);
-        }
-      }
+    // Render chart
+    if (this.chart) {
+      this.chart.load(this.data);
+    } else {
+      this.chart = c3.generate(this.chartOptions);
     }
   }
 
-  setChartOptions(): void {
-    this.chartOptions = {
+  /**
+   * Chart options for c3
+   */
+  get chartOptions(): any {
+    return {
       bindto: this.el.nativeElement.children[0],
-      data: [],
+      data: this.data || [],
       size: {
         height: this.height
       },
@@ -106,7 +112,7 @@ export class LineChartComponent implements OnInit, OnChanges {
           height: 50
         }
       }
-    };
+    }
   }
 
 }
