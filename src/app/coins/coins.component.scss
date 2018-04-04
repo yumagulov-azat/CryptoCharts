@@ -1,3 +1,6 @@
+//
+// Fix «T bug» on mat-sort with ssr
+//
 ::ng-deep .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
   opacity: 0;
 }

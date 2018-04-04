@@ -8,15 +8,11 @@
       }
     }
   }
-}
 
-.to-symbol-select {
-  width: 70px;
-  font-size: 16px
-}
-
-mat-card {
-  margin-bottom: 16px;
+  mat-card {
+    margin-bottom: 16px;
+    box-shadow: 0 3px 8px rgba(0,0,0,.1);
+  }
 }
 
 .coin-stats {
@@ -47,8 +43,6 @@ mat-card {
     }
   }
 }
-
-
 
 
 .coin-overview-error {

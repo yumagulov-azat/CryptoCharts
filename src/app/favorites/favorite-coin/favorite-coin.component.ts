@@ -22,6 +22,7 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
 
   coinData: CoinSnapshot;
   coinChartData: any;
+  coinTrend: number = 0;
 
   toSymbolDisplay = '$';
 
@@ -39,6 +40,7 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
     this.coinsService.getCoinData(this.coin, this.historyLimit.value, this.historyLimit.type, this.toSymbol)
       .subscribe(res => {
         this.coinData = res;
+        this.coinTrend = res.finance.changePct24Hour;
         this.toSymbolDisplay = this.coinData.finance.toSymbolDisplay;
         this.state.loading = false;
         this.prepareChartData();
@@ -60,6 +62,9 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
       keys: {
         x: 'time',
         value: ['close'],
+      },
+      colors: {
+        'close': this.coinData.finance.changePct24Hour > 0 ? '#4caf50' : '#E91E63'
       },
       type: 'area-spline'
     };

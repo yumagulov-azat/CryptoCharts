@@ -1,10 +1,11 @@
 .favorite-coin {
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
   min-height: 308px;
   padding-bottom: 0;
   padding-top: 18px;
-  transition: transform .3s ease;
+  overflow: hidden;
+  transition: all .3s ease, box-shadow 1s ease;
 
   // Favorite coin card header
   &__header {
@@ -18,7 +19,7 @@
         display: block;
         font-size: 14px;
         line-height: 14px;
-        color: rgba(0,0,0,.4)
+        color: rgba(0, 0, 0, .4)
       }
     }
 
@@ -53,7 +54,7 @@
       max-width:: 33.33333%;
 
       &__title {
-        color: rgba(0,0,0,.4);
+        color: rgba(0, 0, 0, .4);
         margin-bottom: 5px;
       }
 
@@ -68,6 +69,7 @@
   &__chart {
     transform: translateY(8px);
     margin: 0 -26px 0px -26px;
+    overflow: hidden;
   }
 
   // Drag handle button
@@ -106,6 +108,18 @@
 //
 :host {
   position: relative;
+
+  mat-card.favorite-coin {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .1);
+
+    &.trend-negative {
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 20px 30px rgba(233, 30, 99, 0.1);
+    }
+
+    &.trend-positive {
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 20px 30px rgba(76, 175, 80, 0.1);
+    }
+  }
 
   &.gu-transit {
     .favorite-coin {

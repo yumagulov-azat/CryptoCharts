@@ -1,4 +1,4 @@
-<mat-card class="favorite-coin">
+<mat-card class="favorite-coin" [ngClass]="{'trend-positive': coinTrend > 0, 'trend-negative': coinTrend < 0}">
   <div *ngIf="!state.loading">
 
     <!--  Header -->
@@ -64,8 +64,7 @@
           [subchart]="false"
           [showY]="false"
           [showX]="false"
-          [height]="150"
-          [chartColors]="coinData.finance.changePct24Hour > 0 ? ['#4caf50'] : ['#E91E63']">
+          [height]="150">
         </app-line-chart>
       </div>
     </mat-card-content>

@@ -3,12 +3,13 @@
 .favorites-coins {
   display: flex;
   flex-wrap: wrap;
-  margin-left: -8px;
-  margin-right: -8px;
+  padding-top: 16px;
+  //margin-left: -8px;
+  //margin-right: -8px;
 
   app-favorite-coin {
     flex: 50% 0 0;
     max-width: 50%;
-    padding: 0 8px;
+    padding: 0 16px;
   }
 }
