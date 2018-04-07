@@ -1,0 +1,21 @@
+<mat-card class="news-list-item">
+  <mat-card-header>
+    <div class="news-list-item__date">
+      {{ news.date }} |
+      <span class="news-list-item__source">
+        <a href="{{ news.source.name }}" target="_blank">{{ news.source.name }}</a>
+      </span>
+    </div>
+    <h2 class="news-list-item__title">
+      <a href="{{ news.url }}" target="_blank">{{ news.title }}</a>
+    </h2>
+  </mat-card-header>
+  <mat-card-content class="news-list-item__body">
+    <div class="news-list-item__img">
+      <img src="{{ news.imageUrl }}" alt="{{ news.title }}">
+    </div>
+    <div class="news-list-item__anons">
+      {{ news.anons }}
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -6,7 +6,11 @@ import { NewsComponent } from './news.component';
 const routes: Routes = [
   {
     path: '',
-    component: NewsComponent
+    redirectTo: 'all',
+  },
+  {
+    path: ':categoryName',
+    component: NewsComponent,
   }
 ];
 

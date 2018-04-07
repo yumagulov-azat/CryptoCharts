@@ -1,0 +1,9 @@
+<mat-nav-list>
+  <a mat-list-item routerLink="/news/all" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+    <h4 mat-line>All categories</h4>
+  </a>
+  <mat-divider></mat-divider>
+  <a mat-list-item routerLink="/news/{{ category.name }}" routerLinkActive="active" *ngFor="let category of newsCategories">
+    <h4 mat-line>{{ category.name }}</h4>
+  </a>
+</mat-nav-list>
