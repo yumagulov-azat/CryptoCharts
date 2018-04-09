@@ -35,8 +35,7 @@ export class SparklineComponent implements OnInit, OnChanges {
    */
   ngOnChanges() {
     // Stop render if platform is server
-    if (isPlatformServer(this.platformId)) return;
-    if (!this.data) return;
+    if (isPlatformServer(this.platformId) || !this.data) return;
 
     // Render chart
     if (this.chart) {

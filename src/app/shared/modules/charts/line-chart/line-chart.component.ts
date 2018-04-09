@@ -53,8 +53,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
    */
   ngOnChanges() {
     // Stop render if platform is server
-    if (isPlatformServer(this.platformId)) return;
-    if (!this.data) return;
+    if (isPlatformServer(this.platformId) || !this.data) return;
 
     // Prepare chart axis options
     if (!this.axis) {

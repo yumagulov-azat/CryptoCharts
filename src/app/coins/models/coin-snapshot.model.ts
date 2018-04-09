@@ -8,4 +8,5 @@ export interface CoinSnapshot {
   exchanges: Array<any>;
   pairs: Array<any>;
   toSymbols: Array<any>;
+  volumeByCurrency: Array<any>
 }

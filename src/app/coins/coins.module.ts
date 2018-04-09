@@ -11,6 +11,7 @@ import { CoinsListComponent } from './pages/coins-list/coins-list.component';
 import { CoinOverviewComponent } from './pages/coin-overview/coin-overview.component';
 import { CoinsNavComponent } from './components/coins-nav/coins-nav.component';
 import { CoinChartComponent } from './components/coin-chart/coin-chart.component';
+import { CoinDonutChartComponent } from './components/coin-donut-chart/coin-donut-chart.component';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { CoinChartComponent } from './components/coin-chart/coin-chart.component
     CoinsListComponent,
     CoinOverviewComponent,
     CoinChartComponent,
+    CoinDonutChartComponent,
   ],
   exports: [
     CoinsComponent

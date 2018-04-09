@@ -42,6 +42,14 @@
       height: 115px;
     }
   }
+
+  &--donuts {
+    .coin-stats__card {
+      mat-card {
+        height: auto;
+      }
+    }
+  }
 }
 
 

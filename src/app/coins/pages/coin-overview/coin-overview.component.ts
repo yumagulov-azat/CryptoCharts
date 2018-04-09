@@ -40,6 +40,9 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
     data: ['close']
   };
 
+  coinVolumeByCurrencyChartData: Array<any>;
+  coinVolumeByExchangesChartData: Array<any>;
+
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
               private router: Router,
@@ -78,12 +81,14 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
-        this.pageService.hideError();
         this.pageTitle = this.coin.info.FullName;
 
         if(!this.coin.toSymbols.find((item: string) => item === this.toSymbol )) {
           this.router.navigate(['/coins/overview/', this.coinSymbol, this.coin.toSymbols[0]]);
         }
+
+        this.prepareDonutsData();
+        this.pageService.hideError();
       }, err => {
         console.error(err);
         this.pageService.showError();
@@ -114,5 +119,20 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
   toSymbolChanged(toSymbol): void {
     this.router.navigate(['/coins/overview/', this.coinSymbol, toSymbol]);
   }
+
+  prepareDonutsData(): void {
+    this.coinVolumeByCurrencyChartData = this.coin.volumeByCurrency
+      .slice(0,5)
+      .map((item: any) => {
+        return [item.toSymbol, item.volume24h]
+      });
+
+    this.coinVolumeByExchangesChartData = this.coin.exchanges
+      .slice(0,5)
+      .map((item: any) => {
+        return [item.MARKET, item.VOLUME24HOUR]
+      });
+  }
+
 
 }
