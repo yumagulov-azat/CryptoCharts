@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoadingService } from '../../services/loading.service';
+
+// RxJs
 import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
 
 /**
  * App loading progress indicator
@@ -26,7 +29,7 @@ export class LoadingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   }
-
+  
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

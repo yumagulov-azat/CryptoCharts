@@ -1,8 +1,18 @@
 <app-page>
-  <app-page-nav [title]="'News'">
-
+  <app-page-nav [title]="'Crypto News'">
+    <app-news-categories [newsCategories]="newsCategories"></app-news-categories>
   </app-page-nav>
   <app-page-content>
-    <router-outlet></router-outlet>
+    <mat-toolbar class="app-page-content-toolbar">
+      <mat-toolbar-row>
+        <span *ngIf="activeCategory">{{ activeCategory }} |&nbsp;</span> <span>Latest news</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <section class="app-page-content-wrap">
+      <app-loading></app-loading>
+
+      <app-news-list [newsList]="newsList"></app-news-list>
+    </section>
   </app-page-content>
 </app-page>

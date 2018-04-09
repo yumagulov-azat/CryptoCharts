@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
  * Loading state service
@@ -8,7 +9,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class LoadingService {
 
-  loading = new Subject<boolean>();
+  loading = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
