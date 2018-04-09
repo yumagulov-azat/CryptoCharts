@@ -1,12 +1,12 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 
 // Services
-import { CoinsService } from '../../coins/coins.service';
-import { PageService } from '../../shared/modules/page/page.service';
+import { CoinsService } from '../../../coins/coins.service';
+import { PageService } from '../../../shared/modules/page/page.service';
 
 // Models
-import { CoinSnapshot } from '../../coins/models/coin-snapshot.model';
-import { HistoryLimit } from '../../coins/models/history-limit';
+import { CoinSnapshot } from '../../../coins/models/coin-snapshot.model';
+import { HistoryLimit } from '../../../coins/models/history-limit';
 
 @Component({
   selector: 'app-favorite-coin',

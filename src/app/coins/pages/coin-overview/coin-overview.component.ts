@@ -31,6 +31,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
 
   coinSymbol: string;
   toSymbol: string;
+  pageTitle: string = '';
 
   coin: CoinSnapshot;
   chartFilter: ChartFilter = {
@@ -78,6 +79,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
         this.pageService.hideError();
+        this.pageTitle = this.coin.info.FullName;
 
         if(!this.coin.toSymbols.find((item: string) => item === this.toSymbol )) {
           this.router.navigate(['/coins/overview/', this.coinSymbol, this.coin.toSymbols[0]]);

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 
 // RxJs
@@ -29,7 +29,6 @@ export class NewsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private meta: MetaService,
     private newsService: NewsService
   ) { }
@@ -37,12 +36,14 @@ export class NewsComponent implements OnInit {
   ngOnInit() {
     this.getNewsCategories();
 
+    // Load news list on route params changed
     this.route.paramMap
       .takeUntil(this.ngUnsubscribe)
       .subscribe((route: any) => {
         const category = route.params.categoryName;
         this.getNewsList(category);
 
+        // Set title
         if(category !== 'all') {
           this.meta.setTitle(`${category} | News`);
           this.activeCategory = category;
@@ -58,23 +59,30 @@ export class NewsComponent implements OnInit {
     this.ngUnsubscribe.complete();
   }
 
+  /**
+   * Get latest news
+   * @param category
+   */
   getNewsList(category: string = ''): void {
     this.newsService.getNewsList(category)
       .takeUntil(this.ngUnsubscribe)
       .subscribe((res: NewsList[]) => {
           this.newsList = res;
       }, (err) => {
-        console.log(err)
+        console.log(err);
       });
   }
 
+  /**
+   * Get categories list
+   */
   getNewsCategories(): void {
     this.newsService.getNewsCategories()
       .takeUntil(this.ngUnsubscribe)
       .subscribe((res: NewsCategories[]) => {
           this.newsCategories = res;
       }, (err) => {
-        console.log(err)
+        console.log(err);
       });
   }
 

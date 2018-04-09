@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID } from '@a
 import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 // RxJs
 import { Subscription } from 'rxjs/Subscription';
@@ -38,7 +38,6 @@ export class CoinsListComponent implements OnInit, OnDestroy {
   pageSize: number = 50;
   toSymbol: string;
 
-  @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private coinsService: CoinsService,
@@ -93,7 +92,6 @@ export class CoinsListComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe((coinsListData: CoinsList[]) => {
         this.coinsList.data = coinsListData;
-        this.coinsList.sort = this.sort;
         this.pageService.hideError();
 
         // TODO Remove setTimeout

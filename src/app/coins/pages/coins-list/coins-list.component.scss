@@ -56,6 +56,8 @@
 
 // Table row style
 .coins-list-item {
+  overflow: hidden;
+
   &__position {
     max-width: 40px;
     color: rgba(0, 0, 0, .3)
@@ -103,6 +105,7 @@
     text-align: center;
     margin-left: 8px;
     opacity: 0;
+    overflow: hidden;
     transform: translateX(40px);
     transition: all .25s ease;
 

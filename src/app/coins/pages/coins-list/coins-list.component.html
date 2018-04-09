@@ -9,17 +9,17 @@
 <section class="app-page-content-wrap">
   <div class="coins-list">
     <app-loading></app-loading>
-    <mat-table #table [dataSource]="coinsList" matSort>
+    <mat-table #table [dataSource]="coinsList">
 
       <!-- Position Column -->
       <ng-container matColumnDef="position">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
         <mat-cell *matCellDef="let row" class="coins-list-item__position"> {{ row.position }}</mat-cell>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let row" class="coins-list-item__name">
           <div class="coins-list-item__name__img">
             <img src="https://www.cryptocompare.com{{ row.imageUrl }}" width="24">
@@ -33,7 +33,7 @@
 
       <!-- Price Column -->
       <ng-container matColumnDef="price">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <span>{{ row.price | cryptoCurrency:row.toSymbolDisplay }}</span>
         </mat-cell>
@@ -41,13 +41,13 @@
 
       <!-- Market cap Column -->
       <ng-container matColumnDef="marketCap">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Market cap</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Market cap</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.marketCap | cryptoCurrency:row.toSymbolDisplay:'short' }}</mat-cell>
       </ng-container>
 
       <!-- Chg. 24H Column -->
       <ng-container matColumnDef="changePct24Hour">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Chg. 24H</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Chg. 24H</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <div [ngClass]="{'value-up': row.changePct24Hour > 0, 'value-down': row.changePct24Hour < 0}">
             {{ row.changePct24Hour }}%
@@ -57,7 +57,7 @@
 
       <!-- Chg. 7d Column -->
       <ng-container matColumnDef="change7d">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Chg. 7d</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Chg. 7d</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <div [ngClass]="{'value-up': row.historyChange > 0, 'value-down': row.historyChange < 0}">
             {{ row.historyChange }}%

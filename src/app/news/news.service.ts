@@ -23,6 +23,11 @@ export class NewsService {
     private loadingService: LoadingService
   ) { }
 
+  /**
+   * Get latest news
+   * @param category
+   * @returns {Observable<T>}
+   */
   getNewsList(category: string = ''): Observable<NewsList[]> {
     this.loadingService.showLoading();
 
@@ -59,6 +64,10 @@ export class NewsService {
       });
   }
 
+  /**
+   * Get news categories list
+   * @returns {Observable<R>}
+   */
   getNewsCategories(): Observable<NewsCategories[]> {
     return this.http.get(this.API_URL + 'categories')
       .map((res: any) => {

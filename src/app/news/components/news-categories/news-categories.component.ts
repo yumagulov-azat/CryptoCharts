@@ -10,7 +10,7 @@ import { NewsCategories } from '../../models/news-categories';
 })
 export class NewsCategoriesComponent implements OnInit {
 
-  @Input() newsCategories: Array<any> = [];
+  @Input() newsCategories: NewsCategories[] = [];
 
   constructor() { }
 
