@@ -1,11 +1,12 @@
-import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ChangeDetectionStrategy, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import * as c3 from 'c3';
 
 @Component({
   selector: 'app-donut-chart',
   templateUrl: './donut-chart.component.html',
-  styleUrls: ['./donut-chart.component.scss']
+  styleUrls: ['./donut-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DonutChartComponent implements OnInit, OnChanges {
 
@@ -30,15 +31,13 @@ export class DonutChartComponent implements OnInit, OnChanges {
     // Render chart
     if (this.chart) {
       this.chart.load({
-        columns: this.data,
-        unload: this.oldData.map((item: any) => {
-          return item[0]
-        })
+        columns: this.data
       });
-
+      this.chart.unload(this.unloadData)
     } else {
       this.chart = c3.generate(this.chartOptions);
     }
+
     this.oldData = this.data;
   }
 
@@ -62,6 +61,24 @@ export class DonutChartComponent implements OnInit, OnChanges {
         duration: 600
       }
     };
+  }
+
+  /**
+   * Return data columns for unload
+   * @returns {Array}
+   */
+  get unloadData(): Array<string> {
+    const columns: Array<string> = [];
+
+    this.oldData.forEach((oldItem) => {
+      let some = this.data.some((newItem) => { return newItem[0] == oldItem[0] });
+
+      if(!some) {
+        columns.push(oldItem[0])
+      }
+    });
+
+    return columns;
   }
 
 }
