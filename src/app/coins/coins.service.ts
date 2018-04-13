@@ -139,10 +139,11 @@ export class CoinsService {
       history: [],
       exchanges: [],
       pairs: [],
-      toSymbols: []
+      toSymbols: [],
+      volumeByCurrency: []
     };
 
-    return this.http.get(this.API_URL + '/top/pairs?fsym=' + coinSymbol + '&limit=20')
+    return this.getVolumeByCurrency(coinSymbol, 20)
       .flatMap((pairs: any) => {
 
         // Find USD. If USD not found, get first pair
@@ -185,6 +186,7 @@ export class CoinsService {
               coinSnapshot.pairs = pairs.Data;
               coinSnapshot.toSymbols = pairs.Data.map((item: any) => item.toSymbol);
               coinSnapshot.exchanges = res[0].Data.Exchanges;
+              coinSnapshot.volumeByCurrency = pairs.Data
 
               return coinSnapshot;
             } else {
@@ -246,6 +248,21 @@ export class CoinsService {
     } else {
       throw new Error('Coins list empty');
     }
+  }
+
+
+  /**
+   * Get top pairs by volume for a currency
+   * @param coinSymbol
+   * @param limit
+   * @returns {Observable<Object>}
+   */
+  getVolumeByCurrency(coinSymbol: string, limit: number = 5): Observable<any> {
+    const params = new HttpParams()
+      .set('fsym', coinSymbol)
+      .set('limit', limit.toString());
+
+    return this.http.get(this.API_URL + '/top/pairs', { params: params} )
   }
 
 }

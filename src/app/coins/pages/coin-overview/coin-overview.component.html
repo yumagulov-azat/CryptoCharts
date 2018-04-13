@@ -114,5 +114,22 @@
         </mat-card>
       </div>
     </div>
+
+    <!-- Coin donuts -->
+    <div class="coin-stats coin-stats--donuts">
+      <div class="coin-stats__card">
+        <app-coin-donut-chart
+          [title]="coinSymbol + ' Volume by Currency'"
+          [chartData]="coinVolumeByCurrencyChartData">
+        </app-coin-donut-chart>
+      </div>
+      <div class="coin-stats__card">
+        <app-coin-donut-chart
+          [title]="coinSymbol + '-' + toSymbol + ' Volume by Exchange'"
+          [chartData]="coinVolumeByExchangesChartData">
+        </app-coin-donut-chart>
+      </div>
+    </div>
+
   </div>
 </section>

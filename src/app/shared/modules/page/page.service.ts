@@ -10,10 +10,11 @@ export class PageService {
 
   constructor() { }
 
-  showError(message: string = 'API error'): void {
+  showError(message: string = 'API error', icon: string = 'cloud_of'): void {
     this.pageError.next({
       show: true,
-      message: message
+      message: message,
+      icon: icon
     });
   }
 
