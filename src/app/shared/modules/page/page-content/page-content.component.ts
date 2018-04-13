@@ -14,6 +14,7 @@ export class PageContentComponent implements OnInit {
 
   error = false;
   errorMessage: string;
+  errorIcon: string;
 
   constructor(private pageService: PageService) { }
 
@@ -22,6 +23,7 @@ export class PageContentComponent implements OnInit {
       .subscribe(res => {
         this.error = res.show;
         this.errorMessage = res.message;
+        this.errorIcon = res.icon;
       });
   }
 
