@@ -49,7 +49,7 @@
       <ng-container matColumnDef="changePct24Hour">
         <mat-header-cell *matHeaderCellDef>Chg. 24H</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <div [ngClass]="{'value-up': row.changePct24Hour > 0, 'value-down': row.changePct24Hour < 0}">
+          <div [appTrendColor]="row.changePct24Hour">
             {{ row.changePct24Hour }}%
           </div>
         </mat-cell>
@@ -59,7 +59,7 @@
       <ng-container matColumnDef="change7d">
         <mat-header-cell *matHeaderCellDef>Chg. 7d</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <div [ngClass]="{'value-up': row.historyChange > 0, 'value-down': row.historyChange < 0}">
+          <div [appTrendColor]="row.historyChange">
             {{ row.historyChange }}%
           </div>
         </mat-cell>

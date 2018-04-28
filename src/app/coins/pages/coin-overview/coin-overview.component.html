@@ -51,7 +51,7 @@
             <div class="coin-stats__card__title">
               24h change
             </div>
-            <div class="coin-stats__card__value" [ngClass]="{'value-up': coin.finance.changePct24Hour > 0, 'value-down': coin.finance.changePct24Hour < 0}">
+            <div class="coin-stats__card__value" [appTrendColor]="coin.finance.changePct24Hour">
               {{ coin.finance.changePct24Hour }}%
             </div>
           </mat-card-content>

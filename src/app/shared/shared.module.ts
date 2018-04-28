@@ -13,6 +13,9 @@ import { SymbolSelectComponent } from './components/symbol-select/symbol-select.
 // Pipes
 import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
 
+// Directives
+import { TrendColorDirective } from './directives/trend-color.directive';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +26,8 @@ import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
   declarations: [
     LoadingComponent,
     CryptoCurrencyPipe,
-    SymbolSelectComponent
+    SymbolSelectComponent,
+    TrendColorDirective
   ],
   exports: [
     CommonModule,
@@ -32,7 +36,8 @@ import { CryptoCurrencyPipe } from './pipes/crypto-currency.pipe';
     ChartsModule,
     LoadingComponent,
     CryptoCurrencyPipe,
-    SymbolSelectComponent
+    SymbolSelectComponent,
+    TrendColorDirective
   ]
 })
 export class SharedModule { }

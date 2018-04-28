@@ -50,7 +50,7 @@
           <div class="favorite-coin__stats__item__title">
             Change 24h
           </div>
-          <div class="favorite-coin__stats__item__value" [ngClass]="{'value-up': coinData.finance.changePct24Hour > 0, 'value-down': coinData.finance.changePct24Hour < 0}">
+          <div class="favorite-coin__stats__item__value" [appTrendColor]="coinData.finance.changePct24Hour">
             {{ coinData.finance.changePct24Hour }}%
           </div>
         </div>
