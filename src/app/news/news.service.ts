@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 // RxJs
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { map, finalize } from 'rxjs/operators';
 
 // Services
@@ -17,6 +18,9 @@ import { NewsCategories } from './models/news-categories'
 export class NewsService {
 
   private API_URL = 'https://min-api.cryptocompare.com/data/news/';
+
+  // Cache
+  newsCategoriesCache: NewsCategories[];
 
   constructor(
     private http: HttpClient,
@@ -71,23 +75,28 @@ export class NewsService {
    * @returns {Observable<R>}
    */
   getNewsCategories(): Observable<NewsCategories[]> {
-    return this.http.get(this.API_URL + 'categories')
-      .pipe(
-        map((res: any) => {
-          const newsCategories: NewsCategories[] = [];
-          if(res) {
-            res.forEach((item: any) => {
-              newsCategories.push({
-                name: item.categoryName
-              })
-            });
-          } else {
-            throw new Error('News categories list empty');
-          }
+    if(this.newsCategoriesCache) {
+      return of(this.newsCategoriesCache)
+    } else {
+      return this.http.get(this.API_URL + 'categories')
+        .pipe(
+          map((res: any) => {
+            const newsCategories: NewsCategories[] = [];
+            if(res) {
+              res.forEach((item: any) => {
+                newsCategories.push({
+                  name: item.categoryName
+                })
+              });
+            } else {
+              throw new Error('News categories list empty');
+            }
 
-          return newsCategories;
-        })
-      );
+            this.newsCategoriesCache = newsCategories;
+            return newsCategories;
+          })
+        );
+    }
   }
 
 }

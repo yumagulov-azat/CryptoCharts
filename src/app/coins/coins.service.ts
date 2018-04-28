@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { from } from 'rxjs/observable/from';
+import { of } from 'rxjs/observable/of';
 import { map, mergeMap, concatMap, finalize} from 'rxjs/operators';
 
 // Services
@@ -30,8 +31,13 @@ export class CoinsService {
 
   private API_URL = 'https://min-api.cryptocompare.com/data';
 
-  coinsList = new Subject<any>();
-  toSymbol = new BehaviorSubject<string>('');
+  coinsList: Subject<any> = new Subject<any>();
+  toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
+  // Cache
+  coinDataCache: any = {};
+  coinHistoryCache: any = {};
+  volumeByCurrencyCache: any = {}
 
   constructor(
     private http: HttpClient,
@@ -160,42 +166,53 @@ export class CoinsService {
           // Request coin history by days
           const coinDaysHistoryRequest = this.getCoinHistory(coinSymbol, historyLimit, historyType, toSymbol);
 
-          return forkJoin([coinInfoRequest, coinDaysHistoryRequest])
-            .pipe(
-              map((res: any) => {
-                if (res[0].Response === 'Success') {
-                  const finance = res[0].Data.AggregatedData;
+          let cacheKey = coinSymbol + toSymbol;
 
-                  coinSnapshot.info = res[0].Data.CoinInfo;
-                  coinSnapshot.history = res[1];
-                  coinSnapshot.finance = {
-                    toSymbol: toSymbol,
-                    toSymbolDisplay: this.utils.getSymbolFromCurrency(toSymbol),
-                    price: finance.PRICE,
-                    change24Hour: finance.CHANGE24HOUR,
-                    changeDay: finance.CHANGEDAY,
-                    changePct24Hour: finance.CHANGEPCT24HOUR.toFixed(2),
-                    changePctDay: finance.CHANGEPCTDAY.toFixed(2),
-                    high24Hour: finance.HIGH24HOUR,
-                    highDay: finance.HIGHDAY,
-                    low24Hour: finance.LOW24HOUR,
-                    lowDay: finance.LOWDAY,
-                    open24Hour: finance.OPEN24HOUR,
-                    openDay: finance.OPENDAY,
-                    marketCap: finance.MKTCAP,
-                    volume24Hour: finance.VOLUME24HOUR,
-                  };
-                  coinSnapshot.pairs = pairs.Data;
-                  coinSnapshot.toSymbols = pairs.Data.map((item: any) => item.toSymbol);
-                  coinSnapshot.exchanges = res[0].Data.Exchanges;
-                  coinSnapshot.volumeByCurrency = pairs.Data
+          // If request in cache return cache
+          if(this.coinDataCache[cacheKey]) {
+            this.loadingService.hideLoading();
+            return of(this.coinDataCache[cacheKey]);
+          } else {
+            return forkJoin([coinInfoRequest, coinDaysHistoryRequest])
+              .pipe(
+                map((res: any) => {
+                  if (res[0].Response === 'Success') {
+                    const finance = res[0].Data.AggregatedData;
 
-                  return coinSnapshot;
-                } else {
-                  throw new Error('Coin data empty');
-                }
-              })
-            );
+                    coinSnapshot.info = res[0].Data.CoinInfo;
+                    coinSnapshot.history = res[1];
+                    coinSnapshot.finance = {
+                      toSymbol: toSymbol,
+                      toSymbolDisplay: this.utils.getSymbolFromCurrency(toSymbol),
+                      price: finance.PRICE,
+                      change24Hour: finance.CHANGE24HOUR,
+                      changeDay: finance.CHANGEDAY,
+                      changePct24Hour: finance.CHANGEPCT24HOUR.toFixed(2),
+                      changePctDay: finance.CHANGEPCTDAY.toFixed(2),
+                      high24Hour: finance.HIGH24HOUR,
+                      highDay: finance.HIGHDAY,
+                      low24Hour: finance.LOW24HOUR,
+                      lowDay: finance.LOWDAY,
+                      open24Hour: finance.OPEN24HOUR,
+                      openDay: finance.OPENDAY,
+                      marketCap: finance.MKTCAP,
+                      volume24Hour: finance.VOLUME24HOUR,
+                    };
+                    coinSnapshot.pairs = pairs.Data;
+                    coinSnapshot.toSymbols = pairs.Data.map((item: any) => item.toSymbol);
+                    coinSnapshot.exchanges = res[0].Data.Exchanges;
+                    coinSnapshot.volumeByCurrency = pairs.Data
+
+                    // Cache pair in variable
+                    this.coinDataCache[cacheKey] = coinSnapshot;
+
+                    return coinSnapshot;
+                  } else {
+                    throw new Error('Coin data empty');
+                  }
+                })
+              );
+          }
         }),
         finalize(() => {
           this.loadingService.hideLoading();
@@ -212,7 +229,7 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
+  getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD', fromCache: boolean = true): Observable<any> {
     this.loadingService.showLoading();
 
     const params = new HttpParams()
@@ -220,15 +237,25 @@ export class CoinsService {
       .set('fsym', coinSymbol)
       .set('tsym', toSymbol);
 
-    return this.http.get(this.API_URL + '/' + historyType, {params: params})
-      .pipe(
-        map((res: any) => {
-          return res.Data;
-        }),
-        finalize(() => {
-          this.loadingService.hideLoading();
-        })
-      );
+    let cacheKey = historyType + historyLimit.toString() + coinSymbol + toSymbol;
+
+    // If request in cache return cache
+    if(this.coinHistoryCache[cacheKey] && fromCache) {
+      this.loadingService.hideLoading();
+      return of(this.coinHistoryCache[cacheKey])
+    } else {
+      return this.http.get(this.API_URL + '/' + historyType, {params: params})
+        .pipe(
+          map((res: any) => {
+            // Cache pair in variable
+            this.coinHistoryCache[cacheKey] = res.Data;
+            return res.Data;
+          }),
+          finalize(() => {
+            this.loadingService.hideLoading();
+          })
+        );
+    }
   }
 
 
@@ -244,13 +271,13 @@ export class CoinsService {
 
     if (coinsList.length > 0) {
       coinsList.forEach((coin) => {
-        coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol));
+        coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol, false));
       });
 
       return from(coinsRequests)
         .pipe(
-          concatMap((value) => {
-            return value;
+          concatMap((history) => {
+            return history;
           })
         );
     } else {
@@ -270,7 +297,20 @@ export class CoinsService {
       .set('fsym', coinSymbol)
       .set('limit', limit.toString());
 
-    return this.http.get(this.API_URL + '/top/pairs', { params: params} )
-  }
+    let cacheKey = '/top/pairs/' + coinSymbol + limit.toString();
 
+    // If request in cache return cache
+    if(this.volumeByCurrencyCache[cacheKey]) {
+      return of(this.volumeByCurrencyCache[cacheKey])
+    } else {
+      return this.http.get(this.API_URL + '/top/pairs', { params: params} )
+        .pipe(
+          map((res) => {
+            // Cache pair in variable
+            this.volumeByCurrencyCache[cacheKey] = res;
+            return res;
+          })
+        );
+    }
+  }
 }
