@@ -36,7 +36,7 @@
           [toSymbol]="toSymbol"
           [historyLimit]="historyLimit"
           (coinDeleted)="deleteCoin($event)"
-          [@enterAnimation]
+          [@slideInUp]
           [ngClass]="{'is-dragged' : drag}">
         </app-favorite-coin>
       </section>

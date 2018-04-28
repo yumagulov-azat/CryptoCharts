@@ -1,26 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { FavoritesService } from './favorites.service';
-import { trigger, style, animate, transition } from '@angular/animations';
+import { animate } from '@angular/animations';
 import { HistoryLimit } from '@app/coins/models/history-limit';
 
 import { CoinsService } from '@app/coins/coins.service';
+
+import { slideInUp } from '@app/shared/animations/slide-in-up';
 
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.scss'],
   viewProviders: [DragulaService],
-  animations: [
-    trigger(
-      'enterAnimation', [
-        transition(':enter', [
-          style({transform: 'translateY(100px)', opacity: 0}),
-          animate('0.6s cubic-bezier(0.075, 0.82, 0.165, 1)', style({transform: 'translateY(0)', opacity: 1}))
-        ])
-      ]
-    )
-  ]
+  animations: [slideInUp()]
 })
 export class FavoritesComponent implements OnInit {
 
