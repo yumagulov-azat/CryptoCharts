@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { LazyLoadImagesModule } from 'ngx-lazy-load-images';
 import { SharedModule } from '../shared/shared.module';
 
 import { NewsRoutingModule } from './news-routing.module';
@@ -9,6 +10,7 @@ import { NewsListItemComponent } from './components/news-list-item/news-list-ite
 
 @NgModule({
   imports: [
+    LazyLoadImagesModule,
     SharedModule,
     NewsRoutingModule
   ],
