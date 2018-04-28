@@ -3,9 +3,8 @@ import { isPlatformBrowser } from '@angular/common';
 
 // RxJs
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+import { of } from 'rxjs/observable/of';
+import { map, mergeMap } from 'rxjs/operators';
 
 /**
  * Storage service.
@@ -20,9 +19,9 @@ export class StorageService {
 
   getItem(key: string): Observable<any> {
     if (isPlatformBrowser(this.platformId)) {
-      return Observable.of(localStorage.getItem(key));
+      return of(localStorage.getItem(key));
     } else {
-      return Observable.of('');
+      return of('');
     }
   }
 
@@ -34,14 +33,16 @@ export class StorageService {
 
   getItemAsArray(key: string): Observable<Array<any>> {
     if (isPlatformBrowser(this.platformId)) {
-      return Observable.of(localStorage.getItem(key))
-        .map(res => {
-          if (res) {
-            return res.split(',');
-          } else {
-            return null;
-          }
-        });
+      return of(localStorage.getItem(key))
+        .pipe(
+          map(res => {
+            if (res) {
+              return res.split(',');
+            } else {
+              return null;
+            }
+          })
+        );
     } else {
       return Observable.of([]);
     }

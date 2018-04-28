@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 // RxJs
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
+import { map, finalize } from 'rxjs/operators';
 
 // Services
 import { LoadingService } from '@app/shared/services/loading.service';
@@ -36,32 +36,34 @@ export class NewsService {
       .set('categories', category === 'all' ? '' : category);
 
     return this.http.get(this.API_URL, { params: params })
-      .map((res: any) => {
-        const newsList: News[] = [];
+      .pipe(
+        map((res: any) => {
+          const newsList: News[] = [];
 
-        if(res) {
-          res.forEach((item: any) => {
-            newsList.push({
-              date: moment.unix(item.published_on).fromNow(),
-              title: item.title,
-              anons: item.body,
-              imageUrl: item.imageurl,
-              url: item.url,
-              source: {
-                name: item.source_info.name,
-                img: item.source_info.img
-              },
-            })
-          });
-        } else {
-          throw new Error('News list empty');
-        }
+          if(res) {
+            res.forEach((item: any) => {
+              newsList.push({
+                date: moment.unix(item.published_on).fromNow(),
+                title: item.title,
+                anons: item.body,
+                imageUrl: item.imageurl,
+                url: item.url,
+                source: {
+                  name: item.source_info.name,
+                  img: item.source_info.img
+                },
+              })
+            });
+          } else {
+            throw new Error('News list empty');
+          }
 
-        return newsList;
-      })
-      .finally(() => {
-        this.loadingService.hideLoading();
-      });
+          return newsList;
+        }),
+        finalize(() => {
+          this.loadingService.hideLoading();
+        })
+      )
   }
 
   /**
@@ -70,20 +72,22 @@ export class NewsService {
    */
   getNewsCategories(): Observable<NewsCategories[]> {
     return this.http.get(this.API_URL + 'categories')
-      .map((res: any) => {
-        const newsCategories: NewsCategories[] = [];
-        if(res) {
-          res.forEach((item: any) => {
-            newsCategories.push({
-              name: item.categoryName
-            })
-          });
-        } else {
-          throw new Error('News categories list empty');
-        }
+      .pipe(
+        map((res: any) => {
+          const newsCategories: NewsCategories[] = [];
+          if(res) {
+            res.forEach((item: any) => {
+              newsCategories.push({
+                name: item.categoryName
+              })
+            });
+          } else {
+            throw new Error('News categories list empty');
+          }
 
-        return newsCategories;
-      });
+          return newsCategories;
+        })
+      );
   }
 
 }
