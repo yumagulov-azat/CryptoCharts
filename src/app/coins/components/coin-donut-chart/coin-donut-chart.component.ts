@@ -1,9 +1,10 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-coin-donut-chart',
   templateUrl: './coin-donut-chart.component.html',
-  styleUrls: ['./coin-donut-chart.component.scss']
+  styleUrls: ['./coin-donut-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoinDonutChartComponent implements OnInit, OnChanges {
 

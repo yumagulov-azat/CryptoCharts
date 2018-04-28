@@ -10,7 +10,7 @@ import 'rxjs/add/operator/takeUntil';
 import { NewsService } from './news.service';
 
 // Models
-import { NewsList } from './models/news-list';
+import { News } from './models/news';
 import { NewsCategories } from './models/news-categories';
 
 @Component({
@@ -22,7 +22,7 @@ export class NewsComponent implements OnInit {
 
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  newsList: NewsList[] = [];
+  newsList: News[] = [];
   newsCategories: NewsCategories[] = [];
 
   activeCategory: string = '';
@@ -66,7 +66,7 @@ export class NewsComponent implements OnInit {
   getNewsList(category: string = ''): void {
     this.newsService.getNewsList(category)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe((res: NewsList[]) => {
+      .subscribe((res: News[]) => {
           this.newsList = res;
       }, (err) => {
         console.log(err);

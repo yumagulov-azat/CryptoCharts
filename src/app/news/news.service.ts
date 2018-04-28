@@ -10,7 +10,7 @@ import 'rxjs/add/operator/finally';
 import { LoadingService } from '../shared/services/loading.service';
 
 // Models
-import { NewsList } from './models/news-list'
+import { News } from './models/news'
 import { NewsCategories } from './models/news-categories'
 
 @Injectable()
@@ -28,16 +28,16 @@ export class NewsService {
    * @param category
    * @returns {Observable<T>}
    */
-  getNewsList(category: string = ''): Observable<NewsList[]> {
+  getNewsList(category: string = ''): Observable<News[]> {
     this.loadingService.showLoading();
 
     let params = new HttpParams()
       .set('lang', 'EN')
       .set('categories', category === 'all' ? '' : category);
 
-    return this.http.get<NewsList[]>(this.API_URL, { params: params })
+    return this.http.get(this.API_URL, { params: params })
       .map((res: any) => {
-        const newsList: NewsList[] = [];
+        const newsList: News[] = [];
 
         if(res) {
           res.forEach((item: any) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 // Models
@@ -13,7 +13,8 @@ import { HistoryLimit } from '../../models/history-limit';
 @Component({
   selector: 'app-coin-chart',
   templateUrl: './coin-chart.component.html',
-  styleUrls: ['./coin-chart.component.scss']
+  styleUrls: ['./coin-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoinChartComponent implements OnInit, OnChanges {
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { StorageService } from '../../services/storage.service';
 
@@ -9,7 +9,8 @@ import { StorageService } from '../../services/storage.service';
 @Component({
   selector: 'app-symbol-select',
   templateUrl: './symbol-select.component.html',
-  styleUrls: ['./symbol-select.component.scss']
+  styleUrls: ['./symbol-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SymbolSelectComponent implements OnInit {
 

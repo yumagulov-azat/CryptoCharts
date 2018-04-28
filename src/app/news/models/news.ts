@@ -1,4 +1,4 @@
-export interface NewsList {
+export interface News {
   date: string,
   title: string,
   anons: string,

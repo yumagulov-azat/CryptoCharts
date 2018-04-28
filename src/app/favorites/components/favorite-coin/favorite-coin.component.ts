@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
 // Services
 import { CoinsService } from '../../../coins/coins.service';
@@ -12,6 +12,7 @@ import { HistoryLimit } from '../../../coins/models/history-limit';
   selector: 'app-favorite-coin',
   templateUrl: './favorite-coin.component.html',
   styleUrls: ['./favorite-coin.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FavoriteCoinComponent implements OnInit, OnChanges {
 
@@ -33,7 +34,8 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
   };
 
   constructor(private coinsService: CoinsService,
-              private pageService: PageService) {
+              private pageService: PageService,
+              private cd: ChangeDetectorRef) {
   }
 
   ngOnChanges() {
@@ -44,8 +46,10 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
         this.toSymbolDisplay = this.coinData.finance.toSymbolDisplay;
         this.state.loading = false;
         this.prepareChartData();
+        this.cd.detectChanges();
       }, err => {
         this.pageService.showError();
+        this.cd.detectChanges();
       });
   }
 
@@ -76,6 +80,7 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
    */
   deleteCoin(coinName): void {
     this.coinDeleted.emit(coinName);
+    this.cd.detectChanges();
   }
 
 }

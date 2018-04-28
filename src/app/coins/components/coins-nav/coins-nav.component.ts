@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Services
@@ -15,7 +15,8 @@ import { CoinsList } from '../../models/coins-list.model';
 @Component({
   selector: 'app-coins-nav',
   templateUrl: './coins-nav.component.html',
-  styleUrls: ['./coins-nav.component.scss']
+  styleUrls: ['./coins-nav.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoinsNavComponent implements OnInit {
 
@@ -25,6 +26,7 @@ export class CoinsNavComponent implements OnInit {
   constructor(
     private coinsService: CoinsService,
     private router: Router,
+    private cd: ChangeDetectorRef
   ) {
 
   }
@@ -32,7 +34,8 @@ export class CoinsNavComponent implements OnInit {
   ngOnInit() {
     this.coinsService.toSymbol.subscribe(res => {
       this.toSymbol = res;
-    })
+      this.cd.detectChanges();
+    });
   }
 
   isLinkActive(instruction: any[]): boolean {

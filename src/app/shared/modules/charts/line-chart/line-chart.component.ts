@@ -1,4 +1,14 @@
-import { Component, OnInit, OnChanges, AfterViewInit, Input, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  AfterViewInit,
+  Input,
+  ElementRef,
+  Inject,
+  PLATFORM_ID,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 
 // 3rd
@@ -11,7 +21,8 @@ import { UtilsService } from '../../../services/utils.service';
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
-  styleUrls: ['./line-chart.component.scss']
+  styleUrls: ['./line-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { UtilsService } from '../../../services/utils.service';
 import * as c3 from 'c3';
@@ -7,7 +7,8 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-sparkline',
   templateUrl: './sparkline.component.html',
-  styleUrls: ['./sparkline.component.scss']
+  styleUrls: ['./sparkline.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SparklineComponent implements OnInit, OnChanges {
 
