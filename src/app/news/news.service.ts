@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/finally';
 
 // Services
-import { LoadingService } from '../shared/services/loading.service';
+import { LoadingService } from '@app/shared/services/loading.service';
 
 // Models
 import { News } from './models/news'

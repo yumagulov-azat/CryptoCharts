@@ -12,8 +12,8 @@ import 'rxjs/add/operator/switchMap';
 
 // Services
 import { CoinsService } from '../../coins.service';
-import { FavoritesService } from '../../../favorites/favorites.service';
-import { PageService } from '../../../shared/modules/page/page.service';
+import { FavoritesService } from '@app/favorites/favorites.service';
+import { PageService } from '@app/shared/modules/page/page.service';
 
 // Models
 import { CoinsList } from '../../models/coins-list.model';

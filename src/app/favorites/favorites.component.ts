@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { FavoritesService } from './favorites.service';
 import { trigger, style, animate, transition } from '@angular/animations';
-import { HistoryLimit } from '../coins/models/history-limit';
+import { HistoryLimit } from '@app/coins/models/history-limit';
 
-import { CoinsService } from '../coins/coins.service';
+import { CoinsService } from '@app/coins/coins.service';
 
 @Component({
   selector: 'app-favorites',

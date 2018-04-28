@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { StorageService } from '../shared/services/storage.service';
+import { StorageService } from '@app/shared/services/storage.service';
 
 @Injectable()
 export class FavoritesService {

@@ -8,8 +8,8 @@ import 'rxjs/add/operator/takeUntil';
 
 // Services
 import { CoinsService } from '../../coins.service';
-import { NotificationsService } from '../../../shared/services/notifications.service';
-import { PageService } from '../../../shared/modules/page/page.service';
+import { NotificationsService } from '@app/shared/services/notifications.service';
+import { PageService } from '@app/shared/modules/page/page.service';
 
 // Models
 import { CoinSnapshot } from '../../models/coin-snapshot.model';

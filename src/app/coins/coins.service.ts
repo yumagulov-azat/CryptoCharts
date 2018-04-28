@@ -13,10 +13,10 @@ import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/finally';
 
 // Services
-import { UtilsService } from '../shared/services/utils.service';
-import { FavoritesService } from '../favorites/favorites.service';
-import { LoadingService } from '../shared/services/loading.service';
-import { StorageService } from '../shared/services/storage.service';
+import { UtilsService } from '@app/shared/services/utils.service';
+import { FavoritesService } from '@app/favorites/favorites.service';
+import { LoadingService } from '@app/shared/services/loading.service';
+import { StorageService } from '@app/shared/services/storage.service';
 
 // Models
 import { CoinsList } from './models/coins-list.model';
