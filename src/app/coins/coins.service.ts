@@ -8,14 +8,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { from } from 'rxjs/observable/from';
 import { of } from 'rxjs/observable/of';
-import { map, mergeMap, concatMap, finalize} from 'rxjs/operators';
+import { map, mergeMap, concatMap, finalize, catchError } from 'rxjs/operators';
 
 // Services
 import { UtilsService } from '@app/shared/services/utils.service';
 import { FavoritesService } from '@app/favorites/favorites.service';
 import { LoadingService } from '@app/shared/services/loading.service';
 import { StorageService } from '@app/shared/services/storage.service';
-import { CoinsServiceHelpers } from './coins.service.helpers';
 
 // Models
 import { CoinsList } from './models/coins-list.model';
@@ -34,8 +33,6 @@ export class CoinsService {
   coinHistoryCache: any = {};
   volumeByCurrencyCache: any = {}
 
-  coinsServiceHelpers: any;
-
   constructor(
     private http: HttpClient,
     private utils: UtilsService,
@@ -44,23 +41,23 @@ export class CoinsService {
     private storageService: StorageService,
   ) {
 
-    this.coinsServiceHelpers = new CoinsServiceHelpers(utils, favoritesService);
-
     // Get toSymbol from storage
-    this.storageService.getItem('toSymbol').subscribe((res: string) => {
-      if(res !== '') {
-        this.toSymbol.next(res);
-      } else {
-        this.toSymbol.next('USD');
-      }
-    });
+    this.storageService.getItem('toSymbol')
+      .subscribe((res: string) => {
+        if(res !== '') {
+          this.toSymbol.next(res);
+        } else {
+          this.toSymbol.next('USD');
+        }
+      });
 
     // Save toSymbol to storage
-    this.toSymbol.subscribe(res => {
-      if(res !== '') {
-        this.storageService.setItem('toSymbol', res)
-      }
-    });
+    this.toSymbol
+      .subscribe(res => {
+        if(res !== '') {
+          this.storageService.setItem('toSymbol', res)
+        }
+      });
 
   }
 
@@ -79,16 +76,19 @@ export class CoinsService {
       .set('page', page.toString())
       .set('tsym', toSymbol);
 
+    let coinsList: CoinsList[] = [];
+
     return this.http.get(this.API_URL + '/top/totalvol', {params: params})
       .pipe(
         map((res: any) => {
           if (res.Message === 'Success' && res.Data.length > 0) {
-            let coinsList = this.coinsServiceHelpers.convertDataToCoinsList(res.Data, page, limit, toSymbol);
-            this.coinsList.next(coinsList);
-            return coinsList;
+            coinsList = this.convertDataToCoinsList(res.Data, page, limit, toSymbol);
           } else {
             throw new Error('Coins list empty');
           }
+
+          this.coinsList.next(coinsList);
+          return coinsList;
         }),
         finalize(() => {
           this.loadingService.hideLoading();
@@ -107,11 +107,16 @@ export class CoinsService {
   getCoinData(coinSymbol: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
     this.loadingService.showLoading();
 
+    let coinSnapshot: CoinSnapshot;
+
+    // Get coin avalible pairs
     return this.getVolumeByCurrency(coinSymbol, 20)
       .pipe(
         mergeMap((pairs: any) => {
+          if(!pairs.Data.length) throw new Error('Coin data empty');
+
           // Find USD. If USD not found, get first pair
-          toSymbol = pairs.Data.find(item => item.toSymbol == toSymbol) ? toSymbol : pairs.Data[0].toSymbol;
+          toSymbol = pairs.Data.find(item => item.toSymbol === toSymbol) ? toSymbol : pairs.Data[0].toSymbol;
 
           const params = new HttpParams()
             .set('fsym', coinSymbol)
@@ -124,6 +129,7 @@ export class CoinsService {
             this.loadingService.hideLoading();
             return of(this.coinDataCache[cacheKey]);
           } else {
+            // Get coin main info and price history
             return forkJoin([
               this.http.get<CoinSnapshot>(this.API_URL + '/top/exchanges/full', {params: params}),
               this.getCoinHistory(coinSymbol, historyLimit, historyType, toSymbol)
@@ -131,12 +137,13 @@ export class CoinsService {
               .pipe(
                 map((res: any) => {
                   if (res[0].Response === 'Success') {
-                    let coinSnapshot = this.coinsServiceHelpers.convertDataToCoinShanpshot(res, pairs, toSymbol);
+                    coinSnapshot = this.convertDataToCoinShanpshot(res, pairs, toSymbol);
                     this.coinDataCache[cacheKey] = coinSnapshot;
-                    return coinSnapshot;
                   } else {
                     throw new Error('Coin data empty');
                   }
+
+                  return coinSnapshot;
                 })
               );
           }
@@ -174,7 +181,6 @@ export class CoinsService {
       return this.http.get(this.API_URL + '/' + historyType, {params: params})
         .pipe(
           map((res: any) => {
-            // Cache pair in variable
             this.coinHistoryCache[cacheKey] = res.Data;
             return res.Data;
           }),
@@ -239,5 +245,77 @@ export class CoinsService {
           })
         );
     }
+  }
+
+  /**
+   * Convert data from server to CoinsList[]
+   */
+  private convertDataToCoinsList(data: Array<any>, page: number, limit: number, toSymbol: string): CoinsList[] {
+    const coinsList: CoinsList[] = [];
+
+    data.forEach((item, index) => {
+      const coinInfo: any = item.CoinInfo,
+            conversionInfo: any = item.ConversionInfo || { Supply: 0, RAW: ['']};
+
+      let priceInfo: any;
+
+      if (conversionInfo.RAW.length > 1) {
+        priceInfo = this.utils.cccUnpackMulti(conversionInfo.RAW);
+      } else {
+        priceInfo = this.utils.cccUnpack(conversionInfo.RAW[0]);
+      }
+
+      coinsList.push({
+        position: page * limit + (index + 1),
+        symbol: coinInfo.Name,
+        name: coinInfo.FullName,
+        imageUrl: coinInfo.ImageUrl,
+        price: priceInfo.PRICE || 0,
+        changePct24Hour: priceInfo.PRICE && priceInfo.OPEN24HOUR ? Math.round(((priceInfo.PRICE - priceInfo.OPEN24HOUR) / priceInfo.OPEN24HOUR * 100) * 100) / 100 : 0,
+        marketCap: priceInfo.PRICE * conversionInfo.Supply || 0,
+        history: null,
+        historyChange: 0,
+        conversionSymbol: toSymbol,
+        favorite: this.favoritesService.checkFavorite(coinInfo.Name),
+        toSymbolDisplay: this.utils.getSymbolFromCurrency(toSymbol),
+      });
+    });
+
+    return coinsList;
+  }
+
+  /**
+   * Convert data from server to coinSnapshot
+   */
+  private convertDataToCoinShanpshot(data: Array<any>, pairs: any, toSymbol: string): CoinSnapshot {
+    const finance = data[0].Data.AggregatedData;
+
+    const coinSnapshot: CoinSnapshot = {
+      info: data[0].Data.CoinInfo,
+      finance: {
+        toSymbol: toSymbol,
+        toSymbolDisplay: this.utils.getSymbolFromCurrency(toSymbol),
+        price: finance.PRICE,
+        change24Hour: finance.CHANGE24HOUR,
+        changeDay: finance.CHANGEDAY,
+        changePct24Hour: finance.CHANGEPCT24HOUR.toFixed(2),
+        changePctDay: finance.CHANGEPCTDAY.toFixed(2),
+        high24Hour: finance.HIGH24HOUR,
+        highDay: finance.HIGHDAY,
+        low24Hour: finance.LOW24HOUR,
+        lowDay: finance.LOWDAY,
+        open24Hour: finance.OPEN24HOUR,
+        openDay: finance.OPENDAY,
+        marketCap: finance.MKTCAP,
+        volume24Hour: finance.VOLUME24HOUR,
+      },
+      history: data[1],
+      exchanges: data[0].Data.Exchanges,
+      pairs: pairs.Data,
+      toSymbols: pairs.Data.map((item: any) => item.toSymbol),
+      volumeByCurrency: pairs.Data
+    };
+
+    return coinSnapshot;
   }
 }
