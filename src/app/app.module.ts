@@ -14,6 +14,8 @@ import { AppComponent } from './app.component';
 import { CoinsService } from './coins/coins.service';
 import { FavoritesService } from './favorites/favorites.service';
 import { NewsService } from './news/news.service';
+import { ExchangesService } from './exchanges/exchanges.service';
+
 import { UtilsService } from './shared/services/utils.service';
 import { NotificationsService } from './shared/services/notifications.service';
 import { StorageService } from './shared/services/storage.service';
@@ -54,7 +56,8 @@ export function metaFactory(): MetaLoader {
     LoadingService,
     CoinsService,
     FavoritesService,
-    NewsService
+    NewsService,
+    ExchangesService
   ],
   bootstrap: [
     AppComponent

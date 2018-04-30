@@ -28,11 +28,6 @@ export class CoinsService {
   coinsList: Subject<any> = new Subject<any>();
   toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  // Cache
-  coinDataCache: any = {};
-  coinHistoryCache: any = {};
-  volumeByCurrencyCache: any = {}
-
   constructor(
     private http: HttpClient,
     private utils: UtilsService,
@@ -122,31 +117,19 @@ export class CoinsService {
             .set('fsym', coinSymbol)
             .set('tsym', toSymbol);
 
-          const cacheKey = coinSymbol + toSymbol;
-
-          // If request in cache return cache
-          if(this.coinDataCache[cacheKey]) {
-            this.loadingService.hideLoading();
-            return of(this.coinDataCache[cacheKey]);
-          } else {
-            // Get coin main info and price history
-            return forkJoin([
-              this.http.get<CoinSnapshot>(this.API_URL + '/top/exchanges/full', {params: params}),
-              this.getCoinHistory(coinSymbol, historyLimit, historyType, toSymbol)
-            ])
-              .pipe(
-                map((res: any) => {
-                  if (res[0].Response === 'Success') {
-                    coinSnapshot = this.convertDataToCoinShanpshot(res, pairs, toSymbol);
-                    this.coinDataCache[cacheKey] = coinSnapshot;
-                  } else {
-                    throw new Error('Coin data empty');
-                  }
-
-                  return coinSnapshot;
-                })
-              );
-          }
+          return forkJoin([
+            this.http.get<CoinSnapshot>(this.API_URL + '/top/exchanges/full', {params: params}),
+            this.getCoinHistory(coinSymbol, historyLimit, historyType, toSymbol)
+          ])
+            .pipe(
+              map((res: any) => {
+                if (res[0].Response === 'Success') {
+                  return this.convertDataToCoinShanpshot(res, pairs, toSymbol);
+                } else {
+                  throw new Error('Coin data empty');
+                }
+              })
+            );
         }),
         finalize(() => {
           this.loadingService.hideLoading();
@@ -163,7 +146,7 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD', fromCache: boolean = true): Observable<any> {
+  getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
     this.loadingService.showLoading();
 
     const params = new HttpParams()
@@ -171,24 +154,15 @@ export class CoinsService {
       .set('fsym', coinSymbol)
       .set('tsym', toSymbol);
 
-    let cacheKey = historyType + historyLimit.toString() + coinSymbol + toSymbol;
-
-    // If request in cache return cache
-    if(this.coinHistoryCache[cacheKey] && fromCache) {
-      this.loadingService.hideLoading();
-      return of(this.coinHistoryCache[cacheKey])
-    } else {
-      return this.http.get(this.API_URL + '/' + historyType, {params: params})
-        .pipe(
-          map((res: any) => {
-            this.coinHistoryCache[cacheKey] = res.Data;
-            return res.Data;
-          }),
-          finalize(() => {
-            this.loadingService.hideLoading();
-          })
-        );
-    }
+    return this.http.get(this.API_URL + '/' + historyType, {params: params})
+      .pipe(
+        map((res: any) => {
+          return res.Data;
+        }),
+        finalize(() => {
+          this.loadingService.hideLoading();
+        })
+      );
   }
 
 
@@ -204,7 +178,7 @@ export class CoinsService {
 
     if (coinsList.length > 0) {
       coinsList.forEach((coin) => {
-        coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol, false));
+        coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol));
       });
 
       return from(coinsRequests)
@@ -230,21 +204,12 @@ export class CoinsService {
       .set('fsym', coinSymbol)
       .set('limit', limit.toString());
 
-    let cacheKey = '/top/pairs/' + coinSymbol + limit.toString();
-
-    // If request in cache return cache
-    if(this.volumeByCurrencyCache[cacheKey]) {
-      return of(this.volumeByCurrencyCache[cacheKey])
-    } else {
-      return this.http.get(this.API_URL + '/top/pairs', { params: params} )
-        .pipe(
-          map((res) => {
-            // Cache pair in variable
-            this.volumeByCurrencyCache[cacheKey] = res;
-            return res;
-          })
-        );
-    }
+    return this.http.get(this.API_URL + '/top/pairs', { params: params} )
+      .pipe(
+        map((res) => {
+          return res;
+        })
+      );
   }
 
   /**
