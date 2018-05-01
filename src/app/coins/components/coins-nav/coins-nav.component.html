@@ -1,10 +1,16 @@
 <mat-nav-list>
-  <a mat-list-item [routerLink]="['/coins/list/', toSymbol, 1]" [class.active]="isLinkActive(['/coins/list/', toSymbol, 1])">
+  <a mat-list-item [routerLink]="['/coins/list/', toSymbol, 1]"
+     [class.active]="isLinkActive(['/coins/list/', toSymbol, 1])">
     <h4 mat-line>All coins</h4>
   </a>
   <mat-divider></mat-divider>
-  <a mat-list-item [routerLink]="['/coins/overview/', coin.symbol, toSymbol]" [class.active]="isLinkActive(['/coins/overview/', coin.symbol, toSymbol])" *ngFor="let coin of coinsList">
+  <a mat-list-item [routerLink]="['/coins/overview/', coin.symbol, toSymbol]"
+     [class.active]="isLinkActive(['/coins/overview/', coin.symbol, toSymbol])" *ngFor="let coin of coinsList">
+    <div class="text-right" [appTrendColor]="coin.changePct24Hour">
+      {{ coin.changePct24Hour }}%
+    </div>
     <h4 mat-line>{{ coin.name }}</h4>
     <p mat-line>{{ coin.symbol }}</p>
   </a>
 </mat-nav-list>
+

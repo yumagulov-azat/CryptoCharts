@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-
   appNav: AppNav[] = [
     {
       name: 'Favorites',
@@ -29,6 +28,7 @@ export class AppComponent {
       icon: 'view_list'
     }
   ];
+
 }
 
 export interface AppNav {
@@ -36,3 +36,5 @@ export interface AppNav {
   link: string;
   icon: string;
 }
+
+

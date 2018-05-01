@@ -36,15 +36,18 @@ export class NewsService {
     this.loadingService.showLoading();
 
     let params = new HttpParams()
-      .set('lang', 'EN')
-      .set('categories', category === 'all' ? '' : category);
+      .set('lang', 'EN');
+
+    if(category !== 'all') {
+      params.set('categories', category);
+    }
 
     return this.http.get(this.API_URL, { params: params })
       .pipe(
         map((res: any) => {
           const newsList: News[] = [];
 
-          if(res) {
+          if(res && res instanceof Array) {
             res.forEach((item: any) => {
               newsList.push({
                 date: moment.unix(item.published_on).fromNow(),

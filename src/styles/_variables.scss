@@ -1,0 +1,16 @@
+@import '~@angular/material/theming';
+
+$app-primary: mat-palette($mat-deep-purple);
+$app-accent: mat-palette($mat-pink, A200, A100, A400);
+$app-warn: mat-palette($mat-red, 500);
+
+// Colors
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent);
+$green: mat-color(mat-palette($mat-green));
+$gray: whitesmoke;
+$light-gray: whitesmoke;
+
+// Component colors
+$toolbar-background: #666;
+$toolbar-background-dark: #333;

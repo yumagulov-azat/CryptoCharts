@@ -1,39 +1,8 @@
-@import url('//fonts.googleapis.com/css?family=Roboto:300,400,500&subset=cyrillic');
-@import url('//fonts.googleapis.com/icon?family=Material+Icons');
-@import '~@angular/material/theming';
-@import '~c3/c3.min';
+@import "~styles/_variables.scss";
+@import './styles/vendors';
+//@import './styles/variables';
+@import './styles/material-theme';
+@import './styles/core';
+@import './styles/helpers';
 
-@include mat-core();
 
-$primary: mat-palette($mat-deep-purple);
-// $primary: #7C2289;
-$accent: mat-palette($mat-pink, A200, A100, A400);
-$warn: mat-palette($mat-red, 500);
-$green: mat-palette($mat-green);
-
-$theme: mat-light-theme($primary, $accent, $warn);
-
-@include angular-material-theme($theme);
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: $mat-font-family;
-  font-weight: normal;
-  padding: 0;
-  margin: 0;
-}
-
-h1, h2, h3, h4 {
-  font-weight: normal;
-}
-
-.value-down {
-  color: mat-color($accent, 600);
-}
-
-.value-up {
-  color: mat-color($green);
-}

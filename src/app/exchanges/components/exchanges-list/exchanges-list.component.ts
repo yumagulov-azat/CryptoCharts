@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 // Models
-import { ExchangesList } from '../models/exchanges-list';
+import { ExchangesList } from '../../models/exchanges-list';
 
 @Component({
   selector: 'app-exchanges-list',

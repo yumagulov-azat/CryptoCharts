@@ -11,7 +11,7 @@
 
   .mat-header-row {
     position: sticky;
-    top: 64px;
+    top: 80px;
     background: white;
     z-index: 2;
     min-height: 48px;
@@ -38,6 +38,7 @@
     background: rgba(0, 0, 0, .0);
     transition: all .25s ease;
     padding-right: 16px;
+    border-bottom-color: rgba(0,0,0,.08);
 
     &:hover {
       background: rgba(0, 0, 0, .01);
@@ -49,7 +50,7 @@
     bottom: 0;
     z-index: 2;
     min-height: 48px;
-    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom-color: rgba(0,0,0,.08);
     background: #fff;
   }
 }
@@ -60,7 +61,7 @@
 
   &__position {
     max-width: 40px;
-    color: rgba(0, 0, 0, .3)
+    color: rgba(0, 0, 0, .3);
   }
 
   &__name {
