@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 // RxJs
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { from } from 'rxjs/observable/from';
-import { of } from 'rxjs/observable/of';
+import { Observable ,  Subject ,  BehaviorSubject ,  forkJoin ,  from ,  of } from 'rxjs';
 import { map, mergeMap, concatMap, finalize, catchError } from 'rxjs/operators';
 
 // Services

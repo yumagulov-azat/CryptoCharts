@@ -17,7 +17,8 @@
       "dom"
     ],
     "paths": {
-      "@app/*": ["./app/*"]
+      "@app/*": ["./app/*"],
+      "dragula": ["../node_modules/dragula/dist/dragula.min.js"]
     }
   }
 }

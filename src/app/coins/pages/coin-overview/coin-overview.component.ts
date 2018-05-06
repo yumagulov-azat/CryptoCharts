@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 
 // RxJs
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 // Services
 import { CoinsService } from '../../coins.service';
@@ -54,7 +54,9 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.paramMap
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((route: any) => {
         this.coinSymbol = route.params.coinSymbol;
         this.toSymbol = route.params.toSymbol;
@@ -78,7 +80,9 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    */
   getCoinInfo(): void {
     this.coinsService.getCoinData(this.coinSymbol, this.chartFilter.period, this.chartFilter.periodType, this.toSymbol)
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((coin: CoinSnapshot) => {
         this.coin = coin;
         this.pageTitle = this.coin.info.FullName;
@@ -103,7 +107,9 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    */
   getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
     this.coinsService.getCoinHistory(this.coinSymbol, filter.period, filter.periodType, toSymbol)
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((history: any) => {
         this.coin.history = history;
         this.chartFilter = filter;

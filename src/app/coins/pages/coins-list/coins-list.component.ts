@@ -5,10 +5,9 @@ import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 // RxJs
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/switchMap';
+import { Subscription,  Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 
 // Services
 import { CoinsService } from '../../coins.service';
@@ -60,7 +59,9 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
     // Get params from url then get coins list
     this.route.paramMap
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((route: any) => {
         this.paginator.pageIndex = route.params.page - 1;
         this.toSymbol = route.params.toSymbol;
@@ -89,7 +90,9 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    */
   getCoinsList(limit: number = this.pageSize, page: number = this.paginator.pageIndex, toSymbol: string = this.toSymbol): void {
     this.coinsService.getCoinsList(limit, page, toSymbol)
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((coinsListData: CoinsList[]) => {
         this.coinsList.data = coinsListData;
         this.pageService.hideError();
@@ -124,7 +127,9 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
     let i = 0;
     this.coinsListSubscription = this.coinsService.getCoinsHistory(coins, 6, 'histoday', this.toSymbol)
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(res => {
         if (res.length > 0) {
           // Change 7d

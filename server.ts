@@ -18,6 +18,7 @@ const domino = require('domino');
 const fs = require('fs');
 const path = require('path');
 const win = domino.createWindow(template);
+const files = fs.readdirSync(`${process.cwd()}/dist/server`);
 
 win.SVGPathElement = function () {};
 global['window'] = win;
@@ -38,7 +39,9 @@ enableProdMode();
 
 // Express server
 const app = express();
-const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./dist/server/main.bundle');
+const mainFiles = files.filter(file => file.startsWith('main'));
+const hash = mainFiles[0].split('.')[1];
+const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require(`./dist/server/main.${hash}`);
 
 // Express Engine
 import {ngExpressEngine} from '@nguniversal/express-engine';

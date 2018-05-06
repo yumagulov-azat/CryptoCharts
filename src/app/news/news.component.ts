@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 
 // RxJs
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 // Services
 import { NewsService } from './news.service';
@@ -38,7 +38,9 @@ export class NewsComponent implements OnInit {
 
     // Load news list on route params changed
     this.route.paramMap
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((route: any) => {
         const category = route.params.categoryName;
         this.getNewsList(category);
@@ -65,7 +67,9 @@ export class NewsComponent implements OnInit {
    */
   getNewsList(category: string = ''): void {
     this.newsService.getNewsList(category)
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((res: News[]) => {
           this.newsList = res;
       }, (err) => {
@@ -78,7 +82,9 @@ export class NewsComponent implements OnInit {
    */
   getNewsCategories(): void {
     this.newsService.getNewsCategories()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((res: NewsCategories[]) => {
           this.newsCategories = res;
       }, (err) => {

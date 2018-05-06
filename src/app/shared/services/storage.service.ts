@@ -2,8 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 // RxJs
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable ,  of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
 /**
@@ -44,7 +43,7 @@ export class StorageService {
           })
         );
     } else {
-      return Observable.of([]);
+      return of([]);
     }
   }
 
