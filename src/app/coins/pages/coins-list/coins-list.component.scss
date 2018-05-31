@@ -58,6 +58,7 @@
 // Table row style
 .coins-list-item {
   overflow: hidden;
+  backface-visibility: hidden;
 
   &__position {
     max-width: 80px;

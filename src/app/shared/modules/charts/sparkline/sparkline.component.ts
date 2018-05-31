@@ -1,8 +1,9 @@
-import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ElementRef, Inject, PLATFORM_ID, ChangeDetectionStrategy, NgZone } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { UtilsService } from '../../../services/utils.service';
 import * as c3 from 'c3';
 import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-sparkline',
@@ -23,6 +24,7 @@ export class SparklineComponent implements OnInit, OnChanges {
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
+              private zone: NgZone,
               @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
@@ -39,11 +41,13 @@ export class SparklineComponent implements OnInit, OnChanges {
     if (isPlatformServer(this.platformId) || !this.data) return;
 
     // Render chart
-    if (this.chart) {
-      this.chart.load(this.data);
-    } else {
-      this.chart = c3.generate(this.chartOptions);
-    }
+    this.zone.runOutsideAngular(() => {
+      if (this.chart) {
+        this.chart.load(this.data);
+      } else {
+        this.chart = c3.generate(this.chartOptions);
+      }
+    });
   }
 
 

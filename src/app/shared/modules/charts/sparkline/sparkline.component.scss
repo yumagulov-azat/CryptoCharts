@@ -1,6 +1,9 @@
 @import "../charts.style";
 
 :host {
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+
   ::ng-deep {
     mat-spinner {
       opacity: .5;

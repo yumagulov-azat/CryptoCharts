@@ -7,7 +7,8 @@ import {
   ElementRef,
   Inject,
   PLATFORM_ID,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 
@@ -41,6 +42,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
+              private zone: NgZone,
               @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
@@ -92,11 +94,13 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     // Render chart
-    if (this.chart) {
-      this.chart.load(this.data);
-    } else {
-      this.chart = c3.generate(this.chartOptions);
-    }
+    this.zone.runOutsideAngular(() => {
+      if (this.chart) {
+        this.chart.load(this.data);
+      } else {
+        this.chart = c3.generate(this.chartOptions);
+      }
+    });
   }
 
   /**

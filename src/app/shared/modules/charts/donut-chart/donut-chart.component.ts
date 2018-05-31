@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, ChangeDetectionStrategy, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ChangeDetectionStrategy, ElementRef, Inject, PLATFORM_ID, NgZone } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import * as c3 from 'c3';
 
@@ -17,6 +17,7 @@ export class DonutChartComponent implements OnInit, OnChanges {
   oldData: Array<any> = [];
 
   constructor(private el: ElementRef,
+              private zone: NgZone,
               @Inject(PLATFORM_ID) private platformId: Object) {
   }
 
@@ -29,14 +30,16 @@ export class DonutChartComponent implements OnInit, OnChanges {
     if (isPlatformServer(this.platformId) || !this.data) return;
 
     // Render chart
-    if (this.chart) {
-      this.chart.load({
-        columns: this.data
-      });
-      this.chart.unload(this.unloadData)
-    } else {
-      this.chart = c3.generate(this.chartOptions);
-    }
+    this.zone.runOutsideAngular(() => {
+      if (this.chart) {
+        this.chart.load({
+          columns: this.data
+        });
+        this.chart.unload(this.unloadData);
+      } else {
+        this.chart = c3.generate(this.chartOptions);
+      }
+    });
 
     this.oldData = this.data;
   }
@@ -71,10 +74,10 @@ export class DonutChartComponent implements OnInit, OnChanges {
     const columns: Array<string> = [];
 
     this.oldData.forEach((oldItem) => {
-      let some = this.data.some((newItem) => { return newItem[0] == oldItem[0] });
+      const some = this.data.some((newItem) => newItem[0] === oldItem[0] );
 
-      if(!some) {
-        columns.push(oldItem[0])
+      if (!some) {
+        columns.push(oldItem[0]);
       }
     });
 

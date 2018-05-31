@@ -1,5 +1,10 @@
 @import "../charts.style";
 
+:host {
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+}
+
 .line-chart {
   svg {
     width: 100%;

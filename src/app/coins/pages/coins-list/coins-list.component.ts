@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 // RxJs
-import { Subscription,  Subject } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 
@@ -25,7 +25,8 @@ import { CoinsList } from '../../models/coins-list.model';
 @Component({
   selector: 'app-coins-list',
   templateUrl: './coins-list.component.html',
-  styleUrls: ['./coins-list.component.scss']
+  styleUrls: ['./coins-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoinsListComponent implements OnInit, OnDestroy {
 
@@ -45,6 +46,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
               private meta: MetaService,
               private favoritesService: FavoritesService,
               private pageService: PageService,
+              private changeDetector: ChangeDetectorRef,
               @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
@@ -81,7 +83,6 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-
   /**
    * Get coins list
    * @param limit
@@ -111,8 +112,8 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Render sparklines after coins linst loaded
-   * because paralell loading is very slow
+   * Render sparkLines after coins list loaded
+   * because parallel loading is very slow
    */
   renderSparklines(): void {
     const coins = this.coinsList.data.map(item => {
@@ -134,8 +135,10 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         if (res.length > 0) {
           // Change 7d
           const historyFirst = res[0].close,
-                historyLast  = res[res.length - 1].close;
-          this.coinsList.data[i].historyChange = historyLast && historyFirst ? (((historyLast - historyFirst) / historyFirst) * 100).toFixed(2) : 0;
+            historyLast = res[res.length - 1].close,
+            historyChangePercent = (((historyLast - historyFirst) / historyFirst) * 100).toFixed(2);
+
+          this.coinsList.data[i].historyChange = historyLast && historyFirst ? historyChangePercent : 0;
 
           // Pass chart data
           this.coinsList.data[i].history = {
@@ -148,6 +151,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
           };
         }
         i++;
+        this.changeDetector.detectChanges();
       });
   }
 
