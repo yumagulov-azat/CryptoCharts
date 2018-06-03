@@ -115,7 +115,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/server/environment.ts"
                 }
               ]
             },
@@ -129,7 +129,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/server/environment.prod.ts"
                 }
               ]
             }

@@ -1,20 +1,15 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { FavoritesService } from './favorites.service';
-import { animate } from '@angular/animations';
 import { HistoryLimit } from '@app/coins/models/history-limit';
 
 import { CoinsService } from '@app/coins/coins.service';
-
-import { slideInUp } from '@app/shared/animations/slide-in-up';
-
 
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.scss'],
   viewProviders: [DragulaService],
-  animations: [slideInUp()]
 })
 export class FavoritesComponent implements OnInit {
 

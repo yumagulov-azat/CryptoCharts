@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { animate } from '@angular/animations';
 import { PageService } from '../page.service';
 
 /**
