@@ -3,15 +3,16 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
 
 // RxJs
-import { Observable ,  of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, finalize } from 'rxjs/operators';
 
 // Services
 import { LoadingService } from '@app/shared/services/loading.service';
 
 // Models
-import { News } from './models/news'
-import { NewsCategories } from './models/news-categories'
+import { News } from './models/news';
+import { NewsCategories } from './models/news-categories';
+
 
 @Injectable()
 export class NewsService {
@@ -24,7 +25,8 @@ export class NewsService {
   constructor(
     private http: HttpClient,
     private loadingService: LoadingService
-  ) { }
+  ) {
+  }
 
   /**
    * Get latest news
@@ -37,16 +39,16 @@ export class NewsService {
     let params = new HttpParams()
       .set('lang', 'EN');
 
-    if(category !== 'all') {
-      params.set('categories', category);
+    if (category !== 'all') {
+      params = params.append('categories', category);
     }
 
-    return this.http.get(this.API_URL, { params: params })
+    return this.http.get(this.API_URL, {params: params})
       .pipe(
         map((res: any) => {
           const newsList: News[] = [];
 
-          if(res && res instanceof Array) {
+          if (res && res instanceof Array) {
             res.forEach((item: any) => {
               newsList.push({
                 date: moment.unix(item.published_on).fromNow(),
@@ -58,7 +60,7 @@ export class NewsService {
                   name: item.source_info.name,
                   img: item.source_info.img
                 },
-              })
+              });
             });
           } else {
             throw new Error('News list empty');
@@ -69,7 +71,7 @@ export class NewsService {
         finalize(() => {
           this.loadingService.hideLoading();
         })
-      )
+      );
   }
 
   /**
@@ -77,18 +79,18 @@ export class NewsService {
    * @returns {Observable<R>}
    */
   getNewsCategories(): Observable<NewsCategories[]> {
-    if(this.newsCategoriesCache) {
-      return of(this.newsCategoriesCache)
+    if (this.newsCategoriesCache) {
+      return of(this.newsCategoriesCache);
     } else {
       return this.http.get(this.API_URL + 'categories')
         .pipe(
           map((res: any) => {
             const newsCategories: NewsCategories[] = [];
-            if(res) {
+            if (res) {
               res.forEach((item: any) => {
                 newsCategories.push({
                   name: item.categoryName
-                })
+                });
               });
             } else {
               throw new Error('News categories list empty');
