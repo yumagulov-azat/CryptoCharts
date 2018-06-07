@@ -11,7 +11,7 @@ import { LoadingService } from '@app/shared/services/loading.service';
 
 // Models
 import { News } from './models/news';
-import { NewsCategories } from './models/news-categories';
+import { NewsCategory } from './models/news-category';
 
 
 @Injectable()
@@ -20,7 +20,7 @@ export class NewsService {
   private API_URL = 'https://min-api.cryptocompare.com/data/news/';
 
   // Cache
-  newsCategoriesCache: NewsCategories[];
+  newsCategoriesCache: NewsCategory[];
 
   constructor(
     private http: HttpClient,
@@ -78,14 +78,14 @@ export class NewsService {
    * Get news categories list
    * @returns {Observable<R>}
    */
-  getNewsCategories(): Observable<NewsCategories[]> {
+  getNewsCategories(): Observable<NewsCategory[]> {
     if (this.newsCategoriesCache) {
       return of(this.newsCategoriesCache);
     } else {
       return this.http.get(this.API_URL + 'categories')
         .pipe(
           map((res: any) => {
-            const newsCategories: NewsCategories[] = [];
+            const newsCategories: NewsCategory[] = [];
             if (res) {
               res.forEach((item: any) => {
                 newsCategories.push({

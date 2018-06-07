@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 // models
-import { NewsCategories } from '../../models/news-categories';
+import { NewsCategory } from '../../models/news-category';
 
 @Component({
   selector: 'app-news-categories',
@@ -10,7 +10,7 @@ import { NewsCategories } from '../../models/news-categories';
 })
 export class NewsCategoriesComponent implements OnInit {
 
-  @Input() newsCategories: NewsCategories[] = [];
+  @Input() newsCategories: NewsCategory[] = [];
 
   constructor() { }
 

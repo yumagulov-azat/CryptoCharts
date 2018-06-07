@@ -120,6 +120,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
         show: false
       },
       point: {
+        sensitivity: 100,
         r: 0,
         focus: {
           expand: {

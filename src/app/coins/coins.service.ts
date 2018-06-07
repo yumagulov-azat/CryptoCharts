@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 // RxJs
-import { Observable ,  Subject ,  BehaviorSubject ,  forkJoin ,  from ,  of } from 'rxjs';
-import { map, mergeMap, concatMap, finalize, catchError } from 'rxjs/operators';
+import { Observable, Subject, BehaviorSubject, forkJoin, from } from 'rxjs';
+import { map, mergeMap, concatMap, finalize } from 'rxjs/operators';
 
 // Services
 import { UtilsService } from '@app/shared/services/utils.service';
@@ -83,7 +83,7 @@ export class CoinsService {
         finalize(() => {
           this.loadingService.hideLoading();
         })
-      )
+      );
   }
 
   /**

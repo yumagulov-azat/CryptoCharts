@@ -1,3 +1,18 @@
-<p>
-  exchange-overview works!
-</p>
+<!-- Page toolbar-->
+<mat-toolbar class="app-page-content-toolbar">
+  <mat-toolbar-row>
+    <span>
+      <span>{{ exchangeName }}</span>
+    </span>
+    <span class="spacer"></span>
+    <!--<app-symbol-select [symbols]="toS" [symbolSelected]="toSymbol" (symbolChanged)="toSymbolChanged($event);"></app-symbol-select>-->
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- Loading indicator-->
+<app-loading></app-loading>
+
+<!-- Main content -->
+<section class="app-page-content-wrap">
+
+</section>

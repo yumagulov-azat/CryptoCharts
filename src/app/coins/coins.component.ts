@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 // RxJs
 import { Subscription,  Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 // Services
 import { CoinsService } from './coins.service';
@@ -35,13 +35,13 @@ export class CoinsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Do not make unnecessary requests
     if (this.route.snapshot.children[0].url[0].path === 'list') {
-      this.coinsListSubscription = this.coinsService.coinsList
+      this.coinsService.coinsList
         .pipe(
-          takeUntil(this.ngUnsubscribe)
+          takeUntil(this.ngUnsubscribe),
+          take(1)
         )
         .subscribe((res: CoinsList[]) => {
           this.coinsList = res;
-          this.coinsListSubscription.unsubscribe();
         });
     } else {
       this.coinsService.getCoinsList()
@@ -58,7 +58,5 @@ export class CoinsComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-
-
 
 }

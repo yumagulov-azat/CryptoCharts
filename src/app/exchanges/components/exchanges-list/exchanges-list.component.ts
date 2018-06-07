@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 // Models
-import { ExchangesList } from '../../models/exchanges-list';
+import { Exchange } from '../../models/exchange';
 
 @Component({
   selector: 'app-exchanges-list',
@@ -10,7 +10,7 @@ import { ExchangesList } from '../../models/exchanges-list';
 })
 export class ExchangesListComponent implements OnInit {
 
-  @Input() exchangesList: ExchangesList[] = [];
+  @Input() exchangesList: Exchange[] = [];
 
   constructor() { }
 

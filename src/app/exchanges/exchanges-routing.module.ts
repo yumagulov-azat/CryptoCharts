@@ -10,7 +10,7 @@ const routes: Routes = [
     component: ExchangesComponent,
     children: [
       {
-        path: ':exchange',
+        path: ':exchange/:toSymbol',
         component: ExchangeOverviewComponent,
       }
     ]

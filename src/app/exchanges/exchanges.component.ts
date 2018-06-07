@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExchangesService } from './exchanges.service';
 
 // Models
-import { ExchangesList } from './models/exchanges-list';
+import { Exchange } from './models/exchange';
 
 @Component({
   selector: 'app-exchanges',
@@ -13,7 +13,7 @@ import { ExchangesList } from './models/exchanges-list';
 })
 export class ExchangesComponent implements OnInit {
 
-  exchangesList: ExchangesList[] = [];
+  exchangesList: Exchange[] = [];
 
   constructor(
     private exchangesService: ExchangesService
@@ -21,7 +21,7 @@ export class ExchangesComponent implements OnInit {
 
   ngOnInit() {
     this.exchangesService.getExchangesList()
-      .subscribe((res: ExchangesList[])=>{
+      .subscribe((res: Exchange[])=>{
         if(res.length){
           this.exchangesList = res;
         }

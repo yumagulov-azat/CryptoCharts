@@ -101,7 +101,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         // TODO Remove setTimeout
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
-            this.renderSparklines();
+            // this.renderSparklines();
           }, 100);
         }
       }, err => {

@@ -11,7 +11,7 @@ import { NewsService } from './news.service';
 
 // Models
 import { News } from './models/news';
-import { NewsCategories } from './models/news-categories';
+import { NewsCategory } from './models/news-category';
 
 @Component({
   selector: 'app-news',
@@ -23,7 +23,7 @@ export class NewsComponent implements OnInit {
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
   newsList: News[] = [];
-  newsCategories: NewsCategories[] = [];
+  newsCategories: NewsCategory[] = [];
 
   activeCategory: string = '';
 
@@ -85,7 +85,7 @@ export class NewsComponent implements OnInit {
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe((res: NewsCategories[]) => {
+      .subscribe((res: NewsCategory[]) => {
           this.newsCategories = res;
       }, (err) => {
         console.log(err);
