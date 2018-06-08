@@ -1,9 +1,12 @@
+// Libs
 import { Component, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
-import { FavoritesService } from './favorites.service';
 import { HistoryLimit } from '@app/coins/models/history-limit';
 
+// Services
 import { CoinsService } from '@app/coins/coins.service';
+import { LoadingService } from '@app/shared/services/loading.service';
+import { FavoritesService } from './favorites.service';
 
 @Component({
   selector: 'app-favorites',
@@ -35,7 +38,8 @@ export class FavoritesComponent implements OnInit {
   constructor(
     private favoritesService: FavoritesService,
     private dragulaService: DragulaService,
-    private coinsService: CoinsService
+    private coinsService: CoinsService,
+    private loadingService: LoadingService
   ) {
     dragulaService.setOptions('favorites-coins-bag', {
       moves: function (el, container, handle) {
@@ -114,6 +118,7 @@ export class FavoritesComponent implements OnInit {
    * @param toSymbol
    */
   toSymbolChanged(toSymbol: string): void {
+    this.loadingService.showLoading();
     this.toSymbol = toSymbol;
     this.coinsService.toSymbol.next(this.toSymbol);
   }
