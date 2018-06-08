@@ -12,6 +12,12 @@ const routes: Routes = [
       {
         path: ':exchange/:toSymbol',
         component: ExchangeOverviewComponent,
+        // children: [
+        //   {
+        //     path: ':page',
+        //     component: ExchangeOverviewComponent,
+        //   }
+        // ]
       }
     ]
   }

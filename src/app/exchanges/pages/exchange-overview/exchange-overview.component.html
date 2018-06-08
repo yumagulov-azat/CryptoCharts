@@ -5,7 +5,8 @@
       <span>{{ exchangeName }}</span>
     </span>
     <span class="spacer"></span>
-    <!--<app-symbol-select [symbols]="toS" [symbolSelected]="toSymbol" (symbolChanged)="toSymbolChanged($event);"></app-symbol-select>-->
+    <app-symbol-select [symbols]="exchange.toSymbols" [symbolSelected]="toSymbol"
+                       (symbolChanged)="toSymbolChanged($event);" *ngIf="exchange"></app-symbol-select>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -14,5 +15,58 @@
 
 <!-- Main content -->
 <section class="app-page-content-wrap">
+  <div class="exchanges-pairs">
+    <app-loading></app-loading>
+    <mat-table #table [dataSource]="exchangePairs">
+      <!-- Price Column -->
+      <ng-container matColumnDef="pair">
+        <mat-header-cell *matHeaderCellDef>Pair</mat-header-cell>
+        <mat-cell *matCellDef="let row" class="exchanges-pairs-item__pair">
+          <span><a routerLink="/coins/overview/{{row.fromSymbol}}/{{ row.toSymbol }}">{{ row.fromSymbol }} | {{ row.toSymbol }}</a></span>
+        </mat-cell>
+      </ng-container>
 
+      <!-- Price Column -->
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span>{{ row.price | cryptoCurrency:row.toSymbolDisplay }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="open24Hour">
+        <mat-header-cell *matHeaderCellDef>Open 24h</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span>{{ row.open24Hour | cryptoCurrency:row.toSymbolDisplay }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="range24Hour">
+        <mat-header-cell *matHeaderCellDef>Range 24h</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <div>L: {{ row.low24Hour | cryptoCurrency:row.toSymbolDisplay }}</div>
+          <div>H: {{ row.high24Hour | cryptoCurrency:row.toSymbolDisplay }}</div>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="changePct24Hour">
+        <mat-header-cell *matHeaderCellDef>Chg. 24H</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <span [appTrendColor]="row.changePct24Hour">{{ row.changePct24Hour }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" class="exchanges-pairs-item"></mat-row>
+    </mat-table>
+    <!--<mat-paginator #paginator-->
+                   <!--[length]="1000"-->
+                   <!--[pageSize]="50"-->
+                   <!--[hidePageSize]="true"-->
+                   <!--[showFirstLastButtons]="true">-->
+    <!--</mat-paginator>-->
+  </div>
 </section>

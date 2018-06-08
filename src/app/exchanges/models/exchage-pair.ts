@@ -1,4 +1,4 @@
-export interface ExchangePairData {
+export interface ExchangePair {
   fromSymbol: string;
   toSymbol: string;
   price: number;

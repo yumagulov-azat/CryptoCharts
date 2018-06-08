@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 // RxJs
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of, forkJoin, BehaviorSubject } from 'rxjs';
 import { map, finalize, mergeMap } from 'rxjs/operators';
 
 // Services
@@ -10,8 +10,7 @@ import { LoadingService } from '@app/shared/services/loading.service';
 
 // Models
 import { Exchange } from './models/exchange';
-import { ExchangePairData } from './models/exchage-pair-data';
-
+import { ExchangePair } from './models/exchage-pair';
 
 
 @Injectable()
@@ -19,8 +18,8 @@ export class ExchangesService {
 
   private API_URL = 'https://min-api.cryptocompare.com/data';
 
-  // Cache
-  exchangesCache: Exchange[];
+  public toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private exchangesCache: Exchange[];
 
   constructor(
     private http: HttpClient,
@@ -45,15 +44,16 @@ export class ExchangesService {
                 exchanges.push({
                   name: index,
                   pairs: res[index],
+                  pairsFull: [],
+                  pairsCount: Object.keys(res[index]).length,
                   toSymbols: this.getExchangeToSymbols(res[index])
                 });
               }
-              console.log(exchanges);
+              this.exchangesCache = exchanges;
             } else {
               throw Error('Exchanges list empty');
             }
 
-            this.exchangesCache = exchanges;
             return exchanges;
           })
         );
@@ -64,19 +64,21 @@ export class ExchangesService {
    * Get Exchange pairs data
    * @param {string} toSymbol
    * @param {string} exchangeName
-   * @returns {Observable<ExchangePairData[]>}
+   * @returns {Observable<ExchangePair[]>}
    */
-  public getExchangePairsData(toSymbol: string, exchangeName: string): Observable<ExchangePairData[]> {
+  public getExchange(toSymbol: string, exchangeName: string, page: number = 1, limit: number = 50): Observable<Exchange> {
     this.loadingService.showLoading();
 
     return this.getExchangesList()
       .pipe(
         mergeMap((exchanges: Exchange[]) => {
-          const exchangeData: Exchange = exchanges.find((item) => item.name === exchangeName);
+          const exchange: Exchange = exchanges.find((item) => item.name === exchangeName);
           const requests: Array<any> = [];
 
-          if (exchangeData) {
-            Object.entries(exchangeData.pairs).slice(0, 49).forEach((item: Array<any>) => {
+          if (exchange) {
+            exchange.pairsFull = [];
+
+            Object.entries(exchange.pairs).slice((page - 1) * limit, (limit * page) - 1).forEach((item: Array<any>) => {
               if (item[1].find(symbol => toSymbol)) {
                 const params = new HttpParams()
                   .set('fsym', item[0])
@@ -89,18 +91,22 @@ export class ExchangesService {
             return forkJoin(requests)
               .pipe(
                 map((res: any) => {
-                  const exchangePairsData: ExchangePairData[] = [];
                   res
                     .filter(item => item.Response !== 'Error')
                     .forEach((item: any) => {
-                      exchangePairsData.push({
+                      exchange.pairsFull.push({
                         fromSymbol: item.RAW.FROMSYMBOL,
                         toSymbol: item.RAW.TOSYMBOL,
-                        price: item.RAW.PRICE
+                        toSymbolDisplay: item.DISPLAY.TOSYMBOL,
+                        price: item.RAW.PRICE,
+                        open24Hour: item.RAW.OPEN24HOUR,
+                        high24Hour: item.RAW.HIGH24HOUR,
+                        low24Hour: item.RAW.LOW24HOUR,
+                        changePct24Hour: item.RAW.PRICE && item.RAW.OPEN24HOUR ? Math.round(((item.RAW.PRICE - item.RAW.OPEN24HOUR) / item.RAW.OPEN24HOUR * 100) * 100) / 100 : 0
                       });
                     });
 
-                  return exchangePairsData;
+                  return exchange;
                 })
               );
 

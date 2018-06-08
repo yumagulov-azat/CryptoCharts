@@ -101,7 +101,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         // TODO Remove setTimeout
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
-            // this.renderSparklines();
+            this.renderSparklines();
           }, 100);
         }
       }, err => {
@@ -157,7 +157,8 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
   /**
    * Add coin to favorite
-   **/
+   * @param coin
+   */
   addToFavorite(coin): void {
     if (!coin.favorite) {
       this.favoritesService.addCoin(coin.symbol);
