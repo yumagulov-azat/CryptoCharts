@@ -30,6 +30,14 @@ Object.defineProperty(win.document.body.style, 'transform', {
     };
   },
 });
+Object.defineProperty(win.document.body.style, 'box-shadow', {
+  value: () => {
+    return {
+      enumerable: true,
+      configurable: true
+    };
+  },
+});
 global['document'] = win.document;
 global['navigator'] = win.navigator;
 global['CSS'] = undefined;
