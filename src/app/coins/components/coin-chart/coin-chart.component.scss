@@ -8,4 +8,16 @@
       margin-left: 16px;
     }
   }
+
+  @media (max-width: 575px) {
+    .mat-title {
+      font-size: 18px;
+    }
+
+    &__filter {
+      mat-form-field {
+        max-width: 80px;
+      }
+    }
+  }
 }

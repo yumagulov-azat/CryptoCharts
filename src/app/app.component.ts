@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
+import {MediaMatcher} from '@angular/cdk/layout';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  appNav: AppNav[] = [
+
+export class AppComponent implements OnDestroy {
+
+  public mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
+  public appNav: AppNavItem[] = [
     {
       name: 'Favorites',
       link: '/favorites',
@@ -29,9 +36,20 @@ export class AppComponent {
     }
   ];
 
+
+
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+    this.mobileQuery = media.matchMedia('(max-width: 991px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  ngOnDestroy() {
+
+  }
 }
 
-export interface AppNav {
+export interface AppNavItem {
   name: string;
   link: string;
   icon: string;

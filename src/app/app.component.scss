@@ -1,92 +1,195 @@
 @import '../styles/variables';
 
-.app-container {
-  height: 100vh;
-}
+:host {
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 
-.app-sidenav {
-  display: flex;
-  flex-direction: column;
-  width: 100px;
-  height: 100vh;
-  background: $primary;
-  transform: none;
-
-  &__toolbar {
-    height: 80px;
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-    background: transparent;
-    text-align: center;
-
-    .mat-toolbar-row {
-      justify-content: center;
+    .mat-sidenav-container {
+      flex: 1 0 0;
     }
   }
 
-  nav {
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+  .app-toolbar {
+    display: none;
 
-      li {
-        border-bottom: 1px solid rgba(0, 0, 0, .1);
+    @media (max-width: 991px) {
+      display: flex;
+      flex: 60px 0 0;
+      padding-left: 6px;
+    }
+  }
+
+  /**
+   App main sidenav
+   */
+  .app-sidenav {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: 100%;
+    background: $primary;
+    //transform: none;
+    overflow: hidden;
+
+    &__toolbar {
+      height: 80px;
+      border-bottom: 1px solid rgba(0, 0, 0, .1);
+      background: transparent;
+      text-align: center;
+
+      .mat-toolbar-row {
+        justify-content: center;
+      }
+    }
+
+    nav {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          border-bottom: 1px solid rgba(0, 0, 0, .1);
+        }
+      }
+    }
+
+    &__bottom-nav {
+      margin-top: auto;
+    }
+
+    &__btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      min-width: 100px;
+      max-width: 100px;
+      height: 100px;
+      border-radius: 0;
+      white-space: normal;
+      color: rgba(255, 255, 255, .8);
+      transition: color .25s ease, background .25s ease;
+
+      .mat-icon {
+        width: 100%;
+        height: 36px;
+        font-size: 28px;
+      }
+
+      span {
+        display: block;
+        line-height: 14px;
+        font-size: 12px;
+        font-weight: 400;
+      }
+
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+      }
+
+      &.active {
+        background: rgba(0, 0, 0, .15);
+      }
+
+      ::ng-deep {
+        .mat-button-focus-overlay {
+          transition: opacity .25s ease;
+        }
+      }
+    }
+
+    @media (min-width: 992px) {
+      visibility: visible !important;
+      transform: translate3d(0,0,0) !important;
+    }
+
+    @media (max-width: 991px) {
+      width: 250px;
+      background: #fff;
+
+      &__toolbar {
+        display: none;
+      }
+
+      &__bottom-nav {
+        margin-top: 0;
+        border-top: 1px solid rgba(0, 0, 0, .1);
+      }
+
+      &__btn {
+        flex-direction: row;
+        min-width: 250px;
+        max-width: 250px;
+        height: 60px;
+        color: rgba(0,0,0,.7);
+        padding-left: 7px;
+
+        .mat-icon {
+          width: 40px;
+          height: auto;
+          font-size: 22px;
+          color: rgba(0,0,0,.5);
+        }
+
+        span {
+          font-size: 14px;
+          line-height: 14px;
+        }
+
+        &:hover {
+          color: rgba(0,0,0,.7);
+        }
+
+        &.active {
+          background: rgba(0, 0, 0, .05);
+        }
+
+        ::ng-deep {
+          .mat-button-wrapper {
+            flex: 100% 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+          }
+        }
       }
     }
   }
 
-  &__bottom-nav {
-    margin-top: auto;
-  }
-}
+  .app-main-content {
+    margin-left: 100px !important;
+    height: 100%;
 
-.app-sidenav-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
-  height: 100px;
-  white-space: normal;
-  color: rgba(255, 255, 255, .8);
-  transition: all .25s ease;
-
-  .mat-button-focus-overlay {
-    transition: all .25s ease;
+    @media (max-width: 991px) {
+      margin-left: 0px !important;
+    }
   }
 
-  .mat-icon {
-    width: 100%;
-    height: 36px;
-    font-size: 28px;
-  }
-
-  span {
-    display: block;
-    line-height: 14px;
-    font-size: 12px;
-    font-weight: 400;
-  }
-
-  &:hover {
-    color: rgba(255, 255, 255, 1);
-  }
-
-  &.active {
-    background: rgba(0, 0, 0, .15);
-  }
-}
-
-.app-main-content {
-  margin-left: 100px;
-}
-
-:host {
   ::ng-deep {
-    .mat-toolbar-row, .mat-toolbar-single-row {
+    .mat-toolbar {
       height: 80px;
+
+      .mat-toolbar-row, .mat-toolbar-single-row {
+        height: 80px;
+      }
+    }
+  }
+
+  @media (max-width: 991px) {
+    ::ng-deep {
+      .mat-toolbar {
+        height: 60px;
+        min-height: 60px;
+        font-size: 18px;
+
+        .mat-toolbar-row, .mat-toolbar-single-row {
+          height: 60px;
+        }
+      }
     }
   }
 }

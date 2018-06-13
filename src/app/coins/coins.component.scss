@@ -11,3 +11,11 @@
 ::ng-deep .mat-sort-header-pointer-right.ng-trigger.ng-trigger-rightPointer{
   transform: rotate(45deg);
 }
+
+:host {
+  @media (max-width: 991px) {
+    app-page-nav {
+      display: none;
+    }
+  }
+}

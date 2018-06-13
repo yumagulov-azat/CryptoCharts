@@ -53,8 +53,8 @@
 
       <!-- Price Column -->
       <ng-container matColumnDef="changePct24Hour">
-        <mat-header-cell *matHeaderCellDef>Chg. 24H</mat-header-cell>
-        <mat-cell *matCellDef="let row">
+        <mat-header-cell *matHeaderCellDef class="mat-column-change">Chg. 24H</mat-header-cell>
+        <mat-cell *matCellDef="let row" class="exchanges-pairs-item__change">
           <span [appTrendColor]="row.changePct24Hour">{{ row.changePct24Hour }}%</span>
         </mat-cell>
       </ng-container>

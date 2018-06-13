@@ -25,7 +25,7 @@
             <img src="https://www.cryptocompare.com{{ row.imageUrl }}" width="24">
           </div>
           <div class="coins-list-item__name__text">
-            {{ row.name }}
+            <div>{{ row.name }}</div>
             <span>{{ row.symbol }}</span>
           </div>
         </mat-cell>
@@ -41,14 +41,14 @@
 
       <!-- Market cap Column -->
       <ng-container matColumnDef="marketCap">
-        <mat-header-cell *matHeaderCellDef>Market cap</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef class="coins-list-item__marketCap">Market cap</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.marketCap | cryptoCurrency:row.toSymbolDisplay:'short' }}</mat-cell>
       </ng-container>
 
       <!-- Chg. 24H Column -->
-      <ng-container matColumnDef="changePct24Hour">
+      <ng-container matColumnDef="change24h">
         <mat-header-cell *matHeaderCellDef>Chg. 24H</mat-header-cell>
-        <mat-cell *matCellDef="let row">
+        <mat-cell *matCellDef="let row" class="coins-list-item__change24h">
           <div [appTrendColor]="row.changePct24Hour">
             {{ row.changePct24Hour }}%
           </div>
@@ -58,7 +58,7 @@
       <!-- Chg. 7d Column -->
       <ng-container matColumnDef="change7d">
         <mat-header-cell *matHeaderCellDef>Chg. 7d</mat-header-cell>
-        <mat-cell *matCellDef="let row">
+        <mat-cell *matCellDef="let row" class="coins-list-item__change7d">
           <div [appTrendColor]="row.historyChange">
             {{ row.historyChange }}%
           </div>

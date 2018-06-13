@@ -1,3 +1,5 @@
+@import '~styles/variables';
+
 .app-page-content-wrap {
   padding: 0;
 }
@@ -15,6 +17,7 @@
     background: white;
     z-index: 2;
     min-height: 48px;
+    padding-right: 16px;
   }
 
   .mat-column-position {
@@ -30,7 +33,10 @@
   }
 
   .mat-column-favorite {
+    width: 40px;
     max-width: 40px;
+    padding: 0;
+    margin-left: 8px;
   }
 
   .mat-row {
@@ -57,6 +63,71 @@
     border-bottom-color: rgba(0,0,0,.08);
     background: #fff;
   }
+
+  @media (max-width: 1460px) {
+    .mat-column-position {
+      max-width: 60px;
+    }
+
+    .mat-column-name {
+      min-width: 150px;
+      margin-right: 20px;
+    }
+
+    .mat-column-sparkline {
+      min-width: 100px;
+    }
+  }
+
+  @media (max-width: 1160px) {
+    .mat-column-change7d {
+      display: none;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .mat-header-row {
+      top: 60px;
+    }
+
+    .mat-column-change7d {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .mat-column-sparkline {
+      display: none;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .mat-header-row {
+      min-height: 38px;
+    }
+
+    .mat-column-position {
+      display: none;
+    }
+
+    .mat-column-name {
+      min-width: 0;
+      padding-left: 16px;
+    }
+
+    .mat-column-change24h {
+      max-width: 60px;
+    }
+
+    .mat-column-marketCap {
+      display: none;
+    }
+
+    .mat-column-favorite {
+      margin-left: 0;
+      margin-right: -12px;
+    }
+  }
 }
 
 // Table row style
@@ -65,16 +136,16 @@
   backface-visibility: hidden;
 
   &__position {
-    max-width: 80px;
     color: rgba(0, 0, 0, .3);
   }
 
   &__name {
     display: flex;
     align-items: center;
-    min-width: 250px;
     font-size: 16px;
     font-weight: 600;
+    padding-top: 8px;
+    padding-bottom: 8px;
 
     &__img {
       flex: 32px 0 0;
@@ -99,17 +170,13 @@
   }
 
   &__sparkline {
-    min-width: 200px;
     height: 60px;
     display: flex;
     align-items: center;
   }
 
   &__add-to-favorite {
-    width: 40px;
-    max-width: 40px;
     text-align: center;
-    margin-left: 8px;
     opacity: 0;
     overflow: hidden;
     transform: translateX(40px);
@@ -131,6 +198,49 @@
 
       &:hover {
         opacity: 1;
+      }
+    }
+  }
+
+  @media (max-width: 991px) {
+
+    &__add-to-favorite {
+      opacity: 1;
+      transform: none;
+
+      mat-icon {
+        font-size: 20px;
+        color: rgba(0,0,0,.2);
+      }
+
+      &.is-favorite {
+        opacity: 1;
+
+        mat-icon {
+          color: $accent;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 575px) {
+    &__name {
+
+      &__img {
+        flex: 24px 0 0;
+        width: 24px;
+      }
+
+      &__text {
+        > div {
+          display: none;
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: 600;
+          opacity: 1;
+        }
       }
     }
   }

@@ -30,7 +30,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   @Input() data: any;
-  @Input() height: number = 400;
+  @Input() height: number = 350;
   @Input() chartColors: Array<any> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
   @Input() subchart: boolean = true;
   @Input() toSymbolDisplay: string = '$';

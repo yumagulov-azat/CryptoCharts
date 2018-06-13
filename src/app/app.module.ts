@@ -9,7 +9,6 @@ import { MetaModule, MetaLoader, MetaStaticLoader, PageTitlePositioning } from '
 // Modules
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 
 // Services
 import { CoinsService } from './coins/coins.service';
@@ -22,6 +21,9 @@ import { UtilsService } from './shared/services/utils.service';
 import { NotificationsService } from './shared/services/notifications.service';
 import { StorageService } from './shared/services/storage.service';
 import { LoadingService } from './shared/services/loading.service';
+
+// Components
+import { AppComponent } from './app.component';
 
 
 export function metaFactory(): MetaLoader {
@@ -69,4 +71,3 @@ export function metaFactory(): MetaLoader {
 })
 export class AppModule {
 }
-

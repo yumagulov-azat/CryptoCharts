@@ -1,39 +1,49 @@
-<mat-sidenav-container class="app-container">
-  <mat-sidenav opened mode="side" class="app-sidenav">
-    <mat-toolbar color="primary" class="app-sidenav__toolbar">
-      <mat-toolbar-row>
-        <span>CC</span>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <nav>
-      <ul>
-        <li *ngFor="let item of appNav">
-          <a mat-button routerLink="{{item.link}}" routerLinkActive="active" class="app-sidenav-btn">
-            <mat-icon>{{ item.icon }}</mat-icon>
-            <span>{{ item.name }}</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+<div class="app-container">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <button mat-icon-button (click)="appSidenav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="example-app-name">CryptoCharts</h1>
+  </mat-toolbar>
+  <mat-sidenav-container>
+    <mat-sidenav
+      #appSidenav
+      class="app-sidenav"
+      [mode]="mobileQuery.matches ? 'over' : 'side'"
+      [autoFocus]="false">
+      <mat-toolbar color="primary" class="app-sidenav__toolbar">
+        <mat-toolbar-row>
+          <span>CC</span>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <nav>
+        <ul>
+          <li *ngFor="let item of appNav">
+            <a mat-button routerLink="{{item.link}}" routerLinkActive="active" (click)="appSidenav.close()" class="app-sidenav__btn">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.name }}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-    <nav class="app-sidenav__bottom-nav">
-      <ul>
-        <li>
-          <button mat-button class="app-sidenav-btn">
-            <mat-icon>share</mat-icon>
-            <span>Share</span>
-          </button>
-        </li>
-        <li>
-          <a href="http://yumagulov-azat.ru/" target="_blank" mat-button class="app-sidenav-btn">
-            <mat-icon>face</mat-icon>
-            <span>Author</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </mat-sidenav>
-  <mat-sidenav-content class="app-main-content">
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+      <nav class="app-sidenav__bottom-nav">
+        <ul>
+          <li>
+            <button mat-button class="app-sidenav__btn">
+              <mat-icon>share</mat-icon>
+              <span>Share</span>
+            </button>
+          </li>
+          <li>
+            <a href="http://yumagulov-azat.ru/" target="_blank" mat-button class="app-sidenav__btn">
+              <mat-icon>face</mat-icon>
+              <span>Author</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </mat-sidenav>
+    <mat-sidenav-content class="app-main-content">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

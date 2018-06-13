@@ -16,6 +16,7 @@ import { PageService } from '@app/shared/modules/page/page.service';
 
 // Models
 import { CoinsList } from '../../models/coins-list.model';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 
 /**
@@ -30,10 +31,22 @@ import { CoinsList } from '../../models/coins-list.model';
 })
 export class CoinsListComponent implements OnInit, OnDestroy {
 
+  public mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+
   private coinsListSubscription: Subscription;
 
-  public displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'change7d', 'sparkline', 'favorite'];
+  public displayedColumns: Array<any> = [
+    'position',
+    'name',
+    'price',
+    'marketCap',
+    'change24h',
+    'change7d',
+    'sparkline',
+    'favorite'
+  ];
   public coinsList: any = new MatTableDataSource();
   public pageSize: number = 50;
   public toSymbol: string;
@@ -46,9 +59,13 @@ export class CoinsListComponent implements OnInit, OnDestroy {
               private meta: MetaService,
               private favoritesService: FavoritesService,
               private pageService: PageService,
-              private changeDetector: ChangeDetectorRef,
+              private changeDetectorRef: ChangeDetectorRef,
+              media: MediaMatcher,
               @Inject(PLATFORM_ID) private platformId: Object) {
 
+    this.mobileQuery = media.matchMedia('(max-width: 767px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
@@ -99,7 +116,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         this.pageService.hideError();
 
         // TODO Remove setTimeout
-        if (isPlatformBrowser(this.platformId)) {
+        if (isPlatformBrowser(this.platformId) && !this.mobileQuery.matches) {
           setTimeout(() => {
             this.renderSparklines();
           }, 100);
@@ -151,7 +168,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
           };
         }
         i++;
-        this.changeDetector.detectChanges();
+        this.changeDetectorRef.detectChanges();
       });
   }
 

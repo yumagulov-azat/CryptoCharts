@@ -60,7 +60,7 @@ export class SparklineComponent implements OnInit, OnChanges {
       data: this.data || [],
       size: {
         height: this.height,
-        width: this.width,
+        // width: this.width,
       },
       color: {
         pattern: this.colors
