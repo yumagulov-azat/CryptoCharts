@@ -15,7 +15,7 @@
           <mat-icon class="favorite-coin__drag-handle">drag_handle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item routerLink="/coins/overview/{{ coinData.info.Name }}">
+          <button mat-menu-item routerLink="/coins/overview/{{ coinData.info.Name }}/{{toSymbol}}">
             <mat-icon>info</mat-icon>
             <span>More</span>
           </button>

@@ -1,4 +1,15 @@
-import { Component, OnInit, OnChanges, Input, ChangeDetectionStrategy, ElementRef, Inject, PLATFORM_ID, NgZone } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  Input,
+  ChangeDetectionStrategy,
+  ElementRef,
+  Inject,
+  PLATFORM_ID,
+  NgZone,
+  AfterViewInit
+} from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import * as c3 from 'c3';
 
@@ -8,7 +19,7 @@ import * as c3 from 'c3';
   styleUrls: ['./donut-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DonutChartComponent implements OnInit, OnChanges {
+export class DonutChartComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() data: Array<any>;
   @Input() chartColors: Array<any> = ['#b39ddb', '#f48fb1', '#ffab91', '#a5d6a7', '#80cbc4', '#ff8a65', '#ffd54f'];
@@ -64,6 +75,16 @@ export class DonutChartComponent implements OnInit, OnChanges {
         duration: 600
       }
     };
+  }
+
+  ngAfterViewInit() {
+    // Hack :(
+    // C3js not show chart after ssr
+    if (!isPlatformServer(this.platformId)) {
+      setTimeout(() => {
+        this.chart.resize();
+      }, 100);
+    }
   }
 
   /**
