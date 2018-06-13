@@ -16,8 +16,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class LoadingComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
-  loading = false;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  public loading = false;
 
   constructor(private loadingService: LoadingService) {
     loadingService.loading

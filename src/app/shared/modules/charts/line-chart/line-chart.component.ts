@@ -19,6 +19,7 @@ import * as moment from 'moment';
 // Services
 import { UtilsService } from '../../../services/utils.service';
 
+
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
@@ -37,8 +38,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() showX: boolean = true;
   @Input() axis: any;
 
-  chart: any;
-  chartValues: Array<string> = [''];
+  private chart: any;
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
@@ -106,7 +106,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
   /**
    * Chart options for c3
    */
-  get chartOptions(): any {
+  private get chartOptions(): any {
     return {
       bindto: this.el.nativeElement.children[0],
       data: this.data || [],
@@ -138,7 +138,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
           height: 50
         }
       }
-    }
+    };
   }
 
 }

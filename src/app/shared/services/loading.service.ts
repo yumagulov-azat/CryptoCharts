@@ -8,16 +8,18 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class LoadingService {
 
-  loading = new BehaviorSubject<boolean>(false);
+  public loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
-  showLoading(): void {
+  public showLoading(): void {
     this.loading.next(true);
+    console.log('show l');
   }
 
-  hideLoading(): void {
+  public hideLoading(): void {
     this.loading.next(false);
+    console.log('hide l');
   }
 
 }

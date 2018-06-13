@@ -1,9 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+// Libs
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+
+// RxJs
+import { Subject } from 'rxjs';
 
 // Models
 import { ChartFilter } from '../../models/chart-filter.model';
 import { HistoryLimit } from '../../models/history-limit';
+import { take, takeUntil } from 'rxjs/operators';
 
 
 /**
@@ -16,7 +21,9 @@ import { HistoryLimit } from '../../models/history-limit';
   styleUrls: ['./coin-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoinChartComponent implements OnInit, OnChanges {
+export class CoinChartComponent implements OnInit, OnChanges, OnDestroy {
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   @Input() chartDataInput: any;
   @Input() chartData: any;
@@ -28,7 +35,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
   @Output() filterChanged: EventEmitter<ChartFilter> = new EventEmitter();
 
   // chartDataShow options
-  chartDataList: chartDataList[] = [
+  chartDataList: ChartDataList[] = [
     {value: 'close', viewValue: 'Close'},
     {value: 'open', viewValue: 'Open'},
     {value: 'high', viewValue: 'High'},
@@ -36,7 +43,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
   ];
 
   // chartPeriod options
-  historyLimits: HistoryLimit[] = [
+  public historyLimits: HistoryLimit[] = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
     {value: 23, viewValue: '1 day', type: 'histohour'},
     {value: 6, viewValue: '1 week', type: 'histoday'},
@@ -47,7 +54,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
   ];
 
   // Form group for chart filter
-  chartFilterForm = new FormGroup({
+  public chartFilterForm = new FormGroup({
     historyLimit: new FormControl(this.historyLimits[3]),
     chartDataShow: new FormControl(['close'])
   });
@@ -59,6 +66,9 @@ export class CoinChartComponent implements OnInit, OnChanges {
   ngOnInit() {
     // Emit filterChanged when chartFilter changed
     this.chartFilterForm.valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
       .subscribe(res => {
         const filter: ChartFilter = {
           period: res.historyLimit.value,
@@ -74,9 +84,17 @@ export class CoinChartComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Unsubscribe from Observables on destroy
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  /**
    * Prepare data for chart
    */
-  prepareChartData(): void {
+  private prepareChartData(): void {
     this.chartData = {
       json: this.chartDataInput,
       keys: {
@@ -88,7 +106,7 @@ export class CoinChartComponent implements OnInit, OnChanges {
   }
 }
 
-export interface chartDataList {
+export interface ChartDataList {
   value: string;
   viewValue: string;
 }

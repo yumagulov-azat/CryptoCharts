@@ -1,5 +1,10 @@
+// Libs
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+// RxJs
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 // Services
 import { ExchangesService } from './exchanges.service';
@@ -7,8 +12,6 @@ import { PageService } from '@app/shared/modules/page/page.service';
 
 // Models
 import { Exchange } from './models/exchange';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 
 
 @Component({
@@ -18,9 +21,8 @@ import { Subject } from 'rxjs';
 })
 export class ExchangesComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
-
-  exchangesList: Exchange[] = [];
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  public exchangesList: Exchange[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +33,9 @@ export class ExchangesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.exchangesService.getExchangesList()
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
       .subscribe((res: Exchange[]) => {
         if (res.length) {
           this.exchangesList = res;
@@ -38,6 +43,9 @@ export class ExchangesComponent implements OnInit, OnDestroy {
       });
 
     this.route.paramMap
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
       .subscribe((route: any) => {
         console.log(this.route.children)
         if (!this.route.children.length) {
@@ -50,8 +58,8 @@ export class ExchangesComponent implements OnInit, OnDestroy {
    * Unsubscribe from Observables on destroy
    */
   ngOnDestroy() {
-    // this.ngUnsubscribe.next();
-    // this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

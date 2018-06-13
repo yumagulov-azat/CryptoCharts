@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // RxJs
-import { Subscription,  Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
 // Services
@@ -23,10 +23,8 @@ import { CoinsList } from './models/coins-list.model';
 })
 export class CoinsComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
-
-  coinsList: CoinsList[];
-  coinsListSubscription: Subscription;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  public coinsList: CoinsList[];
 
   constructor(private route: ActivatedRoute, private coinsService: CoinsService) {
 

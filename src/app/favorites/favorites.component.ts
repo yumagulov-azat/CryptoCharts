@@ -1,12 +1,17 @@
 // Libs
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { HistoryLimit } from '@app/coins/models/history-limit';
+
+// RxJs
+import { Subject } from 'rxjs';
 
 // Services
 import { CoinsService } from '@app/coins/coins.service';
 import { LoadingService } from '@app/shared/services/loading.service';
 import { FavoritesService } from './favorites.service';
+import { takeUntil } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-favorites',
@@ -14,17 +19,19 @@ import { FavoritesService } from './favorites.service';
   styleUrls: ['./favorites.component.scss'],
   viewProviders: [DragulaService],
 })
-export class FavoritesComponent implements OnInit {
+export class FavoritesComponent implements OnInit, OnDestroy {
 
-  coins: Array<any>;
-  deletedCoins: Array<any> = [];
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  coinDeleting: boolean = false; // when coin enter delete block
-  drag: boolean = false; // when coin draged
+  public coins: Array<any>;
+  public deletedCoins: Array<any> = [];
 
-  toSymbol: string = 'USD';
+  public coinDeleting: boolean = false; // when coin enter delete block
+  public drag: boolean = false; // when coin draged
 
-  historyLimits: HistoryLimit[] = [
+  public toSymbol: string = 'USD';
+
+  public historyLimits: HistoryLimit[] = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
     {value: 23, viewValue: '1 day', type: 'histohour'},
     {value: 6, viewValue: '1 week', type: 'histoday'},
@@ -33,7 +40,7 @@ export class FavoritesComponent implements OnInit {
     {value: 180, viewValue: '6 month', type: 'histoday'},
     {value: 364, viewValue: '1 year', type: 'histoday'}
   ];
-  historyLimit: HistoryLimit = this.historyLimits[3];
+  public historyLimit: HistoryLimit = this.historyLimits[3];
 
   constructor(
     private favoritesService: FavoritesService,
@@ -68,13 +75,20 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.coinsService.toSymbol.subscribe(res => {
-      if (res) {
-        this.toSymbol = res;
-      }
-    });
+    this.coinsService.toSymbol
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(res => {
+        if (res) {
+          this.toSymbol = res;
+        }
+      });
 
     this.favoritesService.getFavoriteCoins()
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((res: any) => {
         if (res) {
           this.coins = res;
@@ -83,9 +97,17 @@ export class FavoritesComponent implements OnInit {
   }
 
   /**
+   * Unsubscribe from Observables on destroy
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  /**
    * Save coins sorting
    **/
-  onDrop(): void {
+  private onDrop(): void {
     this.drag = false;
     this.favoritesService.setFavoriteCoins(this.coins);
   }
@@ -94,7 +116,7 @@ export class FavoritesComponent implements OnInit {
    * On element over bag
    * @param value
    */
-  onOver(value): void {
+  private onOver(value): void {
     const [e, el, container] = value;
 
     if (container.tagName === 'APP-FAVORITES-DROP-DELETE') {
@@ -108,7 +130,7 @@ export class FavoritesComponent implements OnInit {
    * Delete coin from favorites
    * @param coinName
    */
-  deleteCoin(coinName): void {
+  public deleteCoin(coinName): void {
     this.coins.splice(this.coins.indexOf(coinName), 1);
     this.favoritesService.deleteCoin(coinName);
   }
@@ -117,7 +139,7 @@ export class FavoritesComponent implements OnInit {
    * When toSymbol chaged
    * @param toSymbol
    */
-  toSymbolChanged(toSymbol: string): void {
+  public toSymbolChanged(toSymbol: string): void {
     this.loadingService.showLoading();
     this.toSymbol = toSymbol;
     this.coinsService.toSymbol.next(this.toSymbol);

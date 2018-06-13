@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class PageService {
 
-  pageError: BehaviorSubject<any> = new BehaviorSubject(false);
+  public pageError: BehaviorSubject<any> = new BehaviorSubject(false);
 
   constructor() { }
 
@@ -15,7 +15,7 @@ export class PageService {
    * @param {string} message
    * @param {string} icon
    */
-  showError(message: string = 'API error', icon: string = 'cloud_of'): void {
+  public showError(message: string = 'API error', icon: string = 'cloud_of'): void {
     this.pageError.next({
       show: true,
       message: message,
@@ -26,7 +26,7 @@ export class PageService {
   /**
    * Hide error
    */
-  hideError(): void {
+  public hideError(): void {
     this.pageError.next(false);
   }
 

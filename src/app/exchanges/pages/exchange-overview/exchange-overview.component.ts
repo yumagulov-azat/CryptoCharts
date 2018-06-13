@@ -14,7 +14,6 @@ import { ExchangesService } from '@app/exchanges/exchanges.service';
 import { PageService } from '@app/shared/modules/page/page.service';
 
 // Models
-import { ExchangePair } from '@app/exchanges/models/exchage-pair';
 import { Exchange } from '@app/exchanges/models/exchange';
 
 
@@ -25,7 +24,7 @@ import { Exchange } from '@app/exchanges/models/exchange';
 })
 export class ExchangeOverviewComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   public exchange: Exchange;
   public exchangeName: string = '';

@@ -30,13 +30,13 @@ import { CoinsList } from '../../models/coins-list.model';
 })
 export class CoinsListComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
-  coinsListSubscription: Subscription;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private coinsListSubscription: Subscription;
 
-  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'change7d', 'sparkline', 'favorite'];
-  coinsList: any = new MatTableDataSource();
-  pageSize: number = 50;
-  toSymbol: string;
+  public displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'change7d', 'sparkline', 'favorite'];
+  public coinsList: any = new MatTableDataSource();
+  public pageSize: number = 50;
+  public toSymbol: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -89,7 +89,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    * @param page
    * @param toSymbol
    */
-  getCoinsList(limit: number = this.pageSize, page: number = this.paginator.pageIndex, toSymbol: string = this.toSymbol): void {
+  private getCoinsList(limit: number = this.pageSize, page: number = this.paginator.pageIndex, toSymbol: string = this.toSymbol): void {
     this.coinsService.getCoinsList(limit, page, toSymbol)
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -115,7 +115,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    * Render sparkLines after coins list loaded
    * because parallel loading is very slow
    */
-  renderSparklines(): void {
+  private renderSparklines(): void {
     const coins = this.coinsList.data.map(item => {
       return {
         name: item.symbol
@@ -159,7 +159,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    * Add coin to favorite
    * @param coin
    */
-  addToFavorite(coin): void {
+  public addToFavorite(coin): void {
     if (!coin.favorite) {
       this.favoritesService.addCoin(coin.symbol);
     } else {
@@ -172,14 +172,14 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    * Change route when toSymbol changed
    * @param toSymbol
    */
-  toSymbolChanged(toSymbol): void {
+  public toSymbolChanged(toSymbol): void {
     this.router.navigate(['/coins/list/', toSymbol, this.paginator.pageIndex + 1]);
   }
 
   /**
    * Set page title
    */
-  setPageTitle(): void {
+  private setPageTitle(): void {
     const metaPage: string = this.paginator.pageIndex > 0 ? ', page ' + (this.paginator.pageIndex + 1) : '';
     this.meta.setTitle(`List${metaPage} | Coins`);
   }

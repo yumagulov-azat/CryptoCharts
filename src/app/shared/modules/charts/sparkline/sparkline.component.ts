@@ -20,7 +20,7 @@ export class SparklineComponent implements OnInit, OnChanges {
   @Input() colors: Array<string> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
   @Input() toSymbolDisplay: string = '$';
 
-  chart: any;
+  private chart: any;
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
@@ -54,7 +54,7 @@ export class SparklineComponent implements OnInit, OnChanges {
   /**
    * Chart options for c3
    */
-  get chartOptions(): any {
+  private get chartOptions(): any {
     return {
       bindto: this.el.nativeElement.children[0],
       data: this.data || [],

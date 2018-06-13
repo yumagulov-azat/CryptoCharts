@@ -28,21 +28,21 @@ import { ChartFilter } from '../../models/chart-filter.model';
 })
 export class CoinOverviewComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  coinSymbol: string;
-  toSymbol: string;
-  pageTitle: string = '';
+  public coinSymbol: string;
+  public toSymbol: string;
+  public pageTitle: string = '';
 
-  coin: CoinSnapshot;
-  chartFilter: ChartFilter = {
+  public coin: CoinSnapshot;
+  public chartFilter: ChartFilter = {
     period: 30,
     periodType: 'histoday',
     data: ['close']
   };
 
-  coinVolumeByCurrencyChartData: Array<any>;
-  coinVolumeByExchangesChartData: Array<any>;
+  public coinVolumeByCurrencyChartData: Array<any>;
+  public coinVolumeByExchangesChartData: Array<any>;
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
@@ -80,7 +80,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
   /**
    * Get coin info
    */
-  getCoinInfo(): void {
+  private getCoinInfo(): void {
     this.coinsService.getCoinData(this.coinSymbol, this.chartFilter.period, this.chartFilter.periodType, this.toSymbol)
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -109,7 +109,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * @param filter
    * @param toSymbol
    */
-  getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
+  public getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
     this.coinsService.getCoinHistory(this.coinSymbol, filter.period, filter.periodType, toSymbol)
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -126,21 +126,21 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * Change route when toSymbol changed
    * @param toSymbol
    */
-  toSymbolChanged(toSymbol): void {
+  public toSymbolChanged(toSymbol): void {
     this.router.navigate(['/coins/overview/', this.coinSymbol, toSymbol]);
   }
 
-  prepareDonutsData(): void {
+  private prepareDonutsData(): void {
     this.coinVolumeByCurrencyChartData = this.coin.volumeByCurrency
       .slice(0,5)
       .map((item: any) => {
-        return [item.toSymbol, item.volume24h]
+        return [item.toSymbol, item.volume24h];
       });
 
     this.coinVolumeByExchangesChartData = this.coin.exchanges
       .slice(0,5)
       .map((item: any) => {
-        return [item.MARKET, item.VOLUME24HOUR]
+        return [item.MARKET, item.VOLUME24HOUR];
       });
   }
 

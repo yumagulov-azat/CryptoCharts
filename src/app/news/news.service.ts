@@ -20,7 +20,7 @@ export class NewsService {
   private API_URL = 'https://min-api.cryptocompare.com/data/news/';
 
   // Cache
-  newsCategoriesCache: NewsCategory[];
+  private newsCategoriesCache: NewsCategory[];
 
   constructor(
     private http: HttpClient,
@@ -33,7 +33,7 @@ export class NewsService {
    * @param category
    * @returns {Observable<T>}
    */
-  getNewsList(category: string = ''): Observable<News[]> {
+  public getNewsList(category: string = ''): Observable<News[]> {
     this.loadingService.showLoading();
 
     let params = new HttpParams()
@@ -78,7 +78,7 @@ export class NewsService {
    * Get news categories list
    * @returns {Observable<R>}
    */
-  getNewsCategories(): Observable<NewsCategory[]> {
+  public getNewsCategories(): Observable<NewsCategory[]> {
     if (this.newsCategoriesCache) {
       return of(this.newsCategoriesCache);
     } else {
