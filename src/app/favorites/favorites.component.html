@@ -25,6 +25,7 @@
 
     <!-- Page content -->
     <section class="app-page-content-wrap">
+      <app-loading></app-loading>
       <section class="favorites-coins"
                [dragula]='"favorites-coins-bag"'
                [dragulaModel]='coins'>
@@ -36,7 +37,6 @@
           [toSymbol]="toSymbol"
           [historyLimit]="historyLimit"
           (coinDeleted)="deleteCoin($event)"
-          [@slideInUp]
           [ngClass]="{'is-dragged' : drag}">
         </app-favorite-coin>
       </section>
@@ -49,7 +49,7 @@
       </app-favorites-drop-delete>
 
       <!-- Favorites empty message-->
-      <app-favorites-empty *ngIf="!coins || coins.length < 1" [@enterAnimation]></app-favorites-empty>
+      <app-favorites-empty *ngIf="!coins || coins.length < 1"></app-favorites-empty>
     </section>
 
   </app-page-content>

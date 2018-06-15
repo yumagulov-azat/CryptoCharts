@@ -1,4 +1,19 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+// Libs
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnDestroy
+} from '@angular/core';
+
+// RxJs
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 // Services
 import { CoinsService } from '../../../coins/coins.service';
@@ -14,21 +29,23 @@ import { HistoryLimit } from '../../../coins/models/history-limit';
   styleUrls: ['./favorite-coin.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FavoriteCoinComponent implements OnInit, OnChanges {
+export class FavoriteCoinComponent implements OnInit, OnChanges, OnDestroy {
+
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   @Input() coin: string;
   @Input() toSymbol: string;
   @Input() historyLimit: HistoryLimit;
   @Output() coinDeleted: EventEmitter<any> = new EventEmitter();
 
-  coinData: CoinSnapshot;
-  coinChartData: any;
-  coinTrend: number = 0;
+  public coinData: CoinSnapshot;
+  public coinChartData: any;
+  public coinTrend: number = 0;
 
-  toSymbolDisplay = '$';
+  public toSymbolDisplay = '$';
 
 
-  state: any = {
+  public state: any = {
     loading: <boolean>true,
     error: <boolean>false
   };
@@ -38,8 +55,15 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
               private cd: ChangeDetectorRef) {
   }
 
+  ngOnInit() {
+
+  }
+
   ngOnChanges() {
     this.coinsService.getCoinData(this.coin, this.historyLimit.value, this.historyLimit.type, this.toSymbol)
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(res => {
         this.coinData = res;
         this.coinTrend = res.finance.changePct24Hour;
@@ -53,14 +77,18 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
       });
   }
 
-  ngOnInit() {
-
+  /**
+   * Unsubscribe from Observables on destroy
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
    * Prepare data for chart
    */
-  prepareChartData(): void {
+  private prepareChartData(): void {
     this.coinChartData = {
       json: this.coinData.history,
       keys: {
@@ -78,7 +106,7 @@ export class FavoriteCoinComponent implements OnInit, OnChanges {
    * Delete coin from favorites
    * @param coinName
    */
-  deleteCoin(coinName): void {
+  public deleteCoin(coinName): void {
     this.coinDeleted.emit(coinName);
     this.cd.detectChanges();
   }

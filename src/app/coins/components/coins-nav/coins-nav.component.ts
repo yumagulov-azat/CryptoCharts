@@ -1,11 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+
+// RxJs
+import { Subject } from 'rxjs';
 
 // Services
 import { CoinsService } from '../../coins.service';
 
 // Models
 import { CoinsList } from '../../models/coins-list.model';
+import { takeUntil } from 'rxjs/operators';
 
 
 /**
@@ -17,10 +21,12 @@ import { CoinsList } from '../../models/coins-list.model';
   templateUrl: './coins-nav.component.html',
   styleUrls: ['./coins-nav.component.scss']
 })
-export class CoinsNavComponent implements OnInit {
+export class CoinsNavComponent implements OnInit, OnDestroy {
+
+  ngUnsubscribe: Subject<void> = new Subject<void>();
 
   @Input() coinsList: CoinsList[];
-  toSymbol: string = 'USD';
+  public toSymbol: string = 'USD';
 
   constructor(
     private coinsService: CoinsService,
@@ -30,12 +36,24 @@ export class CoinsNavComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.coinsService.toSymbol.subscribe(res => {
-      this.toSymbol = res;
-    });
+    this.coinsService.toSymbol
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe(res => {
+        this.toSymbol = res;
+      });
   }
 
-  isLinkActive(instruction: any[]): boolean {
+  /**
+   * Unsubscribe from Observables on destroy
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  public isLinkActive(instruction: any[]): boolean {
     return this.router.isActive(this.router.createUrlTree(instruction), false);
   }
 }

@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 // RxJs
-import { Subscription,  Subject } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 
@@ -16,6 +16,7 @@ import { PageService } from '@app/shared/modules/page/page.service';
 
 // Models
 import { CoinsList } from '../../models/coins-list.model';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 
 /**
@@ -25,17 +26,30 @@ import { CoinsList } from '../../models/coins-list.model';
 @Component({
   selector: 'app-coins-list',
   templateUrl: './coins-list.component.html',
-  styleUrls: ['./coins-list.component.scss']
+  styleUrls: ['./coins-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoinsListComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
-  coinsListSubscription: Subscription;
+  public mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  displayedColumns: Array<any> = ['position', 'name', 'price', 'marketCap', 'changePct24Hour', 'change7d', 'sparkline', 'favorite'];
-  coinsList: any = new MatTableDataSource();
-  pageSize: number = 50;
-  toSymbol: string;
+  private coinsListSubscription: Subscription;
+
+  public displayedColumns: Array<any> = [
+    'position',
+    'name',
+    'price',
+    'marketCap',
+    'change24h',
+    'change7d',
+    'sparkline',
+    'favorite'
+  ];
+  public coinsList: any = new MatTableDataSource();
+  public pageSize: number = 50;
+  public toSymbol: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -45,8 +59,13 @@ export class CoinsListComponent implements OnInit, OnDestroy {
               private meta: MetaService,
               private favoritesService: FavoritesService,
               private pageService: PageService,
+              private changeDetectorRef: ChangeDetectorRef,
+              media: MediaMatcher,
               @Inject(PLATFORM_ID) private platformId: Object) {
 
+    this.mobileQuery = media.matchMedia('(max-width: 767px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
@@ -81,14 +100,13 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-
   /**
    * Get coins list
    * @param limit
    * @param page
    * @param toSymbol
    */
-  getCoinsList(limit: number = this.pageSize, page: number = this.paginator.pageIndex, toSymbol: string = this.toSymbol): void {
+  private getCoinsList(limit: number = this.pageSize, page: number = this.paginator.pageIndex, toSymbol: string = this.toSymbol): void {
     this.coinsService.getCoinsList(limit, page, toSymbol)
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -98,7 +116,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         this.pageService.hideError();
 
         // TODO Remove setTimeout
-        if (isPlatformBrowser(this.platformId)) {
+        if (isPlatformBrowser(this.platformId) && !this.mobileQuery.matches) {
           setTimeout(() => {
             this.renderSparklines();
           }, 100);
@@ -111,10 +129,10 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Render sparklines after coins linst loaded
-   * because paralell loading is very slow
+   * Render sparkLines after coins list loaded
+   * because parallel loading is very slow
    */
-  renderSparklines(): void {
+  private renderSparklines(): void {
     const coins = this.coinsList.data.map(item => {
       return {
         name: item.symbol
@@ -134,8 +152,10 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         if (res.length > 0) {
           // Change 7d
           const historyFirst = res[0].close,
-                historyLast  = res[res.length - 1].close;
-          this.coinsList.data[i].historyChange = historyLast && historyFirst ? (((historyLast - historyFirst) / historyFirst) * 100).toFixed(2) : 0;
+            historyLast = res[res.length - 1].close,
+            historyChangePercent = (((historyLast - historyFirst) / historyFirst) * 100).toFixed(2);
+
+          this.coinsList.data[i].historyChange = historyLast && historyFirst ? historyChangePercent : 0;
 
           // Pass chart data
           this.coinsList.data[i].history = {
@@ -148,13 +168,15 @@ export class CoinsListComponent implements OnInit, OnDestroy {
           };
         }
         i++;
+        this.changeDetectorRef.detectChanges();
       });
   }
 
   /**
    * Add coin to favorite
-   **/
-  addToFavorite(coin): void {
+   * @param coin
+   */
+  public addToFavorite(coin): void {
     if (!coin.favorite) {
       this.favoritesService.addCoin(coin.symbol);
     } else {
@@ -167,14 +189,14 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    * Change route when toSymbol changed
    * @param toSymbol
    */
-  toSymbolChanged(toSymbol): void {
+  public toSymbolChanged(toSymbol): void {
     this.router.navigate(['/coins/list/', toSymbol, this.paginator.pageIndex + 1]);
   }
 
   /**
    * Set page title
    */
-  setPageTitle(): void {
+  private setPageTitle(): void {
     const metaPage: string = this.paginator.pageIndex > 0 ? ', page ' + (this.paginator.pageIndex + 1) : '';
     this.meta.setTitle(`List${metaPage} | Coins`);
   }

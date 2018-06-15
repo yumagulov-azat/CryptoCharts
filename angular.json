@@ -45,6 +45,14 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
+                }
+              ]
             }
           }
         },
@@ -56,12 +64,8 @@
           "configurations": {
             "hmr": {
               "hmr": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.hmr.ts"
-                }
-              ]
+              "hmrWarning": false,
+              "browserTarget": "cryptocharts:build:hmr"
             },
             "production": {
               "browserTarget": "cryptocharts:build:production"
@@ -120,13 +124,7 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
+              "vendorChunk": true
             },
             "production": {
               "optimization": true,

@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 
 // RxJs
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class PageService {
 
-  pageError = new Subject<any>();
+  public pageError: BehaviorSubject<any> = new BehaviorSubject(false);
 
   constructor() { }
 
-  showError(message: string = 'API error', icon: string = 'cloud_of'): void {
+  /**
+   * Show page error
+   * @param {string} message
+   * @param {string} icon
+   */
+  public showError(message: string = 'API error', icon: string = 'cloud_of'): void {
     this.pageError.next({
       show: true,
       message: message,
@@ -18,7 +23,10 @@ export class PageService {
     });
   }
 
-  hideError(): void {
+  /**
+   * Hide error
+   */
+  public hideError(): void {
     this.pageError.next(false);
   }
 

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -16,6 +15,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 /**
  * Angular material components
@@ -23,7 +24,6 @@ import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
-    CommonModule,
     MatSidenavModule,
     MatToolbarModule,
     MatListModule,
@@ -39,7 +39,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatGridListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   declarations: [],
   exports: [
@@ -58,7 +59,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatGridListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule {

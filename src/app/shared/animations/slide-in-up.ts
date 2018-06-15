@@ -8,5 +8,5 @@ export function slideInUp() {
         animate('0.6s cubic-bezier(0.075, 0.82, 0.165, 1)', style({transform: 'translateY(0)', opacity: 1}))
       ])
     ]
-  )
+  );
 }

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 // RxJs
-import { Observable ,  Subject ,  BehaviorSubject ,  forkJoin ,  from ,  of } from 'rxjs';
-import { map, mergeMap, concatMap, finalize, catchError } from 'rxjs/operators';
+import { Observable, Subject, BehaviorSubject, forkJoin, from } from 'rxjs';
+import { map, mergeMap, concatMap, finalize } from 'rxjs/operators';
 
 // Services
 import { UtilsService } from '@app/shared/services/utils.service';
@@ -15,13 +15,14 @@ import { StorageService } from '@app/shared/services/storage.service';
 import { CoinsList } from './models/coins-list.model';
 import { CoinSnapshot } from './models/coin-snapshot.model';
 
+
 @Injectable()
 export class CoinsService {
 
   private API_URL = 'https://min-api.cryptocompare.com/data';
 
-  coinsList: Subject<any> = new Subject<any>();
-  toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public coinsList: Subject<any> = new Subject<any>();
+  public toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private http: HttpClient,
@@ -34,7 +35,7 @@ export class CoinsService {
     // Get toSymbol from storage
     this.storageService.getItem('toSymbol')
       .subscribe((res: string) => {
-        if(res !== '') {
+        if (res !== '') {
           this.toSymbol.next(res);
         } else {
           this.toSymbol.next('USD');
@@ -44,8 +45,8 @@ export class CoinsService {
     // Save toSymbol to storage
     this.toSymbol
       .subscribe(res => {
-        if(res !== '') {
-          this.storageService.setItem('toSymbol', res)
+        if (res !== '') {
+          this.storageService.setItem('toSymbol', res);
         }
       });
 
@@ -58,7 +59,7 @@ export class CoinsService {
    * @param toSymbol
    * @returns {Observable<CoinsList[]>}
    */
-  getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): Observable<CoinsList[]> {
+  public getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): Observable<CoinsList[]> {
     this.loadingService.showLoading();
 
     const params = new HttpParams()
@@ -83,7 +84,7 @@ export class CoinsService {
         finalize(() => {
           this.loadingService.hideLoading();
         })
-      )
+      );
   }
 
   /**
@@ -94,16 +95,16 @@ export class CoinsService {
    * @param toSymbol
    * @returns {Observable<CoinSnapshot>}
    */
-  getCoinData(coinSymbol: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
+  public getCoinData(coinSymbol: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
     this.loadingService.showLoading();
-
-    let coinSnapshot: CoinSnapshot;
 
     // Get coin avalible pairs
     return this.getVolumeByCurrency(coinSymbol, 20)
       .pipe(
         mergeMap((pairs: any) => {
-          if(!pairs.Data.length) throw new Error('Coin data empty');
+          if (!pairs.Data.length) {
+            throw new Error('Coin data empty');
+          }
 
           // Find USD. If USD not found, get first pair
           toSymbol = pairs.Data.find(item => item.toSymbol === toSymbol) ? toSymbol : pairs.Data[0].toSymbol;
@@ -141,8 +142,10 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
-    this.loadingService.showLoading();
+  public getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD', showLoading: boolean = true): Observable<any> {
+    if (showLoading) {
+      this.loadingService.showLoading();
+    }
 
     const params = new HttpParams()
       .set('limit', historyLimit.toString())
@@ -155,7 +158,9 @@ export class CoinsService {
           return res.Data;
         }),
         finalize(() => {
-          this.loadingService.hideLoading();
+          if (showLoading) {
+            this.loadingService.hideLoading();
+          }
         })
       );
   }
@@ -168,12 +173,12 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  getCoinsHistory(coinsList: Array<any>, limit: number = 365, type: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
+  public getCoinsHistory(coinsList: Array<any>, limit: number = 365, type: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
     const coinsRequests = [];
 
     if (coinsList.length > 0) {
       coinsList.forEach((coin) => {
-        coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol));
+        coinsRequests.push(this.getCoinHistory(coin.name, limit, type, toSymbol, false));
       });
 
       return from(coinsRequests)
@@ -194,12 +199,12 @@ export class CoinsService {
    * @param limit
    * @returns {Observable<Object>}
    */
-  getVolumeByCurrency(coinSymbol: string, limit: number = 5): Observable<any> {
+  public getVolumeByCurrency(coinSymbol: string, limit: number = 5): Observable<any> {
     const params = new HttpParams()
       .set('fsym', coinSymbol)
       .set('limit', limit.toString());
 
-    return this.http.get(this.API_URL + '/top/pairs', { params: params} )
+    return this.http.get(this.API_URL + '/top/pairs', {params: params})
       .pipe(
         map((res) => {
           return res;
@@ -215,7 +220,7 @@ export class CoinsService {
 
     data.forEach((item, index) => {
       const coinInfo: any = item.CoinInfo,
-            conversionInfo: any = item.ConversionInfo || { Supply: 0, RAW: ['']};
+        conversionInfo: any = item.ConversionInfo || {Supply: 0, RAW: ['']};
 
       let priceInfo: any;
 

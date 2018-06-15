@@ -1,5 +1,6 @@
 <mat-nav-list>
-  <a mat-list-item routerLink="/exchanges/{{ exchange.name }}" routerLinkActive="active" *ngFor="let exchange of exchangesList">
+  <a mat-list-item routerLink="/exchanges/{{ exchange.name }}/{{ exchange.toSymbols[0] }}" routerLinkActive="active" *ngFor="let exchange of exchangesList">
     <h4 mat-line>{{ exchange.name }}</h4>
+    <p mat-line>{{ exchange.pairsCount }} pairs</p>
   </a>
 </mat-nav-list>

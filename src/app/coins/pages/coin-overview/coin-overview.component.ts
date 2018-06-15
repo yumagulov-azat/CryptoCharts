@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 
@@ -23,31 +23,33 @@ import { ChartFilter } from '../../models/chart-filter.model';
 @Component({
   selector: 'app-coin-overview',
   templateUrl: './coin-overview.component.html',
-  styleUrls: ['./coin-overview.component.scss']
+  styleUrls: ['./coin-overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoinOverviewComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  coinSymbol: string;
-  toSymbol: string;
-  pageTitle: string = '';
+  public coinSymbol: string;
+  public toSymbol: string;
+  public pageTitle: string = '';
 
-  coin: CoinSnapshot;
-  chartFilter: ChartFilter = {
+  public coin: CoinSnapshot;
+  public chartFilter: ChartFilter = {
     period: 30,
     periodType: 'histoday',
     data: ['close']
   };
 
-  coinVolumeByCurrencyChartData: Array<any>;
-  coinVolumeByExchangesChartData: Array<any>;
+  public coinVolumeByCurrencyChartData: Array<any>;
+  public coinVolumeByExchangesChartData: Array<any>;
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
               private router: Router,
               private notifications: NotificationsService,
               private pageService: PageService,
+              private changeDetector: ChangeDetectorRef,
               private meta: MetaService) {
 
   }
@@ -78,7 +80,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
   /**
    * Get coin info
    */
-  getCoinInfo(): void {
+  private getCoinInfo(): void {
     this.coinsService.getCoinData(this.coinSymbol, this.chartFilter.period, this.chartFilter.periodType, this.toSymbol)
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -87,15 +89,17 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
         this.coin = coin;
         this.pageTitle = this.coin.info.FullName;
 
-        if(!this.coin.toSymbols.find((item: string) => item === this.toSymbol )) {
+        if (!this.coin.toSymbols.find((item: string) => item === this.toSymbol )) {
           this.router.navigate(['/coins/overview/', this.coinSymbol, this.coin.toSymbols[0]]);
         }
 
         this.prepareDonutsData();
         this.pageService.hideError();
+        this.changeDetector.detectChanges();
       }, err => {
         console.error(err);
         this.pageService.showError();
+        this.changeDetector.detectChanges();
       });
   }
 
@@ -105,7 +109,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * @param filter
    * @param toSymbol
    */
-  getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
+  public getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
     this.coinsService.getCoinHistory(this.coinSymbol, filter.period, filter.periodType, toSymbol)
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -122,21 +126,21 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * Change route when toSymbol changed
    * @param toSymbol
    */
-  toSymbolChanged(toSymbol): void {
+  public toSymbolChanged(toSymbol): void {
     this.router.navigate(['/coins/overview/', this.coinSymbol, toSymbol]);
   }
 
-  prepareDonutsData(): void {
+  private prepareDonutsData(): void {
     this.coinVolumeByCurrencyChartData = this.coin.volumeByCurrency
       .slice(0,5)
       .map((item: any) => {
-        return [item.toSymbol, item.volume24h]
+        return [item.toSymbol, item.volume24h];
       });
 
     this.coinVolumeByExchangesChartData = this.coin.exchanges
       .slice(0,5)
       .map((item: any) => {
-        return [item.MARKET, item.VOLUME24HOUR]
+        return [item.MARKET, item.VOLUME24HOUR];
       });
   }
 

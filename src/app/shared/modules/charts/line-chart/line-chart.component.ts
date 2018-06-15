@@ -7,7 +7,8 @@ import {
   ElementRef,
   Inject,
   PLATFORM_ID,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  NgZone
 } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 
@@ -17,6 +18,7 @@ import * as moment from 'moment';
 
 // Services
 import { UtilsService } from '../../../services/utils.service';
+
 
 @Component({
   selector: 'app-line-chart',
@@ -28,7 +30,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   @Input() data: any;
-  @Input() height: number = 400;
+  @Input() height: number = 350;
   @Input() chartColors: Array<any> = ['#673ab7', '#E91E63', '#FF9800', '#4CAF50'];
   @Input() subchart: boolean = true;
   @Input() toSymbolDisplay: string = '$';
@@ -36,11 +38,11 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() showX: boolean = true;
   @Input() axis: any;
 
-  chart: any;
-  chartValues: Array<string> = [''];
+  private chart: any;
 
   constructor(private utils: UtilsService,
               private el: ElementRef,
+              private zone: NgZone,
               @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
@@ -92,17 +94,19 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     // Render chart
-    if (this.chart) {
-      this.chart.load(this.data);
-    } else {
-      this.chart = c3.generate(this.chartOptions);
-    }
+    this.zone.runOutsideAngular(() => {
+      if (this.chart) {
+        this.chart.load(this.data);
+      } else {
+        this.chart = c3.generate(this.chartOptions);
+      }
+    });
   }
 
   /**
    * Chart options for c3
    */
-  get chartOptions(): any {
+  private get chartOptions(): any {
     return {
       bindto: this.el.nativeElement.children[0],
       data: this.data || [],
@@ -116,6 +120,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
         show: false
       },
       point: {
+        sensitivity: 100,
         r: 0,
         focus: {
           expand: {
@@ -133,7 +138,7 @@ export class LineChartComponent implements OnInit, OnChanges, AfterViewInit {
           height: 50
         }
       }
-    }
+    };
   }
 
 }

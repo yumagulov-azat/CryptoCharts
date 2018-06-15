@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+// Libs
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
 
@@ -11,21 +12,20 @@ import { NewsService } from './news.service';
 
 // Models
 import { News } from './models/news';
-import { NewsCategories } from './models/news-categories';
+import { NewsCategory } from './models/news-category';
 
 @Component({
   selector: 'app-news',
   templateUrl: './news.component.html',
   styleUrls: ['./news.component.scss']
 })
-export class NewsComponent implements OnInit {
+export class NewsComponent implements OnInit, OnDestroy {
 
-  ngUnsubscribe: Subject<void> = new Subject<void>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  newsList: News[] = [];
-  newsCategories: NewsCategories[] = [];
-
-  activeCategory: string = '';
+  public newsList: News[] = [];
+  public newsCategories: NewsCategory[] = [];
+  public activeCategory: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -65,7 +65,7 @@ export class NewsComponent implements OnInit {
    * Get latest news
    * @param category
    */
-  getNewsList(category: string = ''): void {
+  private getNewsList(category: string = ''): void {
     this.newsService.getNewsList(category)
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -80,12 +80,12 @@ export class NewsComponent implements OnInit {
   /**
    * Get categories list
    */
-  getNewsCategories(): void {
+  private getNewsCategories(): void {
     this.newsService.getNewsCategories()
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe((res: NewsCategories[]) => {
+      .subscribe((res: NewsCategory[]) => {
           this.newsCategories = res;
       }, (err) => {
         console.log(err);

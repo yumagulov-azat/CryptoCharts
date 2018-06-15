@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { animate } from '@angular/animations';
+// Libs
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+// Services
 import { PageService } from '../page.service';
 
 /**
@@ -13,9 +15,9 @@ import { PageService } from '../page.service';
 })
 export class PageContentComponent implements OnInit {
 
-  error = false;
-  errorMessage: string;
-  errorIcon: string;
+  public error = false;
+  public errorMessage: string;
+  public errorIcon: string;
 
   constructor(private pageService: PageService) { }
 
@@ -27,5 +29,6 @@ export class PageContentComponent implements OnInit {
         this.errorIcon = res.icon;
       });
   }
+
 
 }

@@ -1,0 +1,74 @@
+@import "~styles/variables";
+
+.app-page-content-wrap {
+  padding: 0;
+}
+
+// Table styles
+.exchanges-pairs {
+
+  .mat-table {
+    min-height: 100vh;
+  }
+
+  .mat-header-row {
+    position: sticky;
+    top: 80px;
+    background: white;
+    z-index: 2;
+    min-height: 48px;
+  }
+
+  .mat-row {
+    border-bottom-color: rgba(0,0,0,.08);
+  }
+
+  .mat-column-change {
+    max-width: 65px;
+    white-space: nowrap;
+  }
+
+  .mat-cell {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: rgba(0,0,0,.7);
+  }
+
+  @media (max-width: 991px) {
+    .mat-header-row {
+      top: 60px;
+    }
+  }
+}
+
+// Table row style
+.exchanges-pairs-item {
+  overflow: hidden;
+  backface-visibility: hidden;
+
+  &__pair {
+    font-weight: 500;
+
+    a {
+      color: rgba(0,0,0,.8);
+      transition: color .25s ease;
+
+      &:hover {
+        color: $accent;
+      }
+    }
+  }
+
+  &__change {
+
+  }
+
+  @media (max-width: 991px) {
+    &__change {
+      max-width: 65px;
+    }
+  }
+}

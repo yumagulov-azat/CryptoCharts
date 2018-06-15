@@ -66,5 +66,37 @@
       line-height: 28px;
       color: rgba(0,0,0,.8);
     }
+
+    @media (max-width: 991px) {
+      &__header {
+        margin-bottom: 10px;
+      }
+
+      &__title {
+        margin-bottom: 10px;
+
+        a {
+          font-size: 16px;
+          line-height: 26px;
+        }
+      }
+
+      &__source, &__date {
+        font-size: 12px;
+      }
+
+      &__body {
+        display: block;
+      }
+
+      &__img {
+        display: none;
+      }
+
+      &__anons {
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
   }
 }

@@ -8,4 +8,8 @@
   .mat-progress-bar {
     height: 3px;
   }
+
+  @media (max-width: 991px) {
+    top: 60px;
+  }
 }

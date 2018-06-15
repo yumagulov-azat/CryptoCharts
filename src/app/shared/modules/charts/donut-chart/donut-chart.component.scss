@@ -1,7 +1,20 @@
-::ng-deep {
-  .c3 {
-    path {
-      stroke: none;
+:host {
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+
+  ::ng-deep {
+    .c3 {
+      path {
+        stroke: none;
+      }
+
+      .c3-chart {
+        g.c3-event-rects {
+          rect.c3-event-rect {
+            pointer-events: none;
+          }
+        }
+      }
     }
   }
 }
