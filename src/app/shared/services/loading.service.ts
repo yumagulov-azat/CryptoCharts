@@ -14,12 +14,10 @@ export class LoadingService {
 
   public showLoading(): void {
     this.loading.next(true);
-    console.log('show l');
   }
 
   public hideLoading(): void {
     this.loading.next(false);
-    console.log('hide l');
   }
 
 }
