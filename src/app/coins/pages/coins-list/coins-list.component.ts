@@ -98,6 +98,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
   /**

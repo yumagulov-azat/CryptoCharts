@@ -51,7 +51,7 @@
 
     &__item {
       flex: 33.33333%;
-      max-width:: 33.33333%;
+      max-width: 33.33333%;
 
       &__title {
         color: rgba(0, 0, 0, .4);
@@ -89,6 +89,54 @@
   mat-card-content {
     padding: 0;
     margin-bottom: 0;
+  }
+
+  @media (max-width: 991px) {
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 575px) {
+    padding-top: 10px;
+    min-height: 208px;
+
+    &__header {
+      margin-bottom: 10px;
+
+      &__name {
+        margin-bottom: 10px;
+        font-size: 18px;
+
+        span {
+          font-size: 12px;
+          line-height: 12px;
+        }
+      }
+    }
+
+    &__stats {
+      display: flex;
+      margin-bottom: 16px;
+
+      &__item {
+        flex: auto;
+        max-width: 100%;
+        margin-right: 10px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &__title {
+          font-size: 12px;
+          margin-bottom: 0px;
+        }
+
+        &__value {
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+    }
   }
 }
 

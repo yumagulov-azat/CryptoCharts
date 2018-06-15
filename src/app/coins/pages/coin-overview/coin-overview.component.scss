@@ -1,14 +1,6 @@
 :host {
   display: block;
 
-  .app-page-content-toolbar {
-    mat-toolbar-row {
-      button {
-        margin-left: 16px;
-      }
-    }
-  }
-
   mat-card {
     margin-bottom: 16px;
     box-shadow: 0 3px 8px rgba(0,0,0,.1);

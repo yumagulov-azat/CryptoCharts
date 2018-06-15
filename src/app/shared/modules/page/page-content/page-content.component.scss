@@ -15,6 +15,12 @@
       z-index: 3;
       flex: 80px 0 0;
 
+      &__back-btn {
+        display: none;
+        margin-left: -11px;
+        margin-right: 1px;
+      }
+
       mat-toolbar-row {
         .spacer {
           flex: 1 1 auto;
@@ -23,11 +29,27 @@
         .mat-form-field {
           font-size: 14px;
           margin-left: 16px;
+
+          .mat-form-field-underline {
+            background-color: rgba(0, 0, 0, 0.42);
+          }
         }
       }
 
       @media (max-width: 991px) {
         flex: 60px 0 0;
+
+        &__back-btn {
+          display: block;
+        }
+      }
+
+      @media (max-width: 767px) {
+        mat-toolbar-row {
+          .mat-form-field {
+            max-width: 80px;
+          }
+        }
       }
     }
 

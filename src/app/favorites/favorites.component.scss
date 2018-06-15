@@ -1,5 +1,13 @@
 @import 'node_modules/dragula/dist/dragula';
 
+:host {
+  @media (max-width: 991px) {
+    .app-page-content-wrap {
+      padding: 0 8px;
+    }
+  }
+}
+
 .favorites-coins {
   display: flex;
   flex-wrap: wrap;
@@ -9,5 +17,18 @@
     flex: 50% 0 0;
     max-width: 50%;
     padding: 0 16px;
+  }
+
+  @media (max-width: 991px) {
+    app-favorite-coin {
+      padding: 0 8px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    app-favorite-coin {
+      flex: 100% 0 0;
+      max-width: 100%;
+    }
   }
 }
