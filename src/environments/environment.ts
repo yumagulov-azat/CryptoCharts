@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  isServer: false
+  hmr: false
 };
