@@ -33,7 +33,7 @@ export class NewsService {
    * @param category
    * @returns {Observable<T>}
    */
-  public getNewsList(category: string = ''): Observable<News[]> {
+  getNewsList(category: string = ''): Observable<News[]> {
     this.loadingService.showLoading();
 
     let params = new HttpParams()
@@ -78,7 +78,7 @@ export class NewsService {
    * Get news categories list
    * @returns {Observable<R>}
    */
-  public getNewsCategories(): Observable<NewsCategory[]> {
+  getNewsCategories(): Observable<NewsCategory[]> {
     if (this.newsCategoriesCache) {
       return of(this.newsCategoriesCache);
     } else {

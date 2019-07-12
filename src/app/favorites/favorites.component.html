@@ -26,9 +26,7 @@
     <!-- Page content -->
     <section class="app-page-content-wrap">
       <app-loading></app-loading>
-      <section class="favorites-coins"
-               [dragula]='"favorites-coins-bag"'
-               [dragulaModel]='coins'>
+      <section class="favorites-coins">
 
         <!-- Favorite coin card-->
         <app-favorite-coin
@@ -42,10 +40,7 @@
       </section>
 
       <!-- Drop to delete -->
-      <app-favorites-drop-delete
-        [dragula]='"favorites-coins-bag"'
-        [dragulaModel]='deletedCoins'
-        [ngClass]="{'show' : drag, 'deleting' : coinDeleting }">
+      <app-favorites-drop-delete [ngClass]="{'show' : drag, 'deleting' : coinDeleting }">
       </app-favorites-drop-delete>
 
       <!-- Favorites empty message-->

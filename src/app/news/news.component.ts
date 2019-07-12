@@ -23,9 +23,9 @@ export class NewsComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  public newsList: News[] = [];
-  public newsCategories: NewsCategory[] = [];
-  public activeCategory: string = '';
+  newsList: News[] = [];
+  newsCategories: NewsCategory[] = [];
+  activeCategory: string = '';
 
   constructor(
     private route: ActivatedRoute,

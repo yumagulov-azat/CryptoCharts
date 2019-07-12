@@ -43,7 +43,7 @@ export class CoinChartComponent implements OnInit, OnChanges, OnDestroy {
   ];
 
   // chartPeriod options
-  public historyLimits: HistoryLimit[] = [
+  historyLimits: HistoryLimit[] = [
     {value: 59, viewValue: '1 hour', type: 'histominute'},
     {value: 23, viewValue: '1 day', type: 'histohour'},
     {value: 6, viewValue: '1 week', type: 'histoday'},
@@ -54,7 +54,7 @@ export class CoinChartComponent implements OnInit, OnChanges, OnDestroy {
   ];
 
   // Form group for chart filter
-  public chartFilterForm = new FormGroup({
+  chartFilterForm = new FormGroup({
     historyLimit: new FormControl(this.historyLimits[3]),
     chartDataShow: new FormControl(['close'])
   });

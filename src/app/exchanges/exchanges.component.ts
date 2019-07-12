@@ -22,7 +22,7 @@ import { Exchange } from './models/exchange';
 export class ExchangesComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-  public exchangesList: Exchange[] = [];
+  exchangesList: Exchange[] = [];
 
   constructor(
     private route: ActivatedRoute,

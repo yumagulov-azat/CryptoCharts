@@ -18,7 +18,7 @@ export class ExchangesService {
 
   private API_URL = 'https://min-api.cryptocompare.com/data';
 
-  public toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private exchangesCache: Exchange[];
 
   constructor(
@@ -30,7 +30,7 @@ export class ExchangesService {
   /**
    * Get all exchanges
    */
-  public getExchangesList(): Observable<Exchange[]> {
+  getExchangesList(): Observable<Exchange[]> {
     if (this.exchangesCache) {
       return of(this.exchangesCache);
     } else {
@@ -66,7 +66,7 @@ export class ExchangesService {
    * @param {string} exchangeName
    * @returns {Observable<ExchangePair[]>}
    */
-  public getExchange(toSymbol: string, exchangeName: string, page: number = 1, limit: number = 50): Observable<Exchange> {
+  getExchange(toSymbol: string, exchangeName: string, page: number = 1, limit: number = 50): Observable<Exchange> {
     this.loadingService.showLoading();
 
     return this.getExchangesList()

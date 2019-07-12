@@ -16,7 +16,7 @@ export class StorageService {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
   }
 
-  public getItem(key: string): Observable<any> {
+  getItem(key: string): Observable<any> {
     if (isPlatformBrowser(this.platformId)) {
       return of(localStorage.getItem(key));
     } else {
@@ -24,13 +24,13 @@ export class StorageService {
     }
   }
 
-  public setItem(key: string, value: any): void {
+  setItem(key: string, value: any): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(key, value);
     }
   }
 
-  public getItemAsArray(key: string): Observable<Array<any>> {
+  getItemAsArray(key: string): Observable<Array<any>> {
     if (isPlatformBrowser(this.platformId)) {
       return of(localStorage.getItem(key))
         .pipe(
@@ -47,7 +47,7 @@ export class StorageService {
     }
   }
 
-  public addToArray(key: string, value: string): void {
+  addToArray(key: string, value: string): void {
     if (isPlatformBrowser(this.platformId)) {
       let array: any = localStorage.getItem(key);
 
@@ -64,7 +64,7 @@ export class StorageService {
     }
   }
 
-  public removeFromArray(key: string, value: string): void {
+  removeFromArray(key: string, value: string): void {
     if (isPlatformBrowser(this.platformId)) {
       const array = localStorage.getItem(key).split(',');
       array.splice(array.indexOf(value), 1);
@@ -72,7 +72,7 @@ export class StorageService {
     }
   }
 
-  public checkInArray(key: string, value: string): boolean {
+  checkInArray(key: string, value: string): boolean {
     if (isPlatformBrowser(this.platformId)) {
       const array = localStorage.getItem(key);
 

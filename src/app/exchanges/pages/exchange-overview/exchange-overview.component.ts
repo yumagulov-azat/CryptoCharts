@@ -3,7 +3,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // Material
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 // RxJs
 import { Subject } from 'rxjs';
@@ -26,14 +27,16 @@ export class ExchangeOverviewComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  public exchange: Exchange;
-  public exchangeName: string = '';
-  public displayedColumns: Array<any> = ['pair', 'price', 'open24Hour', 'range24Hour', 'changePct24Hour'];
-  public exchangePairs: any = new MatTableDataSource();
+  exchange: Exchange;
+  exchangeName: string = '';
+  displayedColumns: Array<any> = ['pair', 'price', 'open24Hour', 'range24Hour', 'changePct24Hour'];
+  exchangePairs: any = new MatTableDataSource();
 
-  public toSymbol: string;
+  toSymbol: string;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {
+    static: false
+  }) paginator: MatPaginator;
 
   constructor(
     private route: ActivatedRoute,
@@ -70,7 +73,7 @@ export class ExchangeOverviewComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public toSymbolChanged(toSymbol: string) {
+  toSymbolChanged(toSymbol: string) {
     this.router.navigate(['/exchanges/', this.exchangeName, toSymbol]);
   }
 

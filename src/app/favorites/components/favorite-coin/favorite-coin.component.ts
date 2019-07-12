@@ -38,14 +38,14 @@ export class FavoriteCoinComponent implements OnInit, OnChanges, OnDestroy {
   @Input() historyLimit: HistoryLimit;
   @Output() coinDeleted: EventEmitter<any> = new EventEmitter();
 
-  public coinData: CoinSnapshot;
-  public coinChartData: any;
-  public coinTrend: number = 0;
+  coinData: CoinSnapshot;
+  coinChartData: any;
+  coinTrend: number = 0;
 
-  public toSymbolDisplay = '$';
+  toSymbolDisplay = '$';
 
 
-  public state: any = {
+  state: any = {
     loading: <boolean>true,
     error: <boolean>false
   };
@@ -106,7 +106,7 @@ export class FavoriteCoinComponent implements OnInit, OnChanges, OnDestroy {
    * Delete coin from favorites
    * @param coinName
    */
-  public deleteCoin(coinName): void {
+  deleteCoin(coinName): void {
     this.coinDeleted.emit(coinName);
     this.cd.detectChanges();
   }

@@ -13,10 +13,14 @@ export class TrendColorDirective implements OnChanges {
   }
 
   ngOnChanges() {
-    if (this.value && this.value > 0) {
+    if (!this.value) {
+      return false;
+    }
+
+    if (this.value > 0) {
       this.el.nativeElement.classList.remove('value-down');
       this.el.nativeElement.classList.add('value-up');
-    } else if (this.value && this.value < 0) {
+    } else if (this.value < 0) {
       this.el.nativeElement.classList.remove('value-up');
       this.el.nativeElement.classList.add('value-down');
     }

@@ -1,8 +1,19 @@
-import { Component, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  Inject,
+  PLATFORM_ID,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  AfterViewInit
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MetaService } from '@ngx-meta/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 // RxJs
 import { Subscription, Subject } from 'rxjs';
@@ -29,15 +40,15 @@ import { MediaMatcher } from '@angular/cdk/layout';
   styleUrls: ['./coins-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoinsListComponent implements OnInit, OnDestroy {
+export class CoinsListComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  public mobileQuery: MediaQueryList;
+  mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   private coinsListSubscription: Subscription;
 
-  public displayedColumns: Array<any> = [
+  displayedColumns: Array<any> = [
     'position',
     'name',
     'price',
@@ -47,11 +58,11 @@ export class CoinsListComponent implements OnInit, OnDestroy {
     'sparkline',
     'favorite'
   ];
-  public coinsList: any = new MatTableDataSource();
-  public pageSize: number = 50;
-  public toSymbol: string;
+  coinsList: any = new MatTableDataSource();
+  pageSize: number = 50;
+  toSymbol: string;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
@@ -70,6 +81,9 @@ export class CoinsListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+  }
+
+  ngAfterViewInit() {
     // When paginator page changed change url
     this.paginator.page
       .subscribe((page: any) => {
@@ -90,7 +104,6 @@ export class CoinsListComponent implements OnInit, OnDestroy {
         this.coinsService.toSymbol.next(this.toSymbol);
       });
   }
-
 
   /**
    * Unsubscribe from Observables on destroy
@@ -177,7 +190,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    * Add coin to favorite
    * @param coin
    */
-  public addToFavorite(coin): void {
+  addToFavorite(coin): void {
     if (!coin.favorite) {
       this.favoritesService.addCoin(coin.symbol);
     } else {
@@ -190,7 +203,7 @@ export class CoinsListComponent implements OnInit, OnDestroy {
    * Change route when toSymbol changed
    * @param toSymbol
    */
-  public toSymbolChanged(toSymbol): void {
+  toSymbolChanged(toSymbol): void {
     this.router.navigate(['/coins/list/', toSymbol, this.paginator.pageIndex + 1]);
   }
 

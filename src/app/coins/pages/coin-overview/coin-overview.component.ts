@@ -30,19 +30,19 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  public coinSymbol: string;
-  public toSymbol: string;
-  public pageTitle: string = '';
+  coinSymbol: string;
+  toSymbol: string;
+  pageTitle: string = '';
 
-  public coin: CoinSnapshot;
-  public chartFilter: ChartFilter = {
+  coin: CoinSnapshot;
+  chartFilter: ChartFilter = {
     period: 30,
     periodType: 'histoday',
     data: ['close']
   };
 
-  public coinVolumeByCurrencyChartData: Array<any>;
-  public coinVolumeByExchangesChartData: Array<any>;
+  coinVolumeByCurrencyChartData: Array<any>;
+  coinVolumeByExchangesChartData: Array<any>;
 
   constructor(private coinsService: CoinsService,
               private route: ActivatedRoute,
@@ -109,7 +109,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * @param filter
    * @param toSymbol
    */
-  public getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
+  getCoinHistory(filter: ChartFilter, toSymbol: string = 'USD'): void {
     this.coinsService.getCoinHistory(this.coinSymbol, filter.period, filter.periodType, toSymbol)
       .pipe(
         takeUntil(this.ngUnsubscribe)
@@ -126,7 +126,7 @@ export class CoinOverviewComponent implements OnInit, OnDestroy {
    * Change route when toSymbol changed
    * @param toSymbol
    */
-  public toSymbolChanged(toSymbol): void {
+  toSymbolChanged(toSymbol): void {
     this.router.navigate(['/coins/overview/', this.coinSymbol, toSymbol]);
   }
 

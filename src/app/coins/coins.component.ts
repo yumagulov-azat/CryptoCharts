@@ -24,7 +24,7 @@ import { CoinsList } from './models/coins-list.model';
 export class CoinsComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe: Subject<void> = new Subject<void>();
-  public coinsList: CoinsList[];
+  coinsList: CoinsList[];
 
   constructor(private route: ActivatedRoute, private coinsService: CoinsService) {
 

@@ -26,7 +26,7 @@ export class CoinsNavComponent implements OnInit, OnDestroy {
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
   @Input() coinsList: CoinsList[];
-  public toSymbol: string = 'USD';
+  toSymbol: string = 'USD';
 
   constructor(
     private coinsService: CoinsService,
@@ -53,7 +53,7 @@ export class CoinsNavComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public isLinkActive(instruction: any[]): boolean {
+  isLinkActive(instruction: any[]): boolean {
     return this.router.isActive(this.router.createUrlTree(instruction), false);
   }
 }

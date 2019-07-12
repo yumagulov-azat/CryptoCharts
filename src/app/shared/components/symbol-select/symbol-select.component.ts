@@ -31,7 +31,7 @@ export class SymbolSelectComponent implements OnInit {
 
   }
 
-  public changeSymbol() {
+  changeSymbol() {
     this.symbolChanged.emit(this.symbolSelected);
   }
 }

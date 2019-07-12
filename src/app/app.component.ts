@@ -10,10 +10,10 @@ import {MediaMatcher} from '@angular/cdk/layout';
 
 export class AppComponent implements OnDestroy {
 
-  public mobileQuery: MediaQueryList;
+  mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  public appNav: AppNavItem[] = [
+  appNav: AppNavItem[] = [
     {
       name: 'Favorites',
       link: '/favorites',

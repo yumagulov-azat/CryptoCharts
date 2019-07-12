@@ -21,8 +21,8 @@ export class CoinsService {
 
   private API_URL = 'https://min-api.cryptocompare.com/data';
 
-  public coinsList: Subject<any> = new Subject<any>();
-  public toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  coinsList: Subject<any> = new Subject<any>();
+  toSymbol: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private http: HttpClient,
@@ -59,7 +59,7 @@ export class CoinsService {
    * @param toSymbol
    * @returns {Observable<CoinsList[]>}
    */
-  public getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): Observable<CoinsList[]> {
+  getCoinsList(limit: number = 50, page: number = 0, toSymbol: string = 'USD'): Observable<CoinsList[]> {
     this.loadingService.showLoading();
 
     const params = new HttpParams()
@@ -95,7 +95,7 @@ export class CoinsService {
    * @param toSymbol
    * @returns {Observable<CoinSnapshot>}
    */
-  public getCoinData(coinSymbol: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
+  getCoinData(coinSymbol: string, historyLimit: number = 7, historyType: string = 'histoday', toSymbol: string = 'USD'): Observable<CoinSnapshot> {
     this.loadingService.showLoading();
 
     // Get coin avalible pairs
@@ -142,7 +142,7 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  public getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD', showLoading: boolean = true): Observable<any> {
+  getCoinHistory(coinSymbol: string, historyLimit: number = 365, historyType: string = 'histoday', toSymbol: string = 'USD', showLoading: boolean = true): Observable<any> {
     if (showLoading) {
       this.loadingService.showLoading();
     }
@@ -173,7 +173,7 @@ export class CoinsService {
    * @param type
    * @returns {Observable<R>}
    */
-  public getCoinsHistory(coinsList: Array<any>, limit: number = 365, type: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
+  getCoinsHistory(coinsList: Array<any>, limit: number = 365, type: string = 'histoday', toSymbol: string = 'USD'): Observable<any> {
     const coinsRequests = [];
 
     if (coinsList.length > 0) {
@@ -199,7 +199,7 @@ export class CoinsService {
    * @param limit
    * @returns {Observable<Object>}
    */
-  public getVolumeByCurrency(coinSymbol: string, limit: number = 5): Observable<any> {
+  getVolumeByCurrency(coinSymbol: string, limit: number = 5): Observable<any> {
     const params = new HttpParams()
       .set('fsym', coinSymbol)
       .set('limit', limit.toString());

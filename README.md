@@ -1,5 +1,7 @@
 # CryptoCharts
 
+Old code!!!
+
 Crypto-currencies rate compare app.
 Based on https://www.cryptocompare.com/api/
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.8.

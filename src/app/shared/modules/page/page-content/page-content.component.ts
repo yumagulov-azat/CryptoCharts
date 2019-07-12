@@ -15,9 +15,9 @@ import { PageService } from '../page.service';
 })
 export class PageContentComponent implements OnInit {
 
-  public error = false;
-  public errorMessage: string;
-  public errorIcon: string;
+  error = false;
+  errorMessage: string;
+  errorIcon: string;
 
   constructor(private pageService: PageService) { }
 
